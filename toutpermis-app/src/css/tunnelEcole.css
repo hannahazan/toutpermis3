@@ -9,77 +9,7 @@
     font-family: 'Poppins', sans-serif;
 }
 /******************************************navBar****************************************************************/
-.navbar{
-    width: 100%;
-    height: 50px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    position: fixed;
-    top: 0px;
-    padding-left:5px;
-    background-color: white;
-    z-index: 99;
-    margin: 0px;
-  }
-  .burger{
-    width: 25px;
-    height: 25px;
-    margin-left: 10px;
-    margin-top: 5px;
-    filter: invert(28%) sepia(100%) saturate(312%) hue-rotate(135deg) brightness(92%) contrast(86%);
-  }
-  .logoParaPicto{
-    display: flex;
-    flex-direction: row;
-    margin-left: 10px;
-    align-items: center;
-    height: 30px;
-  }
-  .picto{
-    width: 24px;
-    display: flex;
-    flex-direction: row;
-    margin-top: 2px;
-  }
-  .LogoSphère{
-    width:18px
-  }
-  .Volant{
-    width: 10px;
-    height: 10px;
-    position: relative;
-    right: 14px;
-    top: 5px;
-  }
-  .tout{
-    margin: 0px;
-    color: #236468;
-    font-weight: 400;
-    font-size: x-large;
-   
-  }
-  .permis{
-    margin: 0px;
-    color: #37beb4;
-    font-weight: 400;
-    font-size: x-large;
-    
-  }
-  .paraLogo{
-    display: flex;
-    flex-direction: row;
-    position: relative;
-  }
-  .loginContainer{
-    width: 36%;
-    display: flex;
-    flex-direction: row-reverse;
-  }
-  .login{
-    width: 25px; 
-    filter: invert(21%) sepia(13%) saturate(4828%) hue-rotate(145deg) brightness(101%) contrast(94%);
-  }
+
   /************************************main*****************************************************/
   .mainTunnel1{
     margin-left: left;
@@ -92,7 +22,7 @@
     display:flex;
     flex-direction: row;
     text-align: start;
-    font-size: 41px;
+    font-size: 40px;
     font-weight: normal;
     margin-top: 80px;
     line-height: 46px;
@@ -100,7 +30,7 @@
 }
 .trouve{
     color:#236468;
-    font-size: 41px;
+    font-size: 40px;
     font-weight: normal;
     width: fit-content;
     margin: 0px;
@@ -115,7 +45,7 @@
 }
 .pAdapte{
     color:#236468;
-    font-size: 41px;
+    font-size: 40px;
     font-weight: normal;
     width: fit-content;
     margin: 0px;
@@ -124,7 +54,7 @@
 }
 .pConduite{
     color:#37beb4;
-    font-size: 41px;
+    font-size: 40px;
     font-weight: normal;
     width: fit-content;
     margin: 0px;
