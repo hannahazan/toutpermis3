@@ -6,6 +6,7 @@ import Login from '../images/iconsAwesome/user-regular (1).svg'
 import voiture from '../images/iconsAwesome/car-rear-solid.svg'
 import moto from '../images/iconsAwesome/motorcycle-solid.svg'
 import bateau from '../images/iconsAwesome/ship-solid.svg'
+import arrow from '../images/iconsAwesome/arrow-right-solid.svg'
 
 function TunnelEcole(){
     return(
@@ -47,6 +48,10 @@ function TunnelEcole(){
                         <img src={bateau} className='bateau'></img>
                         <p>Bateau</p>
                     </button>
+                </div>
+                <div className='containerRevenir'>
+                    <img src={arrow} className='arrowRetour'></img>
+                    <p>Revenir à l'étape précédente</p>
                 </div>
             </main>
         </div>

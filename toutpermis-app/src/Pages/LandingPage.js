@@ -41,19 +41,6 @@ function LandingPage() {
         </div>
      </navbar>
      <main>
-        <div className="paraTrouve">
-            <p className="ligne1">Trouve le</p>
-            <p className="ligne2">professionnel du </p>
-            <div className="containerLigne3EtLigne4">
-              <p className='ligne3'>permis</p>
-              <p className="ligne4">adapté à tes </p>
-            </div>
-            <p className="ligne5">besoins</p>
-            <p className="secondPara">
-            Besoin d'un aménagement particulier ?<br></br> d'une formation spécifique ? Toutpermis.fr<br></br>  
-            </p>
-            <p className="ligne6">t'accompagne !</p>
-        </div>
         <div className='paraTrouve2'>
         <p className="ligne7">Trouve le</p>
             <p className="ligne8">professionnel du </p>
@@ -114,34 +101,8 @@ function LandingPage() {
              </div>
           </div>
         </div>
-        <div className='marcheSection'>
-          <img src={heros} className='heros'></img>
-          <p className='titreMarcheSection'>Comment ça marche?</p>
-          <div className='stepPara'>
-            <div className='containerStep'>
-              <p className='step'>1</p>
-            </div>
-            <div>
-              <p className='para1'>Sélectionne le parcours ou</p>
-              <p className='para1'>le type de professionnel qui t'intéresse</p>
-            </div>
-          </div>
-          <div className='stepPara'>
-            <div className='containerStep'>
-              <p className='step'>2</p>
-            </div>
-            <p>Applique les filtres adpatés à ta situation</p>
-          </div>
-          <div className='stepPara'>
-            <div className='containerStep'>
-              <p className='step'>3</p>
-            </div>
-            <p>Fais ton choix parmis les résultats</p>
-          </div>
-        </div>
-
         <div className='marcheSection2'>
-          <p className='titreMarcheSection2'>Comment ça marche?</p>
+          <p className='titreMarcheSection2'>Comment ça marche ?</p>
           <div className='stepPara2'>
             <p className='step1'>1</p>
             <div className='containerStep2'>
