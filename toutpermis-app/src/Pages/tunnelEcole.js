@@ -34,7 +34,7 @@ function TunnelEcole(){
                 </div>
                 <p className='pConduite'>de conduite</p>
                 <p className='pAdapte'>adapté à ton besoin</p>
-                <p className='pQuelPermis'>Quel Permis ?</p>
+                <p className='pQuelPermis'>Quel permis ?</p>
                 <div className='containerButtonPermis'>
                     <button className='buttonPermis'>
                         <img src={voiture} className='voiture'></img>
