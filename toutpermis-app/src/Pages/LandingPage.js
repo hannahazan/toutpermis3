@@ -1,4 +1,5 @@
 import '../css/LandingPage.css';
+import '../css/Navbar.css'
 import Burger from '../images/iconsAwesome/bars-solid.svg'
 import localLogo from '../images/toutpermisLogoVidepng.png'
 import volant from '../images/volantLogo.png'

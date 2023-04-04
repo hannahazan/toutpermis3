@@ -1,4 +1,5 @@
 import '../css/tunnelEcole.css'
+import '../css/Navbar.css'
 import Burger from '../images/iconsAwesome/bars-solid.svg'
 import localLogo from '../images/toutpermisLogoVidepng.png'
 import volant from '../images/volantLogo.png'
@@ -49,10 +50,10 @@ function TunnelEcole(){
                         <p>Bateau</p>
                     </button>
                 </div>
-                <div className='containerRevenir'>
+                <a className='containerRevenir'>
                     <img src={arrow} className='arrowRetour'></img>
                     <p>Revenir à l'étape précédente</p>
-                </div>
+                </a>
             </main>
         </div>
     )
