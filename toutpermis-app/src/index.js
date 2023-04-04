@@ -5,6 +5,7 @@ import LandingPage from './Pages/LandingPage.js';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from './component/navBar';
 import TunnelEcole from './Pages/tunnelEcole'
+import TunnelEcoleFormation from './Pages/tunnelEcoleFormations'
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -13,6 +14,7 @@ root.render(
     <Routes>
       <Route path="/" exact element={<LandingPage />}/>
       <Route path="/tunnelEcole" excat element={<TunnelEcole/>}/>
+      <Route path="tunnelEcoleFormation" exact element={<TunnelEcoleFormation/>}></Route>
     </Routes>
   </BrowserRouter>
 );

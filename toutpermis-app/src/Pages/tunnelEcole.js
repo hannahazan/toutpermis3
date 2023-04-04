@@ -12,6 +12,7 @@ import arrow from '../images/iconsAwesome/arrow-right-solid.svg'
 function TunnelEcole(){
     return(
         <div className="TunnelEcole">
+            
             <navbar className="navbar">
                 <img src={Burger} className="burger" ></img>
                 <div className="logoParaPicto">
@@ -28,6 +29,7 @@ function TunnelEcole(){
                     <img src={Login} className='login'></img>
                 </div>
             </navbar>
+
             <main className='mainTunnel1'>
                 <div className='pTrouveEcole'>
                     <p className='trouve'>Trouve</p>

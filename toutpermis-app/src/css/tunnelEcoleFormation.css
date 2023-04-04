@@ -1,0 +1,98 @@
+
+.tunnelEcoleFormation{
+    width:100%;
+    height: 100%;
+    margin: 0px;
+}
+.mainTunnelEcoleFormation{
+    margin-left: left;
+    height: fit-content;
+    text-align: start;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.pSelectionneFormation{
+    font-size: 40px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 30%;
+    line-height: 46px;    
+}
+
+.pSelectionneFormation p{
+    margin: 0px;
+}
+.pFormation{
+    color:#37beb4;
+}
+.pSelectionne{
+    color:#236468;  
+}
+.pSouhaite{
+    color:#236468;
+}
+.pQuelleFormation{
+    color:#236468;
+    font-size:30px;
+}
+.containerSelection1{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.buttonFormation{
+    display: flex;
+    flex-direction:column ;
+    justify-content: center;
+    align-items: center;
+    color:#236468;
+    font-size:20px ;
+    font-family: 'poppins';
+    height: 115px;
+    padding: 0px;
+    border:none;
+    margin: 0px;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0px 5px 8px #DCDCDC;
+    width: 118px;
+}
+.buttonFormation p{
+    margin:0px
+}
+.voitureFormation{
+    width: 35px;
+    filter: invert(21%) sepia(13%) saturate(4828%) hue-rotate(145deg) brightness(101%) contrast(94%)
+}
+.containerSelection2{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 50px;
+}
+.buttonFormation2{
+    display: flex;
+    flex-direction:column ;
+    justify-content: center;
+    align-items: center;
+    color:#236468;
+    font-size:20px ;
+    font-family: 'poppins';
+    height: 115px;
+    padding: 0px;
+    border:none;
+    margin: 0px;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0px 5px 8px #DCDCDC;
+    width: 49%;
+    flex: 0 0 auto;
+    
+}
+.buttonFormation2 p{
+    margin:0px
+}
+
+

@@ -128,3 +128,24 @@
   margin:0px;
   margin-left:15px  
 }
+/**************************revenir************************************/
+.containerRevenir{
+    display: flex;
+    flex-direction: row;
+    color: #236468;
+    font-size: 20px;
+    font-weight: normal;
+    margin-top:40px;
+  }
+  .arrowRetour{
+    width:25px;
+    filter: invert(21%) sepia(13%) saturate(4828%) hue-rotate(145deg) brightness(101%) contrast(94%);
+    transform: rotate(0.5turn);
+    margin:0px;
+  }
+  
+  
+  .containerRevenir p{
+    margin:0px;
+    margin-left:15px  
+  }
