@@ -16,7 +16,7 @@
   .burger{
     width: 25px;
     height: 25px;
-    margin-left: 10px;
+    margin-left: 0px;
     margin-top: 5px;
     filter: invert(28%) sepia(100%) saturate(312%) hue-rotate(135deg) brightness(92%) contrast(86%);
   }

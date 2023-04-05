@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from './component/navBar';
 import TunnelEcole from './Pages/tunnelEcole'
 import TunnelEcoleFormation from './Pages/tunnelEcoleFormations'
+import TunnelEcoleVehicules from './Pages/tunnelEcoleVehicules'
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -14,7 +15,8 @@ root.render(
     <Routes>
       <Route path="/" exact element={<LandingPage />}/>
       <Route path="/tunnelEcole" excat element={<TunnelEcole/>}/>
-      <Route path="tunnelEcoleFormation" exact element={<TunnelEcoleFormation/>}></Route>
+      <Route path="/tunnelEcoleFormation" exact element={<TunnelEcoleFormation/>}></Route>
+      <Route path="/tunnelEcoleVehicules" exact element={<TunnelEcoleVehicules/>}></Route>
     </Routes>
   </BrowserRouter>
 );

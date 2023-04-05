@@ -33,7 +33,7 @@ function TunnelEcoleFormation(){
                 <div className='pSelectionneFormation'>
                     <p className='pSelectionne'>Selectionne</p>
                     <p className='pFormation'>la formation</p>
-                    <p className='pSouhaite'>que tu souhaites</p>
+                    <p className='pSouhaite'>qui t'intéresse</p>
                 </div>
                 <p className='pQuelleFormation'>Quelle formation ?</p>
                 <div className='containerSelection1'>
