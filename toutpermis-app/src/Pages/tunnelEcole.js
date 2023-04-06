@@ -3,18 +3,32 @@ import '../css/Navbar.css'
 import Burger from '../images/iconsAwesome/bars-solid.svg'
 import localLogo from '../images/toutpermisLogoVidepng.png'
 import volant from '../images/volantLogo.png'
-import Login from '../images/iconsAwesome/user-regular (1).svg'
+import cross from '../images/iconsAwesome/xmark-solid (1).svg'
 import voiture from '../images/iconsAwesome/car-rear-solid.svg'
 import moto from '../images/iconsAwesome/motorcycle-solid.svg'
 import bateau from '../images/iconsAwesome/ship-solid.svg'
 import arrow from '../images/iconsAwesome/arrow-right-solid.svg'
+import { useEffect,useState } from 'react'
 
 function TunnelEcole(){
+    const [Open,setOpen]=useState(false)
     return(
         <div className="TunnelEcole">
+            {Open===false?
+            <div className='menuEscamotable'>
+            </div>:
+            <div className='menuEscamotable2'>
+                <img src={cross} className='cross' onClick={()=>{setOpen(false)}}></img>
+                <ul>
+                    <li className='liMenu'>Je m'informe</li>
+                    <li className='liMenu'>Je trouve mon parcours</li>
+                    <li className='liMenu'>Espace pro</li>
+                    <li className='liMenu'>Contactez-nous</li>
+                </ul>
+            </div>}
             
             <navbar className="navbar">
-                <img src={Burger} className="burger" ></img>
+                <img src={Burger} className="burger" onClick={Open==false?()=>{setOpen(true)}:()=>{setOpen(false)}} ></img>
                 <div className="logoParaPicto">
                 <div className='picto'>
                     <img src={localLogo} className="LogoSphère" ></img>
@@ -24,9 +38,6 @@ function TunnelEcole(){
                     <p className="tout">Tout</p>
                     <p className="permis">permis</p>
                 </div>
-                </div>
-                <div className='loginContainer'>
-                    <img src={Login} className='login'></img>
                 </div>
             </navbar>
 

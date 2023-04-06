@@ -1,0 +1,101 @@
+.EspacePro{
+    height: 100%;
+    margin:0px;
+    padding: 0px;
+    background: linear-gradient(white,#FcF3F1);
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+.mainEspacePro{
+    margin-left: left;
+    height: fit-content;
+    text-align: start;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.LogoEspacePro{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 95px;
+}
+.pictoLogoEspacePro{
+    display: flex;
+    flex-direction: row;
+}
+.localLogoPictoEspacePro{
+    position: relative;
+    left: 36px;
+}
+.volantLogoEspacePro{
+    height: 50px;
+    left: 28px;
+    position: relative;
+    left: -56px;
+    top: 45px;
+}
+
+.pLogoEspacePro{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 40px;
+    color: #236468;
+}
+.pLogoEspacePro p{
+    margin:0px
+}
+.PermisLogo{
+    color:#37beb4;
+}
+.espaceProLogo{
+    color:#8FA6A7;
+}
+.paraEspacePro{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    color: #236468;
+    font-size: 17px;
+}
+.buttonEspacePro{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+.inscription{
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: #37beb4;
+    width: 100%;
+    height: 45px;
+    font-family: 'Poppins';
+    color: white;
+    border-radius: 12px;
+    align-items: center;
+    font-size: 17px;
+    font-weight: normal;
+    margin-bottom: 20px;
+}
+.connexion{
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: white;
+    width: 100%;
+    height: 45px;
+    font-family: 'Poppins';
+    color: #236468;
+    border-radius: 12px;
+    align-items: center;
+    font-size: 17px;
+    font-weight: normal;
+}

@@ -4,7 +4,7 @@ import localLogo from '../images/toutpermisLogoVidepng.png'
 import volant from '../images/volantLogo.png'
 import Login from '../images/iconsAwesome/user-regular (1).svg'
 import { NavLink } from 'react-router-dom'
-function navbar(){
+function Navbar(){
     return(
       <div>
         <navbar className="navbar">
@@ -27,4 +27,4 @@ function navbar(){
     )
 }
 
-export default navbar
+export default Navbar
