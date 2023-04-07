@@ -3,7 +3,6 @@ import '../css/Navbar.css'
 import Burger from '../images/iconsAwesome/bars-solid.svg'
 import localLogo from '../images/toutpermisLogoVidepng.png'
 import volant from '../images/volantLogo.png'
-import Login from '../images/iconsAwesome/user-regular (1).svg'
 import cross from '../images/iconsAwesome/xmark-solid (1).svg'
 import carCard from'../images/iconsAwesome/car-rear-solid.svg'
 import stetoCard from '../images/iconsAwesome/stethoscope-solid.svg'
@@ -27,12 +26,10 @@ import { useState,useEffect } from 'react';
 function LandingPage() {
 
   const [Open,setOpen]=useState(false)
-  
-  useEffect(()=>{
-    console.log(Open)
-  })
+
   return (
     <div className="App">
+
       {Open===false?
       <div className='menuEscamotable'>
       </div>:
@@ -58,6 +55,7 @@ function LandingPage() {
               </div>
           </div>
         </navbar>
+
      <main>
         <div className='paraTrouve2'>
         <p className="ligne7">Trouve le</p>
@@ -201,7 +199,7 @@ function LandingPage() {
             <h1 className='pQuestion'>Une question?</h1>
             <p className='pSuggestions'>Des suggestions d'améliorations ?</p>
           </div>
-          <form action='/ma-page-de-traitement' method='post' className='FormContainer'>
+          <form  method='post' className='FormContainer'>
               <input type="text" id="name" name="user_name" placeholder='Nom' className='inName'></input>
               <input type="email" id="mail" name="user_mail" placeholder='E-mail' className='inMail'></input>
               <textarea id="msg" name="user_message" placeholder='Message' className='areaMessage'></textarea>

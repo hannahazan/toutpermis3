@@ -8,6 +8,8 @@ import TunnelEcole from './Pages/tunnelEcole'
 import TunnelEcoleFormation from './Pages/tunnelEcoleFormations'
 import TunnelEcoleVehicules from './Pages/tunnelEcoleVehicules'
 import EspacePro from './Pages/EspacePro'
+import Connexion from  './Pages/Connexion'
+import InscriptionChoix from './Pages/InscriptionChoix'
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -19,6 +21,8 @@ root.render(
         <Route path="/tunnelEcoleFormation" exact element={<TunnelEcoleFormation/>}></Route>
         <Route path="/tunnelEcoleVehicules" exact element={<TunnelEcoleVehicules/>}></Route>
         <Route path="/espacePro" exact element={<EspacePro/>}></Route>
+        <Route path="/connexion" exact element={<Connexion/>}></Route>
+        <Route path="/InscriptionChoix" exact element={<InscriptionChoix/>}></Route>
     </Routes>
   </BrowserRouter>
 );

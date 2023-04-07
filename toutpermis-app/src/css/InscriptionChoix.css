@@ -1,0 +1,52 @@
+.InscriptionChoix{
+    height: 100%;
+    margin:0px;
+    padding: 0px;
+    background: linear-gradient(white,#FcF3F1);
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+.mainInscriptionChoix{
+    margin-left: left;
+    height: fit-content;
+    text-align: start;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.pInscriptionChoix{
+    text-align: center;
+    font-size: 25px;
+    color: #236468;
+    margin-top: 0px;
+}
+.containerButtonInscriptionChoix{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+.buttonInscriptionChoix{
+    width: 100%;
+    padding: 0px;
+    border:none;
+    margin: 0px;
+    border-radius: 8px;
+    background-color: white;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90px;
+    font-size: 20px;
+    font-family: 'poppins';
+    color:#236468;
+    box-shadow: 0px 5px 8px #DCDCDC
+}
+.buttonInscriptionChoix p {
+    margin:0px
+}
+.pvousêtes{
+    text-align: center;
+    color: #236468;
+    font-size: 17px;
+}
