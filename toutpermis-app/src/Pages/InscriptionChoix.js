@@ -8,29 +8,20 @@ import cross from '../images/iconsAwesome/xmark-solid (1).svg'
 import steto from '../images/iconsAwesome/stethoscope-solid.svg'
 import voiture from '../images/iconsAwesome/car-rear-solid.svg'
 import clef from '../images/iconsAwesome/screwdriver-wrench-solid.svg'
-import { useState,useEffect } from 'react';
+import Connexion from './Connexion'
+import Navbar from './Navbar'
+import { useState,useEffect,useContex } from 'react';
+import { Link } from "react-router-dom";
 
 function InsciptionChoix(){
-    const [Open,setOpen]=useState(false)
+    
+    const [test,setTest]=useState('')
     
 
     return(
         <div className='InscriptionChoix'>
-            {Open===false?
-            <div className='menuEscamotable'>
-            </div>:
-            <div className='menuEscamotable2'>
-                <img src={cross} className='cross' onClick={()=>{setOpen(false)}}></img>
-                <ul>
-                <li className='liMenu'>Je m'informe</li>
-                <li className='liMenu'>Je trouve mon parcours</li>
-                <li className='liMenu'>Espace pro</li>
-                <li className='liMenu'>Contactez-nous</li>
-                </ul>
-            </div>}
-            <navbar className="navbar">
-                <img src={Burger} className="burger" onClick={Open==false?()=>{setOpen(true)}:()=>{setOpen(false)}}></img>    
-            </navbar>
+            
+            <Navbar/>
             <main className='mainInscriptionChoix'>
                 <div className="LogoEspacePro">
                     <div className="pictoLogoEspacePro">
@@ -47,7 +38,7 @@ function InsciptionChoix(){
                 <p className='pInscriptionChoix'>Inscription</p>
                 <p className='pvousêtes'>Vous êtes :</p>
                 <div className='containerButtonInscriptionChoix'>
-                    <button className='buttonInscriptionChoix'>
+                    <button onClick={()=>{setTest('approve')}} className='buttonInscriptionChoix'>
                         <img src={voiture} className='voiture'></img>
                         <p>Une école de conduite</p>
                     </button>
@@ -59,6 +50,9 @@ function InsciptionChoix(){
                         <img src={clef} className='bateau'></img>
                         <p>Un aménageur de Véhicule</p>
                     </button>
+                   <Link to='Connexion' className='buttonEtapeSuivante'>
+                    Etape suivante
+                   </Link>
                 </div>
             </main>
         </div>

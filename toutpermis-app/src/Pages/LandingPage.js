@@ -17,7 +17,7 @@ import ombreSuperGirl from '../images/Ombrejambe-removebg-preview.png'
 import ombreGolgoth from '../images/OmbreIinvsible-removebg-preview.png'
 import ombreAgée from '../images/Ombreagée-removebg-preview.png'
 import heros from '../images/CODEO_016_002-removebg-preview.png'
-import Navbar from '../component/navBar';
+import Navbar from './Navbar';
 import { useState,useEffect } from 'react';
 
 
@@ -29,33 +29,7 @@ function LandingPage() {
 
   return (
     <div className="App">
-
-      {Open===false?
-      <div className='menuEscamotable'>
-      </div>:
-      <div className='menuEscamotable2'>
-        <img src={cross} className='cross' onClick={()=>{setOpen(false)}}></img>
-        <ul>
-          <li className='liMenu'>Je m'informe</li>
-          <li className='liMenu'>Je trouve mon parcours</li>
-          <li className='liMenu'>Espace pro</li>
-          <li className='liMenu'>Contactez-nous</li>
-        </ul>
-      </div>}
-       <navbar className="navbar">
-          <img src={Burger} className="burger" onClick={Open==false?()=>{setOpen(true)}:()=>{setOpen(false)}}></img>
-          <div className="logoParaPicto">
-              <div className='picto'>
-                  <img src={localLogo} className="LogoSphère" ></img>
-                  <img src={volant} className="Volant" ></img>
-              </div>
-              <div className="paraLogo">
-                  <p className="tout">Tout</p>
-                  <p className="permis">permis</p>
-              </div>
-          </div>
-        </navbar>
-
+      <Navbar />
      <main>
         <div className='paraTrouve2'>
         <p className="ligne7">Trouve le</p>

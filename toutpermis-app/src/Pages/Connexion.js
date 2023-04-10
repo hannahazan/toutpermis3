@@ -6,6 +6,7 @@ import localLogo from '../images/toutpermisLogoVidepng.png'
 import volant from '../images/volantLogo.png'
 import cross from '../images/iconsAwesome/xmark-solid (1).svg'
 import check from '../images/iconsAwesome/check-solid (1).svg'
+import Navbar from './Navbar'
 import { useState,useEffect } from 'react';
 
 function Connexion(){
@@ -17,24 +18,10 @@ function Connexion(){
         setVerifie(document.getElementById('onverra').checked)
         console.log(`${verifie} la coche`)
     })
-
+   
     return(
         <div className='Connexion'>
-            {Open===false?
-            <div className='menuEscamotable'>
-            </div>:
-            <div className='menuEscamotable2'>
-                <img src={cross} className='cross' onClick={()=>{setOpen(false)}}></img>
-                <ul>
-                <li className='liMenu'>Je m'informe</li>
-                <li className='liMenu'>Je trouve mon parcours</li>
-                <li className='liMenu'>Espace pro</li>
-                <li className='liMenu'>Contactez-nous</li>
-                </ul>
-            </div>}
-            <navbar className="navbar">
-                <img src={Burger} className="burger" onClick={Open==false?()=>{setOpen(true)}:()=>{setOpen(false)}}></img>    
-            </navbar>
+            <Navbar/>
             <main className='mainConnexion'>
                 <div className="LogoEspacePro">
                     <div className="pictoLogoEspacePro">
@@ -61,6 +48,8 @@ function Connexion(){
                             <p className='pOublié'>mot de passe oublié ?</p>    
                         </div>
                         <button className='buttonConnecter'>Se connecter</button>
+                        <p className='pPasEncore'>Vous n'êtes pas encore inscrit ?</p>
+                        <p className='pRejoinsNous'>Rejoignez-nous !</p>
                     </form>
             </main>
         </div>
