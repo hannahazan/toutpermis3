@@ -1,0 +1,113 @@
+.InscriptionFinale{
+    height: 100%;
+    margin:0px;
+    padding: 0px;
+    background: linear-gradient(white,#FcF3F1);
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+.InscriptionFinaleMain{
+    margin-left: left;
+    height: fit-content;
+    text-align: start;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-top: 60px;
+}
+.pInscriptionFinale{
+    text-align: center;
+    font-size: 30px;
+    color: #236468;
+    margin-top: 0px;
+}
+.inNameFinale{
+    width: 95%;
+    height: 50px;
+    border-radius: 8px;
+    padding: 0px;
+    margin: 0px;
+    border-color: #dfe1e6;
+    border: 1px solid #dfe1e6;
+    font-family: 'Poppins';
+    padding-left: 15px;
+    color: #236468;
+    background-color: #f8f9f9;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+.buttonFormFinale{
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    height: 45px;
+    font-family: 'Poppins';
+    color: white;
+    border-radius: 12px;
+    align-items: center;
+    font-size: 17px;
+    font-weight: normal;
+    margin-bottom: 20px;
+    background-color: #37beb4;
+}
+/***********************************logo toutpermis petit************************************************************/
+.pictoFinale{
+    width: 24px;
+    display: flex;
+    flex-direction: row;
+    margin-top: 2px;
+  }
+.LogoSphèreFinale{
+    width: 20px;
+  }
+.VolantFinale{
+    width: 12px;
+    height: 11px;
+    position: relative;
+    right: 16px;
+    top: 6px;
+  }
+.toutFinale{
+    margin: 0px;
+    color: #236468;
+    font-weight: 400;
+    font-size: 23px;
+    margin-left: 0px;
+   
+  }
+.permisFinale{
+    margin: 0px;
+    color: #37beb4;
+    font-weight: 400;
+    font-size: 23px;
+    
+  }
+.logoParaPictoFinale{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: fit-content;
+    justify-content: center;
+  }
+.paraLogoFinale{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+  }
+
+.pEspaceProFinale{
+    text-align: end;
+    width: fit-content;
+    color: #8FA6A7;
+    font-size:15px ;
+    margin: 0px;
+    text-align: center;
+    position: relative;
+    left: 212px;
+    bottom: 13px;
+
+}

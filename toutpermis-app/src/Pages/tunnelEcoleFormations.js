@@ -6,7 +6,7 @@ import volant from '../images/volantLogo.png'
 import cross from '../images/iconsAwesome/xmark-solid (1).svg'
 import Login from '../images/iconsAwesome/user-regular (1).svg'
 import arrow from '../images/iconsAwesome/arrow-right-solid.svg'
-import Navbar from './Navbar'
+import Navbar from '../component/Navbar'
 import voitureFormation from '../images/iconsAwesome/car-rear-solid.svg'
 import { useState,useEffect } from 'react';
 

@@ -8,7 +8,7 @@ import voiture from '../images/iconsAwesome/car-rear-solid.svg'
 import moto from '../images/iconsAwesome/motorcycle-solid.svg'
 import bateau from '../images/iconsAwesome/ship-solid.svg'
 import arrow from '../images/iconsAwesome/arrow-right-solid.svg'
-import Navbar from './Navbar'
+import Navbar from '../component/Navbar'
 import { useEffect,useState } from 'react'
 
 function TunnelEcole(){

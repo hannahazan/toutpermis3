@@ -17,7 +17,7 @@ import ombreSuperGirl from '../images/Ombrejambe-removebg-preview.png'
 import ombreGolgoth from '../images/OmbreIinvsible-removebg-preview.png'
 import ombreAgée from '../images/Ombreagée-removebg-preview.png'
 import heros from '../images/CODEO_016_002-removebg-preview.png'
-import Navbar from './Navbar';
+import Navbar from '../component/Navbar';
 import { useState,useEffect } from 'react';
 
 

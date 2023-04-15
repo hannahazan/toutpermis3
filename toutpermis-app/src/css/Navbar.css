@@ -26,6 +26,9 @@
     align-items: center;
     height: fit-content;
   }
+  .logoParaPicto2{
+    display: none;
+  }
   .picto{
     width: 24px;
     display: flex;
@@ -97,8 +100,11 @@
     padding: 0px;
     font-size: 25px;
   }
+ 
+  
   .menuEscamotable2 ul li{
     margin-bottom: 30px;
+    color: white;
   }
   
  
@@ -109,3 +115,28 @@
     top: 10px;
     right: 10px;
   }
+/*********************************connecté/inscrit***********************************************/
+.non{
+    display:none
+  }
+.pictoLogoEspaceProNav{
+  
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  align-items: center;
+  margin-top: 18px;
+  left: 253px;
+}
+.localLogoPictoProfilNav{
+  height: 50px;
+}
+.profilPictureNav{
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  position: relative;
+  right: 36px;
+  bottom: 4px;
+
+}

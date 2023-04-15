@@ -1,0 +1,198 @@
+.ptestHello1{
+    color:blueviolet;
+    margin-top: 73px;
+}
+.ptestHello2{
+    color:pink;
+    margin-top: 73px;
+}
+.containerPopup{
+    background: linear-gradient(white,#FcF3F1);
+    position: absolute;
+    z-index: 100;
+    height: 350%;
+    width: 100%;
+    top: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: start;
+     
+}
+.containerPopup2{
+    display: none;
+}
+.closePopup{
+  width: 40px;
+  filter: invert(60%) sepia(99%) saturate(290%) hue-rotate(126deg) brightness(89%) contrast(89%);
+  margin-top: 10px;
+  position: relative;
+  left: 178px;
+  margin-right: 40px;
+}
+
+.containerLogoImgFelicitation{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  top: 115px;
+}
+
+.pictoLogoEspaceProPopup{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    top: 31ps;
+    top: 51px;
+    opacity: 0.5;
+}
+.localLogoPictoEspaceProPopup{
+    position: relative;
+    left: 36px;
+}
+.volantLogoEspaceProPopup{
+    height: 50px;
+    left: 28px;
+    position: relative;
+    left: -56px;
+    top: 45px;
+}
+.superHeroPopup{
+    width: 60%;
+    position: relative;
+    top: 0px;
+    left: 11px;
+}
+.pFelicitation{
+    padding-left: 6px;
+    padding-right: 10px; 
+}
+.pFelicitation p{
+    margin: 0px;
+    text-align: start;
+    color:#236468 ;
+    font-size: 25px;
+}
+.pColorCanard{
+    color: #37beb4 !important;
+    text-align: center !important
+}
+.pToutPermis{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;   
+}
+.pFamille{
+    text-align: center !important;
+}
+
+
+/***************explcation fiche*******************/
+.marcheSection2Popup{
+    display: flex;
+    flex-direction: column;
+    background-color: #cedad8;
+    align-items: center;
+    padding-bottom: 10px;
+    padding-top: 10px;
+   display: none;
+  }
+  .titreMarcheSection2Popup{
+    margin: 0px;
+    font-size: 31px;
+    color: #236468;
+    width: fit-content;
+    font-weight: normal;
+    margin-bottom: 10px;
+  }
+  .stepPara2Popup{
+    padding-right: 20px;
+    display: flex;
+    flex-direction: row;
+    color: #236468;
+    align-items: center;
+    text-align: start;
+    height: 93px;
+  }
+  .stepPara3Popup{
+    display: flex;
+    flex-direction: row;
+    color: #236468;
+    align-items: center;
+    text-align: start;
+    height: 93px;
+    position: relative;
+    right: 21px;
+  }
+  .step1Popup{
+    color: #e8937c;
+    font-size: 106px;
+    font-weight: lighter;
+    position: relative;
+    left: 29px;
+    top: -6px;
+    font-family: system-ui;
+    margin: 0px;
+    width: fit-content;
+  }
+  .step2Popup{
+    color: #e8937c;
+    font-size: 106px;
+    font-weight: lighter;
+    position: relative;
+    left: 29px;
+    top: -6px;
+    font-family: system-ui;
+    margin: 0px;
+    width: fit-content;
+  }
+  .step3Popup{
+    color: #e8937c;
+    font-size: 106px;
+    font-weight: lighter;
+    position: relative;
+    left: 90px;
+    z-index: 3;
+    top: -6px;
+    font-family: system-ui;
+    margin: 0px;
+    width: fit-content;
+  }
+  .containerStep2Popup{
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    background-color: #236468;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-right: 11px;
+    flex: 0 0 auto;
+  }
+  .ombreSuperGirlPopup{
+    width: 18px;
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(19deg) brightness(104%) contrast(100%)
+  }
+  .para12Popup{
+    margin: 0px;
+    width: fit-content;
+    align-items: center;
+  }
+  .ombreAgéePopup{
+    width: 25px;
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(19deg) brightness(104%) contrast(100%)
+  }
+  .ombreGolgothPopup{
+    width: 25px;
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(19deg) brightness(104%) contrast(100%)
+  }
+  .pSituationPopup{
+    text-align: end;
+    position: relative;
+    left: 29px;
+  }
+  .pRésultatsPopup{
+    margin-left: 20px;
+  }

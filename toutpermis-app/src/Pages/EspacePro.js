@@ -4,11 +4,16 @@ import Burger from '../images/iconsAwesome/bars-solid.svg'
 import localLogo from '../images/toutpermisLogoVidepng.png'
 import volant from '../images/volantLogo.png'
 import cross from '../images/iconsAwesome/xmark-solid (1).svg'
-import Navbar from './Navbar'
+import Navbar from '../component/Navbar'
 import { useState,useEffect } from 'react';
+import { Link } from 'react-router-dom'
 
 function EspacePro(){
     const [Open,setOpen]=useState(false)
+    const [Path,setpath]=useState('')
+    useEffect(()=>{
+        setpath(window.location.pathname)
+    })
     return(
         <div className='EspacePro'>
             <Navbar />
@@ -37,7 +42,7 @@ function EspacePro(){
                     </p>
                 </div>
                 <div className='buttonEspacePro'>
-                    <button className='inscription'> Créer mon compte</button>
+                    <Link to={`${Path}/InscriptionChoix`}className='inscription'> Créer mon compte</Link>
                     <button className='connexion'>Me connecter</button>
                 </div>
             </main>

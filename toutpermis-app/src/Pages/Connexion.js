@@ -6,8 +6,9 @@ import localLogo from '../images/toutpermisLogoVidepng.png'
 import volant from '../images/volantLogo.png'
 import cross from '../images/iconsAwesome/xmark-solid (1).svg'
 import check from '../images/iconsAwesome/check-solid (1).svg'
-import Navbar from './Navbar'
+import Navbar from '../component/Navbar'
 import { useState,useEffect } from 'react';
+
 
 function Connexion(){
     const [Open,setOpen]=useState(false)

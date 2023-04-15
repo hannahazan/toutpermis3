@@ -1,26 +1,29 @@
 import '../css/Navbar.css'
 import '../css/EspacePro.css'
 import '../css/InscriptionChoix.css'
-import Burger from '../images/iconsAwesome/bars-solid.svg'
 import localLogo from '../images/toutpermisLogoVidepng.png'
 import volant from '../images/volantLogo.png'
-import cross from '../images/iconsAwesome/xmark-solid (1).svg'
 import steto from '../images/iconsAwesome/stethoscope-solid.svg'
 import voiture from '../images/iconsAwesome/car-rear-solid.svg'
 import clef from '../images/iconsAwesome/screwdriver-wrench-solid.svg'
-import Connexion from './Connexion'
-import Navbar from './Navbar'
-import { useState,useEffect,useContex } from 'react';
+import Navbar from '../component/Navbar'
+import { useState,useEffect} from 'react';
 import { Link } from "react-router-dom";
+import { useContext} from 'react' 
+import {InscriptionContext as InscriptionChoice} from '../utilitaires/InscriptionContext'
 
-function InsciptionChoix(){
-    
-    const [test,setTest]=useState('')
-    
 
+function InsciptionChoix(){ 
+    const [Path, setPath]=useState('')
+    const {choice,assignChoice}=useContext(InscriptionChoice) 
+    console.log(choice)
+    useEffect(()=>{
+        setPath(window.location.pathname)
+        console.log(choice)
+    })
+    
     return(
-        <div className='InscriptionChoix'>
-            
+        <div className='InscriptionChoix'>  
             <Navbar/>
             <main className='mainInscriptionChoix'>
                 <div className="LogoEspacePro">
@@ -38,19 +41,19 @@ function InsciptionChoix(){
                 <p className='pInscriptionChoix'>Inscription</p>
                 <p className='pvousêtes'>Vous êtes :</p>
                 <div className='containerButtonInscriptionChoix'>
-                    <button onClick={()=>{setTest('approve')}} className='buttonInscriptionChoix'>
+                    <button onClick={()=>{assignChoice('voiture')}} className='buttonInscriptionChoix'>
                         <img src={voiture} className='voiture'></img>
                         <p>Une école de conduite</p>
                     </button>
-                    <button className='buttonInscriptionChoix'>
+                    <button onClick={()=>{assignChoice('médecin')}} className='buttonInscriptionChoix'>
                         <img src={steto} className='moto'></img>
                         <p >Un médecin agréé</p>
                     </button>
-                    <button className='buttonInscriptionChoix'>
+                    <button onClick={()=>{assignChoice('aménageur')}} className='buttonInscriptionChoix'>
                         <img src={clef} className='bateau'></img>
                         <p>Un aménageur de Véhicule</p>
                     </button>
-                   <Link to='Connexion' className='buttonEtapeSuivante'>
+                   <Link to='/espacepro/inscriptionChoix/inscriptionFinale' className='buttonEtapeSuivante'>
                     Etape suivante
                    </Link>
                 </div>
