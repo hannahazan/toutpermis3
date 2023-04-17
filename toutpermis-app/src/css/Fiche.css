@@ -6,3 +6,68 @@
     width: 100%;
     font-family: 'Poppins', sans-serif;
 }
+.mainFiche{
+    margin-left: left;
+    height: fit-content;
+    text-align: start;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-top: 80px;
+}
+
+.titreFiche{
+    color:#236468;
+    font-size: 35px;
+    text-align: center;
+    font-weight: normal;
+}
+.accompagnéP{
+    color: #236468;
+    line-height: 19px;
+    font-weight: lighter;
+}
+.labelNombreEcole{
+    color: #236468;
+    font-size: 17px;
+}
+.inputNombreEcole{
+    width: 15%;
+    height: 45px;
+    border-radius: 8px;
+    padding: 0px;
+    margin: 0px;
+    border-color: #dfe1e6;
+    border: 1px solid #dfe1e6;
+    font-family: 'Poppins';
+    padding-left: 15px;
+    color: #236468;
+    background-color: #f8f9f9;
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+  .containerInputLabelNombreEcole{
+    display: flex;
+    flex-direction: column;
+  }
+  /********************************************informations*****************************************************************/
+  .containerInformations{
+    display: flex;
+    flex-direction: column;
+  }
+  .pInformations{
+    color: #236468;
+    font-size: 25px;
+    text-align: center;
+    margin-bottom: 0px;
+  }
+  .containerOngletNbreEcole{
+    display: flex;
+    flex-direction: row;
+    color: #236468;
+    font-size: 20px;
+  }
+  .OngletP{
+    margin-right: 20px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }

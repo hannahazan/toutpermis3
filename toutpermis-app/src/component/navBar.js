@@ -32,18 +32,18 @@ function Navbar(){
                 <li className='liMenu'>Je trouve mon parcours</li>
                 <Link to='espacepro'><li className='liMenu'>Espace pro</li></Link>
                 <li className='liMenu'>Contactez-nous</li>
-                <Link to='profil' ><li className='liMenu'>Profil</li></Link>
+                <Link to='/' ><li className='liMenu'>Accueil</li></Link>
                 </ul>
             </div>}
-            {Path==='/connexion'||Path==='/InscriptionChoix'||Path=="/espacepro"||Path=='/espacepro/inscriptionChoix/inscriptionFinale'?
+            {Path==='/connexion'||Path==='/espacepro/InscriptionChoix'||Path=="/espacepro"||Path=='/espacepro/inscriptionChoix/inscriptionFinale'?
             <navbar className="navbar">
                     <img src={Burger} className="burger" onClick={Open==false?()=>{setOpen(true)}:()=>{setOpen(false)}}></img>
-                    <div className={Inscrit===true?'oui':'non'}>
+                    <Link to='/profil' className={Inscrit===true?'oui':'non'}>
                         <div className="pictoLogoEspaceProNav">
                         <img src={localLogo} className='localLogoPictoProfilNav'></img>
                         <img src={photoProfil} className='profilPictureNav'></img>
                         </div>    
-                    </div>  
+                    </Link>  
             </navbar>
             : 
             <navbar className="navbar">
@@ -58,12 +58,12 @@ function Navbar(){
                   <p className="permis">permis</p>
               </div>
           </Link>
-          <div className={Inscrit===true?'oui':'non'}>
+          <Link to="/profil" className={Inscrit===true?'oui':'non'}>
             <div className="pictoLogoEspaceProNav">
             <img src={localLogo} className='localLogoPictoProfilNav'></img>
             <img src={photoProfil} className='profilPictureNav'></img>
             </div>    
-          </div>  
+          </Link>  
         </navbar>
             }
 
