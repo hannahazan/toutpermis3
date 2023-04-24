@@ -2,7 +2,7 @@ import '../css/Profil.css'
 import Navbar from "../component/Navbar";
 import localLogo from '../images/toutpermisLogoVidepng.png'
 import volant from '../images/volantLogo.png'
-import { useContext } from 'react' 
+import { useContext, useEffect } from 'react' 
 import {InscriptionContext as InscriptionChoice} from '../utilitaires/InscriptionContext'
 import photoProfil from '../images/1HloWLLhL3iTrmDtMigiitLB9Qx.jpg'
 import enveloppe from '../images/iconsAwesome/envelope-solid (1).svg'
@@ -11,8 +11,12 @@ import setting from '../images/iconsAwesome/gear-solid (1).svg'
 import voiture from '../images/iconsAwesome/car-rear-solid.svg'
 import PopupInscription from '../component/PopupInscription';
 import { Link } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 const Profil=()=>{
+    const{choice}=useContext(InscriptionChoice)
+    console.log(choice)
+   
     return(
         <div className='profil'>
             <Navbar/>
@@ -46,10 +50,10 @@ const Profil=()=>{
                     <img src={voiture} className='voitureProfilCard'></img>
                     <p>Mes factures</p>
                 </div>
-                <div className='cardProfil'>
+                <Link to='/MesAnnonces' className='cardProfil'>
                     <img src={voiture} className='voitureProfilCard'></img>
                     <p>Mes annonces</p>
-                </div>
+                </Link>
             </div>
             </main>  
         </div>

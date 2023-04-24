@@ -41,16 +41,16 @@ function InsciptionChoix(){
                 <p className='pInscriptionChoix'>Inscription</p>
                 <p className='pvousêtes'>Vous êtes :</p>
                 <div className='containerButtonInscriptionChoix'>
-                    <button onClick={()=>{assignChoice('voiture')}} className='buttonInscriptionChoix'>
-                        <img src={voiture} className='voiture'></img>
+                    <button onClick={()=>{assignChoice('voiture')}} className={choice==='voiture'?'buttonInscriptionChoix2':'buttonInscriptionChoix'}>
+                        <img src={voiture} className={choice==='voiture'?'voiture2':'voiture'}></img>
                         <p>Une école de conduite</p>
                     </button>
-                    <button onClick={()=>{assignChoice('médecin')}} className='buttonInscriptionChoix'>
-                        <img src={steto} className='moto'></img>
+                    <button onClick={()=>{assignChoice('médecin')}} className={choice==='médecin'?'buttonInscriptionChoix2':'buttonInscriptionChoix'}>
+                        <img src={steto} className={choice==='médecin'?'steto2':'moto'}></img>
                         <p >Un médecin agréé</p>
                     </button>
-                    <button onClick={()=>{assignChoice('aménageur')}} className='buttonInscriptionChoix'>
-                        <img src={clef} className='bateau'></img>
+                    <button onClick={()=>{assignChoice('aménageur')}} className={choice==='aménageur'?'buttonInscriptionChoix2':'buttonInscriptionChoix'}>
+                        <img src={clef} className={choice==='aménageur'?'bateau2':'bateau'}></img>
                         <p>Un aménageur de Véhicule</p>
                     </button>
                    <Link to='/espacepro/inscriptionChoix/inscriptionFinale' className='buttonEtapeSuivante'>

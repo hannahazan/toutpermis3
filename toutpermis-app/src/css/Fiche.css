@@ -20,15 +20,18 @@
     font-size: 35px;
     text-align: center;
     font-weight: normal;
+   
 }
 .accompagnéP{
     color: #236468;
     line-height: 19px;
     font-weight: lighter;
+  
 }
 .labelNombreEcole{
     color: #236468;
     font-size: 17px;
+   
 }
 .inputNombreEcole{
     width: 15%;
@@ -66,8 +69,109 @@
     color: #236468;
     font-size: 20px;
   }
-  .OngletP{
-    margin-right: 20px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-  }
+  
+  
+.containerCouvUpload{
+  background-image: url("../images/Rectangle\ 516.png");
+  background-size: 100% 100%;
+  height: 170px;
+  width: 108%;
+  position: relative;
+  right: 4%;
+  margin-top: 20px;
+}
+.uploadHidden{
+  position: relative;
+  bottom: 35px;
+  left: 182px;
+  width: 180px;
+  top: 119px;
+  height: 25px;
+  z-index: 2;
+  opacity: 0;
+}
+  
+
+.uploadFront{
+  width: 184px;
+  height: 27px;
+  border-radius: 15px;
+  padding: 0px;
+  margin: 0px;
+  font-family: 'Poppins';
+  background-color: #37beb4;
+  font-size: 20px;
+  position: relative;
+  left: 176px;
+  top: 66px;
+  color: white;
+  font-size: 16px;
+  text-align: center;
+
+}
+.uploadLogo{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  width: 80px;
+  height: 80px;
+  color: white;
+  background-color: #95B63A;
+  font-size: 32px;
+  position: relative;
+  top: 3px;
+  left: 12px;
+}
+.uploadLogo p{
+  margin: 0px;
+}
+.uploadLogoHidden{
+  position: relative;
+  top: 102px;
+  left: 98px;
+  width: 176px;
+  z-index: 2;
+  opacity: 0;
+}
+.uploadfrontLogo{
+  width: 184px;
+  height: 27px;
+  border-radius: 15px;
+  padding: 0px;
+  margin: 0px;
+  font-family: 'Poppins';
+  background-color: #37beb4;
+  font-size: 20px;
+  position: relative;
+  top: 78px;
+  color: white;
+  font-size: 16px;
+  text-align: center;
+  left: 93px;
+}
+.buttonUpload{
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  height: 30px;
+  font-family: 'Poppins';
+  color: white;
+  border-radius: 12px;
+  align-items: center;
+  font-size: 17px;
+  font-weight: normal;
+  margin-bottom: 20px;
+  background-color: #37beb4;
+  position: relative;
+  top: 38px;
+}
+.pR{
+  color: black;
+}
+
