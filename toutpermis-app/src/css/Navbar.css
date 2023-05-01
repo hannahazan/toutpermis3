@@ -139,4 +139,19 @@
   right: 32px;
   bottom: 3px;
 }
+.containerInitialesNav{
+  background-color: #e8fefb;
+    border-radius: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 32px;
+    bottom: 3px;
+    width: 27px;
+    height: 27px;
+    color: #236468;
+    font-weight: normal;
+    font-size: 12px;
+}
 

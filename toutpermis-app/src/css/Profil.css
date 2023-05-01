@@ -110,3 +110,22 @@
     height: 32px;
     filter: invert(21%) sepia(13%) saturate(4828%) hue-rotate(145deg) brightness(101%) contrast(94%)
 }
+
+.ContainerInitiales{
+    border-radius: 100%;
+    background-color: pink;
+    width: 82px;
+    height: 82px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: 150px;
+    left: 14px;
+    font-size: 30px;
+    background-color: #e8fefb;
+}
+.containerBoxHorairesDay2{
+    display: none;
+}

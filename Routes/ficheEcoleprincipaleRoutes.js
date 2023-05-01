@@ -18,8 +18,8 @@ routerFicheEcolePrincipale.get('/', function (req, res) {
   })
   
 
-routerFicheEcolePrincipale.get('/:pictureName', function (req, res) {
-   FicheEcolePrincipale.findOne({ pictureName: req.params.pictureName }, (err, data) => {
+routerFicheEcolePrincipale.get('/:userPseudo', function (req, res) {
+   FicheEcolePrincipale.findOne({userPseudo: req.params.userPseudo }, (err, data) => {
       res.send(data)
       console.log(data)
     }

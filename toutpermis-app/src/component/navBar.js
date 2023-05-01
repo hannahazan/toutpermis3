@@ -7,19 +7,28 @@ import '../css/Navbar.css'
 import cross from '../images/iconsAwesome/xmark-solid (1).svg'
 import photoProfil from'../images/1HloWLLhL3iTrmDtMigiitLB9Qx.jpg'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 
 function Navbar(){
-    const {Inscrit,boolInscription}=useContext(InscriptionBoolean)
+    const {Inscrit,boolInscription,connectedUser}=useContext(InscriptionBoolean)
     const[Open,setOpen]=useState(false)
     const[Path,setPath]=useState('')
-    useEffect(()=>{
+    const[User,setUser]=useState()
+    const getUser = () => {
+        return axios
+          .get(`http://localhost:5000/Users/${connectedUser}`)
+          .then((res) => {
+            console.log(setUser(res.data))
+            console.log(User)
+            ;
+          })
+          .catch((err) => console.error(err));
+      };  
+      
+      useEffect(()=>{
         setPath(window.location.pathname)
-        console.log(Path)
-        console.log(`${Inscrit}depuis navbar depuis profil`)
-    })
-   
-    
-
+        getUser()
+      },[])
     return(
     <div>
         {Open===false?
@@ -41,7 +50,7 @@ function Navbar(){
                     <Link to='/profil' className={Inscrit===true?'oui':'non'}>
                         <div className="pictoLogoEspaceProNav">
                         <img src={localLogo} className='localLogoPictoProfilNav'></img>
-                        <img src={photoProfil} className='profilPictureNav'></img>
+                        {User!=undefined?<div className='containerInitialesNav'><p>{User.Initiales}</p></div>:<img src={photoProfil} className='profilPictureNav'></img>}
                         </div>    
                     </Link>  
             </navbar>
@@ -61,7 +70,7 @@ function Navbar(){
           <Link to="/profil" className={Inscrit===true?'oui':'non'}>
             <div className="pictoLogoEspaceProNav">
             <img src={localLogo} className='localLogoPictoProfilNav'></img>
-            <img src={photoProfil} className='profilPictureNav'></img>
+            {User!=undefined?<div className='containerInitialesNav'><p>{User.Initiales}</p></div>:<img src={photoProfil} className='profilPictureNav'></img>}
             </div>    
           </Link>  
         </navbar>

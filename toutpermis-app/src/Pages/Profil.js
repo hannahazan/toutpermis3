@@ -2,7 +2,7 @@ import '../css/Profil.css'
 import Navbar from "../component/Navbar";
 import localLogo from '../images/toutpermisLogoVidepng.png'
 import volant from '../images/volantLogo.png'
-import { useContext, useEffect } from 'react' 
+import { useContext, useEffect,useState } from 'react' 
 import {InscriptionContext as InscriptionChoice} from '../utilitaires/InscriptionContext'
 import photoProfil from '../images/1HloWLLhL3iTrmDtMigiitLB9Qx.jpg'
 import enveloppe from '../images/iconsAwesome/envelope-solid (1).svg'
@@ -12,10 +12,26 @@ import voiture from '../images/iconsAwesome/car-rear-solid.svg'
 import PopupInscription from '../component/PopupInscription';
 import { Link } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Profil=()=>{
-    const{choice}=useContext(InscriptionChoice)
-    console.log(choice)
+    const{choice,connectedUser}=useContext(InscriptionChoice)
+    const[User,setUser]=useState()
+    console.log(choice) 
+    const getUser = () => {
+        return axios
+          .get(`http://localhost:5000/Users/${connectedUser}`)
+          .then((res) => {
+            console.log(setUser(res.data))
+            console.log(User)
+            ;
+          })
+          .catch((err) => console.error(err));
+      };  
+      
+      useEffect(()=>{
+        getUser()
+      },[])
    
     return(
         <div className='profil'>
@@ -23,10 +39,10 @@ const Profil=()=>{
             <PopupInscription/>
             <main className='profilMain'>
             <div className='containerToolBoxProfilpicture'>
-                <p className='pBonjourProfil'>Bonjour Charliz!</p> 
+                {User!=undefined?<p className='pBonjourProfil'>Bonjour {User.Prenom} !</p>:<p className='pBonjourProfil'>Bonjour Charliz !</p> }
                 <div className="pictoLogoEspacePro">
                     <img src={localLogo} className='localLogoPictoProfil'></img>
-                    <img src={photoProfil} className='profilPicture'></img>
+                    {User!=undefined?<div className='ContainerInitiales'><p  className='Initiales'>{User.Initiales}</p></div>:<img src={photoProfil} className='profilPicture'></img>}
                 </div>
                 <div className='toolBox'>
                     <img src={enveloppe} className='enveloppeProfil'></img>

@@ -8,6 +8,7 @@ const ficheEcolePrincipaleSchema = new mongoose.Schema(
         Bateau:Boolean,
         voiture:Boolean,
         moto:Boolean,
+        Formation:String
     });
  
      

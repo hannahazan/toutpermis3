@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors'
 import routerFicheLogo from './Routes/ficheLogoRoutes.js'
 import routerFicheEcolePrincipale from './Routes/ficheEcoleprincipaleRoutes.js';
+import routerUsers from './Routes/UsersRoutes.js';
 const app = express()
 const port = 5000
 app.use(cors())
@@ -13,6 +14,7 @@ app.use(express.static('public'))
 
 app.use('/FicheLogo',routerFicheLogo)
 app.use('/FicheEcolePrincipale',routerFicheEcolePrincipale)
+app.use('/Users',routerUsers)
 
 // connection à la bdd mongodb
 main().catch(err => console.error(err))
