@@ -32,6 +32,7 @@ const Fiche=()=>{
     const [afficheTriksFormation,setAfficheTricksFormation]=useState(false)
     const [User,setUser]=useState()
     const[modify,setModify]=useState()
+    const [UploadTest,setUploadTest]=useState()
     const{connectedUser}=useContext(getConnectedUser)
     let arrayTest=[]
     console.log(connectedUser)
@@ -40,7 +41,8 @@ const Fiche=()=>{
     .get(`http://localhost:5000/FicheEcolePrincipale/${connectedUser}`)
     .then((res) => {
       console.log(setUser(res.data))
-      console.log('ca fonctionne?')
+      console.log(User)
+        
       ;
     })
     .catch((err) => console.error(err));
@@ -69,29 +71,61 @@ const Fiche=()=>{
         setCaptNomFormation(e.target.value)   
     }
     let formationsArray=[]
+    console.log("ok donc le dom se remet à jour jsuis vénère")
+    let length=0
     const setFormationElement=()=>{
         setAfficheTricksFormation(true)
-        formationsArray.push(captNomFormation)
+        length+=1
+        formationsArray.push(length)
         console.log(formationsArray)
     }
+    /****************postPart***************************************/
+    const createFiche=()=>{
+        axios.post(`http://localhost:5000/FicheEcolePrincipale/test`,{userPseudo:connectedUser})
+        .then((response)=>{(console.log(response.data))
+        }) 
+        .catch(error => {
+        console.log(error);
+        })   
+    }
+    useEffect(()=>{
+        createFiche()
+    },[])
     /*************modification part *********/
+  
    const submitModify=()=>
     {
-     axios
-    .put(`http://localhost:5000/FicheEcolePrincipale/${connectedUser}`,{Formation:captNomFormation})
-    .then((response) => {
-      console.log(setModify(response.data));
-      console.log("ca marche")
-    })
-    .catch((err) => console.error(err));
-
-    getUser()
+        axios
+        .put(`http://localhost:5000/FicheEcolePrincipale/${connectedUser}`,{Formation:captNomFormation})
+        .then((response) => {
+          console.log(setModify(response.data));
+          console.log("ca marche")
+          getUser() 
+        })
+        .catch((err) => console.error(err)); 
     
 }
 
   
 
     /**************upload part************************** */
+    const uplodPutTest=()=>{
+        const config = {
+            headers: {
+              'content-type': 'multipart/form-data'
+            }
+        }
+        const data=new FormData()
+        data.append('name','josephine')
+        data.append('file',uploadCouv)
+            axios.put(`http://localhost:5000/FicheEcolePrincipale/testUpload/${connectedUser}`,{couvertureUrl:uploadCouv},config)
+            .then((response) => {
+                console.log(setUploadTest(response.data));
+                console.log("ca marche")
+                getUser() 
+              })
+              .catch((err) => console.error(err));
+    }
     async function onSubmit(e) {
         e.preventDefault();
         const data = new FormData();
@@ -122,12 +156,15 @@ const Fiche=()=>{
         console.log(error);
         });
         
+        
 }
+
     return(
         <div className='fiche'>
             <Navbar/>
             <main className='mainFiche'>
                 <h1 className='titreFiche'>Ma fiche</h1>
+                {User!=undefined?<p>{User.Formation}</p>:<p>hello</p>}
                 <p className='accompagnéP'>Besoin d’être accompagné pour remplir ta fiche et
                     attirer un max de candidats ?<br></br> 
                     Clique ici, on t’as concocté un petit guide !
@@ -157,7 +194,7 @@ const Fiche=()=>{
                             <p>C</p>
                         </div>
                     </div>
-                    <input   type='submit' className='buttonUpload' onClick={onSubmit} value={'Valider logo et couverture'}></input>
+                    <input   type='submit' className='buttonUpload' onClick={uplodPutTest} value={'Valider logo et couverture'}></input>
                     <div className='pTEAndLogoMinus'>
                         <p>Type d'établissement</p>
                         {MinusTE===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusTE===false?setMinusTE(true):setMinusTE(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusTE===false?setMinusTE(true):setMinusTE(false)}}>-</p></div>}

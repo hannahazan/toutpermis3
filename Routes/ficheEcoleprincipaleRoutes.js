@@ -52,7 +52,16 @@ routerFicheEcolePrincipale.post("/", upload.single('file'), async (req, res) => 
       res.status(400).json({ error: error.message });
     }
   });
-
+  routerFicheEcolePrincipale.post('/test', function (req, res, next) {
+    var myNewFiche = new FicheEcolePrincipale({
+        userPseudo:req.body.userPseudo   
+    })
+    myNewFiche.save(function (err, post) {
+      if (err) { return next(err) }
+      res.json(201, post)
+    })
+  })
+  
  routerFicheEcolePrincipale.put('/:userPseudo',(req,res) => {
   FicheEcolePrincipale.findOneAndUpdate({userPseudo:req.params.userPseudo},req.body,function(err,data){
       if(err){
@@ -70,5 +79,32 @@ routerFicheEcolePrincipale.post("/", upload.single('file'), async (req, res) => 
       }
     })
   })
+
+  routerFicheEcolePrincipale.put('/testUpload/:userPseudo',upload.single('file'),(req,res) => {
+    const storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, 'tmp/dest')
+      },
+      filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + ' -' + Math.rond(Math.random() * 1E9)
+        cb(null, file.fieldname + '-' + uniqueSuffix)
+      },
+    })
+    FicheEcolePrincipale.findOneAndUpdate({userPseudo:req.params.userPseudo},req.file !==null? "/data/uploads/" + req.file.filename:"",req.file.originalname,function(err,data){
+        if(err){
+          res.sendStatus(404)
+        }
+        else
+        {
+          if (!data){
+              res.sendStatus(404)
+             }
+         else{
+              res.send(data)
+              console.log(req.body)
+             }
+        }
+      })
+    })
 
   export default routerFicheEcolePrincipale
