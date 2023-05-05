@@ -42,7 +42,8 @@ routerFicheEcolePrincipale.post("/", upload.single('file'), async (req, res) => 
         ecoleNumber:req.body.ecoleNumber,
         userPseudo:req.body.userPseudo,
         couvertureUrl: req.file !==null? "/data/uploads/" + req.file.filename:"",
-        pictureName:req.file.originalname,  
+        pictureName:req.file.originalname,
+        Formation:req.body.Formation  
       });
       await myFicheEcolePrincipale.save();
       console.log(req.file)
@@ -68,6 +69,27 @@ routerFicheEcolePrincipale.post("/", upload.single('file'), async (req, res) => 
             console.log(req.body)
            }
       }
+    })
+  })
+  routerFicheEcolePrincipale.post('/test', function (req, res, next) {
+    var myNewFiche = new FicheEcolePrincipale({
+      EcoleName:req.body.EcoleName,
+      Descriptif:req.body.Descriptif,
+      UserPseudo:req.body.userPseudo,
+      Bateau:req.body.Bateau,
+      Voiture:req.body.Voiture,
+      Moto:req.body.Moto,
+      Formation:req.body.Formation,
+      HorairesBureau:req.body.HorairesBureau,
+      HorairesConduite:req.body.HorairesConduite,
+      Mail:req.body.Mail,
+      Adresse:req.body.Adresse,
+      Téléphone:req.body.Téléphone,
+      Site:req.body.Téléphone,
+    })
+    myNewFiche.save(function (err, post) {
+      if (err) { return next(err) }
+      res.json(201, post)
     })
   })
 

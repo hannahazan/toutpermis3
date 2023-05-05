@@ -17,6 +17,7 @@ import Fiche from './Pages/Fiche'
 import { useEffect,useState,useContext } from 'react';
 import Navbar from './component/Navbar';
 
+
 const Path=window.location.pathname
 console.log(`${Path} depuis root`)
 const root = ReactDOM.createRoot(document.getElementById('root'));

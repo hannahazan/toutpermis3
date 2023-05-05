@@ -73,8 +73,6 @@
   
   
 .containerCouvUpload{
-  background-image: url("../images/Rectangle\ 516.png");
-  background-size: 100% 100%;
   height: 170px;
   width: 111%;
   position: relative;
@@ -86,10 +84,15 @@
   bottom: 35px;
   left: 182px;
   width: 180px;
-  top: 119px;
+  top: -93px;
   height: 25px;
   z-index: 2;
   opacity: 0;
+}
+.imgCouverture{
+  width: 100%;
+  position: relative;
+  height: 100%;
 }
   
 
@@ -104,7 +107,7 @@
   font-size: 20px;
   position: relative;
   left: 176px;
-  top: 66px;
+  top: -120px;
   color: white;
   font-size: 16px;
   text-align: center;
@@ -122,7 +125,7 @@
   background-color: #95B63A;
   font-size: 32px;
   position: relative;
-  top: 3px;
+  top: -179px;
   left: 12px;
 }
 .uploadLogo p{
@@ -130,7 +133,7 @@
 }
 .uploadLogoHidden{
   position: relative;
-  top: 102px;
+  top: -78px;
   left: 98px;
   width: 176px;
   z-index: 2;
@@ -146,7 +149,7 @@
   background-color: #37beb4;
   font-size: 20px;
   position: relative;
-  top: 78px;
+  top: -103px;
   color: white;
   font-size: 16px;
   text-align: center;
@@ -171,6 +174,7 @@
   background-color: #37beb4;
   position: relative;
   top: 38px;
+ 
 }
 .pR{
   color: black;
@@ -533,4 +537,36 @@
 .pForfaitAndLogoMinus p{
   margin:0px;
   
+}
+/***************Etablissements**************/
+.containerEtablissements{
+  display: flex;
+  flex-direction: column;
+}
+.containerFormations{
+  display: flex;
+  flex-direction: column;
+}
+.containerArray{
+  display: flex;
+  flex-direction: row;
+}
+/***********************ajouter une école*******************************/
+.buttonAddEcole{
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  height: 45px;
+  font-family: 'Poppins';
+  color: white;
+  border-radius: 12px;
+  align-items: center;
+  font-size: 17px;
+  font-weight: normal;
+  margin-bottom: 20px;
+  background-color: #37beb4;
 }

@@ -1,3 +1,4 @@
+
 import '../css/Fiche.css'
 import Navbar from '../component/Navbar'
 import { useEffect,useState,ChangeEvent,useContext } from 'react'
@@ -135,8 +136,20 @@ const Fiche=()=>{
                     attirer un max de candidats ?<br></br> 
                     Clique ici, on t’as concocté un petit guide !
                 </p>
-                <button className='buttonAddEcole'>Ajouter un établissement de conduite</button>
-                <div className='containerInformations'>
+                <div className='containerInputLabelNombreEcole'>
+                    <label for="tentacles" className='labelNombreEcole'>Nombre d'établissements (5 maximum)</label>
+                    <input type="number" id="tentacles" name="tentacles"
+                    min="1" max="5" className='inputNombreEcole' onChange={(e)=>{getValue(e)}}></input>
+                </div>
+                <div className='containerEtablissements'>
+                        <p>Etablissements</p>
+                        {ecoleNumberArray.map((event,index)=>
+                            <div className='containerFormations' key={index}>
+                               <div className='containerArray'>
+                                    <p onClick={()=>{setEcole(event)}}>{event}</p>
+                                    <p>-</p>
+                               </div>
+                               <div className={Ecole===event?'containerInformations':'containerInformations2'} id={index}>
                                     <p className='pInformations'>Informations</p>
                                     <div className='containerCouvUpload'>
                                     {User!=undefined?<img src={User.couvertureUrl} className='imgCouverture'></img>: <img src={couv} className='imgCouverture'></img>}
@@ -1020,10 +1033,11 @@ const Fiche=()=>{
                                         </div>
                                     </div>
                                 </div>   
+                            </div>
+                        )}
+                </div>
                 
             </main>
         </div>
     )
 }
-
-export default Fiche
