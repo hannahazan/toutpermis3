@@ -4,7 +4,7 @@ import  uuidv4 from 'uuidv4'
 const routerFicheCouverture= express.Router()
 routerFicheCouverture.use(express.json());
 routerFicheCouverture.use(express.urlencoded({extended: true}))
-import FicheCouverture from '../Models/FicheCouvertureModel'
+import FicheCouverture from '../Models/FicheCouvertureModel.js'
 
 const upload = multer({ dest: 'toutpermis-app/public/data/uploads' })
 
@@ -33,5 +33,20 @@ routerFicheCouverture.post("/", upload.single('file'), async (req, res) => {
       res.status(400).json({ error: error.message });
     }
   });
+
+  routerFicheCouverture.get('/:userPseudo', function (req, res) {
+    FicheCouverture.findOne({UserPseudo: req.params.userPseudo }, (err, data) => {
+       res.send(data)
+       console.log(data)
+     }
+     )
+   });
+   routerFicheCouverture.get('/', function (req, res) {
+    FicheCouverture.find((err, data) => {
+       res.send(data)
+       console.log(data)
+     }
+     )
+   });
 
   export default routerFicheCouverture

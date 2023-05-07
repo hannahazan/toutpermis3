@@ -16,46 +16,32 @@ routerFicheEcolePrincipale.get('/', function (req, res) {
       
     })
   })
+  routerFicheEcolePrincipale.get('/:_id', function (req, res) {
+    FicheEcolePrincipale.findById({_id:req.params._id},(err, data) => {
+       res.send(data)
+       console.log(data)
+     })
+   })
   
 
-routerFicheEcolePrincipale.get('/:userPseudo', function (req, res) {
-   FicheEcolePrincipale.findOne({userPseudo: req.params.userPseudo }, (err, data) => {
+routerFicheEcolePrincipale.get('/One/:UserPseudo', function (req, res) {
+   FicheEcolePrincipale.find({UserPseudo: req.params.UserPseudo}, (err, data) => {
       res.send(data)
       console.log(data)
     }
     )
   });
 
-// **CreatePost**/////////////////////////////////////////////////////
-routerFicheEcolePrincipale.post("/", upload.single('file'), async (req, res) => {
-    const storage = multer.diskStorage({
-      destination: function (req, file, cb) {
-        cb(null, 'tmp/dest')
-      },
-      filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + ' -' + Math.rond(Math.random() * 1E9)
-        cb(null, file.fieldname + '-' + uniqueSuffix)
-      },
-    })
-    try {
-      let myFicheEcolePrincipale = new FicheEcolePrincipale({
-        ecoleNumber:req.body.ecoleNumber,
-        userPseudo:req.body.userPseudo,
-        couvertureUrl: req.file !==null? "/data/uploads/" + req.file.filename:"",
-        pictureName:req.file.originalname,
-        Formation:req.body.Formation  
-      });
-      await myFicheEcolePrincipale.save();
-      console.log(req.file)
-      console.log(req.body)
-      res.json({ message: "Created" });
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  });
+  routerFicheEcolePrincipale.get('/creation/:EcoleName', function (req, res) {
+    FicheEcolePrincipale.findOne({EcoleName: req.params.EcoleName}, (err, data) => {
+       res.send(data)
+       console.log(data)
+     }
+     )
+   });
 
- routerFicheEcolePrincipale.put('/:userPseudo',(req,res) => {
-  FicheEcolePrincipale.findOneAndUpdate({userPseudo:req.params.userPseudo},req.body,function(err,data){
+ routerFicheEcolePrincipale.put('/:EcoleName',(req,res) => {
+  FicheEcolePrincipale.findOneAndUpdate({EcoleName:req.params.EcoleName},req.body,function(err,data){
       if(err){
         res.sendStatus(404)
       }
@@ -71,11 +57,28 @@ routerFicheEcolePrincipale.post("/", upload.single('file'), async (req, res) => 
       }
     })
   })
+ routerFicheEcolePrincipale.put('/addFormation/:EcoleName',(req,res) => {
+    FicheEcolePrincipale.updateOne({EcoleName:req.params.EcoleName},{$push:{Formation:req.body.Formation}},function(err,data){
+      console.log(req.body)
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
   routerFicheEcolePrincipale.post('/test', function (req, res, next) {
     var myNewFiche = new FicheEcolePrincipale({
       EcoleName:req.body.EcoleName,
       Descriptif:req.body.Descriptif,
-      UserPseudo:req.body.userPseudo,
+      UserPseudo:req.body.UserPseudo,
       Bateau:req.body.Bateau,
       Voiture:req.body.Voiture,
       Moto:req.body.Moto,
@@ -85,7 +88,7 @@ routerFicheEcolePrincipale.post("/", upload.single('file'), async (req, res) => 
       Mail:req.body.Mail,
       Adresse:req.body.Adresse,
       Téléphone:req.body.Téléphone,
-      Site:req.body.Téléphone,
+      Site:req.body.Site,
     })
     myNewFiche.save(function (err, post) {
       if (err) { return next(err) }

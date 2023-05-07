@@ -26,9 +26,8 @@ main().catch(err => console.error(err))
 async function main() {
     await mongoose.connect('mongodb+srv://hannah:TBlIyaXZd1aS1wgh@cluster0.aailhd7.mongodb.net/Toutpermis?retryWrites=true&w=majority');
     console.log("connection réussi");
-
 }
 
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)})
+  console.log(`app listening on port ${port}`)})

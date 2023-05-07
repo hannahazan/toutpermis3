@@ -1,14 +1,19 @@
 import mongoose from "mongoose";
 const ficheEcolePrincipaleSchema = new mongoose.Schema(
     {
-        ecoleNumber:Number,
-        couvertureUrl:String,
-        pictureName:String,
-        userPseudo:String,
+        EcoleName:String,
+        Descriptif:String,
+        UserPseudo:String,
         Bateau:Boolean,
-        voiture:Boolean,
-        moto:Boolean,
-        Formation:String
+        Voiture:Boolean,
+        Moto:Boolean,
+        Formation:Array,
+        HorairesBureau:Array,
+        HorairesConduite:Array,
+        Mail:String,
+        Adresse:String,
+        Téléphone:String,
+        Site:String,
     });
  
      

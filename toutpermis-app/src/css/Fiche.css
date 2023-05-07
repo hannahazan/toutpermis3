@@ -570,3 +570,17 @@
   margin-bottom: 20px;
   background-color: #37beb4;
 }
+.buttonAddEcole2{
+  display: none;
+}
+
+.containerNomEtaButtonValider{
+  display: flex;
+  flex-direction: column;
+}
+.containerNomEtaButtonValider2{
+  display: none;
+}
+.containerInformations2{
+  display: none;
+}
