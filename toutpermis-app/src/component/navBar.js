@@ -44,7 +44,7 @@ function Navbar(){
                 <Link to='/' ><li className='liMenu'>Accueil</li></Link>
                 </ul>
             </div>}
-            {Path==='/connexion'||Path==='/espacepro/InscriptionChoix'||Path=="/espacepro"||Path=='/espacepro/inscriptionChoix/inscriptionFinale'?
+            {Path==='/connexion'||Path==='/espacepro/InscriptionChoix'||Path=="/espacepro"||Path=='/espacepro/inscriptionChoix/inscriptionFinale'||Path=='/espacepro/inscriptionChoix/inscriptionFinale/profil'?
             <navbar className="navbar">
                     <img src={Burger} className="burger" onClick={Open==false?()=>{setOpen(true)}:()=>{setOpen(false)}}></img>
                     <Link to='/profil' className={Inscrit===true?'oui':'non'}>

@@ -33,15 +33,20 @@ const Fiche=()=>{
     const [AddEcole,setAddEcole]=useState(false)
     const [EcoleName,setEcoleName]=useState('')
     const [Create,setCreate]=useState(false)
-    const [User,setUser]=useState()
+    const [Couverture,setCouverture]=useState()
     const [AllOfOne,setAllOfOne]=useState()
     const [Fiche,setFiche]=useState()
-    const[modify,setModify]=useState()
+    const [modify,setModify]=useState()
+    const [LundiMatinOuvre,setLundiMatinOuvre]=useState('Fermé')
+    const [LundiMatinFerme,setLundiMatinferme]=useState('Fermé')
+    const [LundiApremOuvre,setLundiApremOuvre]=useState('Fermé')
+    const [LundiApremFerme,setLundiApremferme]=useState('Fermé')
     const{connectedUser}=useContext(getConnectedUser)
   
     console.log(connectedUser)
 
-    /******************get part*****************************/
+    /**************get toutes les fiches d'un seul utilisateur doit être
+     utilisée lorsque les fiches ont déjà été créées et que l'utilisateur revient dessus************************ */
     const getAllOfOne=()=>{
         axios
     .get(`http://localhost:5000/FicheEcolePrincipale/One/${connectedUser}`)
@@ -52,11 +57,13 @@ const Fiche=()=>{
     })
     .catch((err) => console.error(err));
     }
-    const getUser=()=>{
+    
+    /******************get part*****************************/
+    const getCouverture=()=>{
         axios
     .get(`http://localhost:5000/FicheCouverture/${connectedUser}`)
     .then((res) => {
-      console.log(setUser(res.data))
+      console.log(setCouverture(res.data))
       console.log('ca fonctionne?')
       ;
     })
@@ -79,7 +86,8 @@ const Fiche=()=>{
         console.log(EcoleName)     
     },[])
     useEffect(()=>{
-        console.log(uploadCouv)         
+        console.log(uploadCouv)   
+              
     })
    
     
@@ -92,7 +100,7 @@ const Fiche=()=>{
         prix:FormationPrix,
      }
      axios
-    .put(`http://localhost:5000/FicheEcolePrincipale/addFormation/${EcoleName}`,{Formation:NouvelleForm})
+    .put(`http://localhost:5000/FicheEcolePrincipale/addFormation/${EcoleName}`,{Formation:NouvelleForm,HorairesBureau:{LundiMatinOuvre,LundiMatinFerme,LundiApremOuvre,LundiApremFerme}})
     .then((response) => {
       console.log(setModify(response.data));
       console.log("ca marche")
@@ -129,7 +137,7 @@ const Fiche=()=>{
         
         axios.post("http://localhost:5000/FicheCouverture",data,config)
         .then((response)=>{(console.log(response.data))
-            getUser()
+            getCouverture()
         }) 
         .catch(error => {
         console.log(error);
@@ -146,15 +154,12 @@ const Fiche=()=>{
         });
         
 }
+/***************************fonction récupération d'évènements******************************************** */
+
     return(
         <div className='fiche'>
             <Navbar/>
             <main className='mainFiche'>
-                {AllOfOne!=undefined?<p>{AllOfOne[1].UserPseudo}</p>:<p>hello</p>}
-                {AllOfOne!=undefined?AllOfOne.map(
-                    (event,index)=> 
-                            <p key={index}>{event.EcoleName}</p>    
-                ):<p>hello</p> } 
                 {Fiche===undefined?<h1 className='titreFiche'>Ma fiche</h1>:<h1 className='titreFiche'>{Fiche.EcoleName}</h1>}
                 <p className='accompagnéP'>Besoin d’être accompagné pour remplir ta fiche et
                     attirer un max de candidats ?<br></br> 
@@ -168,7 +173,7 @@ const Fiche=()=>{
                 <div className={Create===true?'containerInformations':'containerInformations2'}>
                     <p className='pInformations'>Informations</p>
                     <div className='containerCouvUpload'>
-                    {User!=undefined?<img src={User.CouvertureUrl} className='imgCouverture'></img>: <img src={couv} className='imgCouverture'></img>}
+                    {Couverture!=undefined?<img src={Couverture.CouvertureUrl} className='imgCouverture'></img>: <img src={couv} className='imgCouverture'></img>}
                         <input  type="file" id="imageFile" accept="image/*" placeholder='uploadCouv'  className='uploadHidden'onChange={(e)=>{setUploadCouv(e.target.files[0])}} multiple></input>
                         <div className='uploadFront'>Modifier Couverture</div>
                         <input  type="file" id="imageFile" accept="image/*" className='uploadLogoHidden' onChange={(e)=>{setUploadLogo(e.target.files[0])}}></input>
@@ -254,7 +259,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Matin</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setLundiMatinOuvre(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="7:00">7:00</option>
                                             <option value="7:30">7:30</option>
@@ -263,7 +268,7 @@ const Fiche=()=>{
                                             <option value="9:00">9:00</option>
                                             <option value="9:30">9:30</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setLundiMatinferme(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="10:00">10:00</option>
                                             <option value="10:30">10:30</option>
@@ -277,7 +282,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Après-midi</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setLundiApremOuvre(e.target.value)}} >
                                             <option value="Fermé">Fermé</option>
                                             <option value="13:00">13:00</option>
                                             <option value="13:30">13:30</option>
@@ -289,7 +294,7 @@ const Fiche=()=>{
                                             <option value="16:30">16:30</option>
                                             <option value="17:00">17:00</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setLundiApremferme(e.target.value)}} >
                                             <option value="Fermé">Fermé</option>
                                             <option value="17:30">17:30</option>
                                             <option value="18:00">18:00</option>

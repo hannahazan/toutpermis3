@@ -58,7 +58,7 @@ routerFicheEcolePrincipale.get('/One/:UserPseudo', function (req, res) {
     })
   })
  routerFicheEcolePrincipale.put('/addFormation/:EcoleName',(req,res) => {
-    FicheEcolePrincipale.updateOne({EcoleName:req.params.EcoleName},{$push:{Formation:req.body.Formation}},function(err,data){
+    FicheEcolePrincipale.updateOne({EcoleName:req.params.EcoleName},{$push:{Formation:req.body.Formation,HorairesBureau:req.body.HorairesBureau}},function(err,data){
       console.log(req.body)
       if(err){
         res.sendStatus(404)
