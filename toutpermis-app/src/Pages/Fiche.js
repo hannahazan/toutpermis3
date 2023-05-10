@@ -37,10 +37,68 @@ const Fiche=()=>{
     const [AllOfOne,setAllOfOne]=useState()
     const [Fiche,setFiche]=useState()
     const [modify,setModify]=useState()
+
+    /*********************Horaires Bureau *************************************/
     const [LundiMatinOuvre,setLundiMatinOuvre]=useState('Fermé')
     const [LundiMatinFerme,setLundiMatinferme]=useState('Fermé')
     const [LundiApremOuvre,setLundiApremOuvre]=useState('Fermé')
     const [LundiApremFerme,setLundiApremferme]=useState('Fermé')
+    const [MardiMatinOuvre,setMardiMatinOuvre]=useState('Fermé')
+    const [MardiMatinFerme,setMardiMatinFerme]=useState('Fermé')
+    const [MardiApremOuvre,setMardiApremOuvre]=useState('Fermé')
+    const [MardiApremFerme,setMardiApremFerme]=useState('Fermé')
+    const [MercrediMatinFerme,setMercrediMatinFerme]=useState('Fermé')
+    const [MercrediMatinOuvre,setMercrediMatinOuvre]=useState('Fermé')
+    const [MercrediApremOuvre,setMercrediApremOuvre]=useState('Fermé')
+    const [MercrediApremFerme,setMercrediApremFerme]=useState('Fermé')
+    const [JeudiMatinFerme,setJeudiMatinFerme]=useState('Fermé')
+    const [JeudiMatinOuvre,setJeudiMatinOuvre]=useState('Fermé')
+    const [JeudiApremFerme,setJeudiApremFerme]=useState('Fermé')
+    const [JeudiApremOuvre,setJeudiApremOuvre]=useState('Fermé')
+    const [VendrediMatinOuvre,setVendrediMatinOuvre]=useState('Fermé')
+    const [VendrediMatinFerme,setVendrediMatinFerme]=useState('Fermé')
+    const [VendrediApremOuvre,setVendrediApremOuvert]=useState('Fermé')
+    const [VendrediApremFerme,setVendrediApremFerme]=useState('Fermé')
+    const [SamediMatinOuvre,setSamediMatinOuvre]=useState('Fermé')
+    const [SamediMatinFerme,setSamediMatinFerme]=useState('Fermé')
+    const [SamediApremOuvre,setSamediApremOuvert]=useState('Fermé')
+    const [SamediApremFerme,setSamediApremFerme]=useState('Fermé')
+    const [DimancheMatinOuvre,setDimancheMatinOuvre]=useState('Fermé')
+    const [DimancheMatinFerme,setDimancheMatinFerme]=useState('Fermé')
+    const [DimancheApremOuvre,setDimancheApremOuvert]=useState('Fermé')
+    const [DimancheApremFerme,setDimancheApremFerme]=useState('Fermé')
+
+    /*****************************Horaires Conduite**************************************************/
+
+    const [LundiMatinOuvreConduite,setLundiMatinOuvreConduite]=useState('Fermé')
+    const [LundiMatinFermeConduite,setLundiMatinfermeConduite]=useState('Fermé')
+    const [LundiApremOuvreConduite,setLundiApremOuvreConduite]=useState('Fermé')
+    const [LundiApremFermeConduite,setLundiApremfermeConduite]=useState('Fermé')
+    const [MardiMatinOuvreConduite,setMardiMatinOuvreConduite]=useState('Fermé')
+    const [MardiMatinFermeConduite,setMardiMatinFermeConduite]=useState('Fermé')
+    const [MardiApremOuvreConduite,setMardiApremOuvreConduite]=useState('Fermé')
+    const [MardiApremFermeConduite,setMardiApremFermeConduite]=useState('Fermé')
+    const [MercrediMatinFermeConduite,setMercrediMatinFermeConduite]=useState('Fermé')
+    const [MercrediMatinOuvreConduite,setMercrediMatinOuvreConduite]=useState('Fermé')
+    const [MercrediApremOuvreConduite,setMercrediApremOuvreConduite]=useState('Fermé')
+    const [MercrediApremFermeConduite,setMercrediApremFermeConduite]=useState('Fermé')
+    const [JeudiMatinFermeConduite,setJeudiMatinFermeConduite]=useState('Fermé')
+    const [JeudiMatinOuvreConduite,setJeudiMatinOuvreConduite]=useState('Fermé')
+    const [JeudiApremFermeConduite,setJeudiApremFermeConduite]=useState('Fermé')
+    const [JeudiApremOuvreConduite,setJeudiApremOuvreConduite]=useState('Fermé')
+    const [VendrediMatinOuvreConduite,setVendrediMatinOuvreConduite]=useState('Fermé')
+    const [VendrediMatinFermeConduite,setVendrediMatinFermeConduite]=useState('Fermé')
+    const [VendrediApremOuvreConduite,setVendrediApremOuvertConduite]=useState('Fermé')
+    const [VendrediApremFermeConduite,setVendrediApremFermeConduite]=useState('Fermé')
+    const [SamediMatinOuvreConduite,setSamediMatinOuvreConduite]=useState('Fermé')
+    const [SamediMatinFermeConduite,setSamediMatinFermeConduite]=useState('Fermé')
+    const [SamediApremOuvreConduite,setSamediApremOuvertConduite]=useState('Fermé')
+    const [SamediApremFermeConduite,setSamediApremFermeConduite]=useState('Fermé')
+    const [DimancheMatinOuvreConduite,setDimancheMatinOuvreConduite]=useState('Fermé')
+    const [DimancheMatinFermeConduite,setDimancheMatinFermeConduite]=useState('Fermé')
+    const [DimancheApremOuvreConduite,setDimancheApremOuvertConduite]=useState('Fermé')
+    const [DimancheApremFermeConduite,setDimancheApremFermeConduite]=useState('Fermé')
+    
     const{connectedUser}=useContext(getConnectedUser)
   
     console.log(connectedUser)
@@ -100,7 +158,16 @@ const Fiche=()=>{
         prix:FormationPrix,
      }
      axios
-    .put(`http://localhost:5000/FicheEcolePrincipale/addFormation/${EcoleName}`,{Formation:NouvelleForm,HorairesBureau:{LundiMatinOuvre,LundiMatinFerme,LundiApremOuvre,LundiApremFerme}})
+    .put(`http://localhost:5000/FicheEcolePrincipale/addFormation/${EcoleName}`,{Formation:NouvelleForm,HorairesBureau:{LundiMatinOuvre,LundiMatinFerme,LundiApremOuvre,LundiApremFerme,
+MardiMatinOuvre,MardiMatinFerme,MardiApremOuvre,MardiApremFerme,MercrediMatinOuvre,MercrediMatinFerme,MercrediApremOuvre,MercrediApremFerme,JeudiMatinOuvre,JeudiMatinFerme,
+JeudiApremOuvre,JeudiApremFerme,VendrediMatinOuvre,VendrediMatinFerme,VendrediApremOuvre,VendrediApremFerme,SamediMatinOuvre,SamediMatinFerme,
+SamediApremOuvre,SamediApremFerme,DimancheMatinOuvre,DimancheMatinFerme,DimancheApremOuvre,DimancheApremFerme},HorairesConduite:{LundiMatinOuvreConduite,LundiMatinFermeConduite,LundiApremOuvreConduite,
+LundiApremFermeConduite,MardiMatinOuvreConduite,MardiMatinFermeConduite,MardiApremOuvreConduite,MardiMatinFermeConduite,
+MardiApremOuvreConduite,MardiApremFermeConduite,MercrediMatinOuvreConduite,MercrediMatinFermeConduite,MercrediApremOuvreConduite,
+MercrediApremFermeConduite,JeudiMatinOuvreConduite,JeudiMatinFermeConduite,JeudiApremOuvreConduite,JeudiApremFermeConduite,
+VendrediMatinOuvreConduite,VendrediMatinFermeConduite,VendrediApremOuvreConduite,VendrediApremFermeConduite,SamediMatinOuvreConduite,
+SamediMatinFermeConduite,SamediApremOuvreConduite,SamediApremFermeConduite,DimancheMatinOuvreConduite,DimancheMatinFermeConduite,
+DimancheApremOuvreConduite,DimancheApremFermeConduite}})
     .then((response) => {
       console.log(setModify(response.data));
       console.log("ca marche")
@@ -313,7 +380,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Matin</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setMardiMatinOuvre(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="7:00">7:00</option>
                                             <option value="7:30">7:30</option>
@@ -322,7 +389,7 @@ const Fiche=()=>{
                                             <option value="9:00">9:00</option>
                                             <option value="9:30">9:30</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setMardiMatinFerme(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="10:00">10:00</option>
                                             <option value="10:30">10:30</option>
@@ -336,7 +403,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Après-midi</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setMardiApremOuvre(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="13:00">13:00</option>
                                             <option value="13:30">13:30</option>
@@ -348,7 +415,7 @@ const Fiche=()=>{
                                             <option value="16:30">16:30</option>
                                             <option value="17:00">17:00</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setMardiApremFerme(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="17:30">17:30</option>
                                             <option value="18:00">18:00</option>
@@ -367,7 +434,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Matin</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setMercrediMatinOuvre(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="7:00">7:00</option>
                                             <option value="7:30">7:30</option>
@@ -376,7 +443,7 @@ const Fiche=()=>{
                                             <option value="9:00">9:00</option>
                                             <option value="9:30">9:30</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setMercrediMatinFerme(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="10:00">10:00</option>
                                             <option value="10:30">10:30</option>
@@ -390,7 +457,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Après-midi</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setMercrediApremOuvre(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="13:00">13:00</option>
                                             <option value="13:30">13:30</option>
@@ -402,7 +469,7 @@ const Fiche=()=>{
                                             <option value="16:30">16:30</option>
                                             <option value="17:00">17:00</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setMercrediApremFerme(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="17:30">17:30</option>
                                             <option value="18:00">18:00</option>
@@ -421,7 +488,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Matin</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setJeudiMatinOuvre(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="7:00">7:00</option>
                                             <option value="7:30">7:30</option>
@@ -430,7 +497,7 @@ const Fiche=()=>{
                                             <option value="9:00">9:00</option>
                                             <option value="9:30">9:30</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setJeudiMatinFerme(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="10:00">10:00</option>
                                             <option value="10:30">10:30</option>
@@ -444,7 +511,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Après-midi</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setJeudiApremOuvre(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="13:00">13:00</option>
                                             <option value="13:30">13:30</option>
@@ -456,7 +523,7 @@ const Fiche=()=>{
                                             <option value="16:30">16:30</option>
                                             <option value="17:00">17:00</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setJeudiApremFerme(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="17:30">17:30</option>
                                             <option value="18:00">18:00</option>
@@ -475,7 +542,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Matin</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setVendrediMatinOuvre(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="7:00">7:00</option>
                                             <option value="7:30">7:30</option>
@@ -484,7 +551,7 @@ const Fiche=()=>{
                                             <option value="9:00">9:00</option>
                                             <option value="9:30">9:30</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setVendrediMatinFerme(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="10:00">10:00</option>
                                             <option value="10:30">10:30</option>
@@ -498,7 +565,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Après-midi</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setVendrediApremOuvert(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="13:00">13:00</option>
                                             <option value="13:30">13:30</option>
@@ -510,7 +577,7 @@ const Fiche=()=>{
                                             <option value="16:30">16:30</option>
                                             <option value="17:00">17:00</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setVendrediApremFerme(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="17:30">17:30</option>
                                             <option value="18:00">18:00</option>
@@ -529,7 +596,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Matin</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setSamediMatinOuvre(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="7:00">7:00</option>
                                             <option value="7:30">7:30</option>
@@ -538,7 +605,7 @@ const Fiche=()=>{
                                             <option value="9:00">9:00</option>
                                             <option value="9:30">9:30</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setSamediMatinFerme(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="10:00">10:00</option>
                                             <option value="10:30">10:30</option>
@@ -552,7 +619,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Après-midi</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setSamediApremOuvert(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="13:00">13:00</option>
                                             <option value="13:30">13:30</option>
@@ -564,7 +631,7 @@ const Fiche=()=>{
                                             <option value="16:30">16:30</option>
                                             <option value="17:00">17:00</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setSamediApremFerme(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="17:30">17:30</option>
                                             <option value="18:00">18:00</option>
@@ -583,7 +650,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Matin</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setDimancheMatinOuvre(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="7:00">7:00</option>
                                             <option value="7:30">7:30</option>
@@ -592,7 +659,7 @@ const Fiche=()=>{
                                             <option value="9:00">9:00</option>
                                             <option value="9:30">9:30</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setDimancheMatinOuvre(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="10:00">10:00</option>
                                             <option value="10:30">10:30</option>
@@ -606,7 +673,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Après-midi</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setDimancheApremOuvert(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="13:00">13:00</option>
                                             <option value="13:30">13:30</option>
@@ -618,7 +685,7 @@ const Fiche=()=>{
                                             <option value="16:30">16:30</option>
                                             <option value="17:00">17:00</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setDimancheApremFerme(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="17:30">17:30</option>
                                             <option value="18:00">18:00</option>
@@ -640,7 +707,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Matin</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setLundiMatinOuvreConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="7:00">7:00</option>
                                             <option value="7:30">7:30</option>
@@ -649,7 +716,7 @@ const Fiche=()=>{
                                             <option value="9:00">9:00</option>
                                             <option value="9:30">9:30</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setLundiMatinfermeConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="10:00">10:00</option>
                                             <option value="10:30">10:30</option>
@@ -663,7 +730,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Après-midi</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setLundiApremOuvreConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="13:00">13:00</option>
                                             <option value="13:30">13:30</option>
@@ -675,7 +742,7 @@ const Fiche=()=>{
                                             <option value="16:30">16:30</option>
                                             <option value="17:00">17:00</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setLundiApremfermeConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="17:30">17:30</option>
                                             <option value="18:00">18:00</option>
@@ -694,7 +761,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Matin</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setMardiMatinOuvreConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="7:00">7:00</option>
                                             <option value="7:30">7:30</option>
@@ -703,7 +770,7 @@ const Fiche=()=>{
                                             <option value="9:00">9:00</option>
                                             <option value="9:30">9:30</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setMardiMatinFermeConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="10:00">10:00</option>
                                             <option value="10:30">10:30</option>
@@ -717,7 +784,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Après-midi</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setMardiApremOuvreConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="13:00">13:00</option>
                                             <option value="13:30">13:30</option>
@@ -729,7 +796,7 @@ const Fiche=()=>{
                                             <option value="16:30">16:30</option>
                                             <option value="17:00">17:00</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setMardiApremFermeConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="17:30">17:30</option>
                                             <option value="18:00">18:00</option>
@@ -748,7 +815,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Matin</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setMercrediMatinOuvreConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="7:00">7:00</option>
                                             <option value="7:30">7:30</option>
@@ -757,7 +824,7 @@ const Fiche=()=>{
                                             <option value="9:00">9:00</option>
                                             <option value="9:30">9:30</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setMercrediMatinFermeConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="10:00">10:00</option>
                                             <option value="10:30">10:30</option>
@@ -771,7 +838,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Après-midi</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setMercrediApremOuvreConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="13:00">13:00</option>
                                             <option value="13:30">13:30</option>
@@ -783,7 +850,7 @@ const Fiche=()=>{
                                             <option value="16:30">16:30</option>
                                             <option value="17:00">17:00</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setMercrediApremFermeConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="17:30">17:30</option>
                                             <option value="18:00">18:00</option>
@@ -802,7 +869,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Matin</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setJeudiMatinOuvreConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="7:00">7:00</option>
                                             <option value="7:30">7:30</option>
@@ -811,7 +878,7 @@ const Fiche=()=>{
                                             <option value="9:00">9:00</option>
                                             <option value="9:30">9:30</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setJeudiMatinFermeConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="10:00">10:00</option>
                                             <option value="10:30">10:30</option>
@@ -825,7 +892,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Après-midi</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setJeudiApremOuvreConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="13:00">13:00</option>
                                             <option value="13:30">13:30</option>
@@ -837,7 +904,7 @@ const Fiche=()=>{
                                             <option value="16:30">16:30</option>
                                             <option value="17:00">17:00</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setJeudiApremFermeConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="17:30">17:30</option>
                                             <option value="18:00">18:00</option>
@@ -856,7 +923,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Matin</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setVendrediMatinOuvreConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="7:00">7:00</option>
                                             <option value="7:30">7:30</option>
@@ -865,7 +932,7 @@ const Fiche=()=>{
                                             <option value="9:00">9:00</option>
                                             <option value="9:30">9:30</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setVendrediMatinFermeConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="10:00">10:00</option>
                                             <option value="10:30">10:30</option>
@@ -879,7 +946,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Après-midi</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setVendrediApremOuvertConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="13:00">13:00</option>
                                             <option value="13:30">13:30</option>
@@ -891,7 +958,7 @@ const Fiche=()=>{
                                             <option value="16:30">16:30</option>
                                             <option value="17:00">17:00</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setVendrediApremFermeConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="17:30">17:30</option>
                                             <option value="18:00">18:00</option>
@@ -910,7 +977,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Matin</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setSamediMatinOuvreConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="7:00">7:00</option>
                                             <option value="7:30">7:30</option>
@@ -919,7 +986,7 @@ const Fiche=()=>{
                                             <option value="9:00">9:00</option>
                                             <option value="9:30">9:30</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setSamediMatinFermeConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="10:00">10:00</option>
                                             <option value="10:30">10:30</option>
@@ -933,7 +1000,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Après-midi</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setSamediApremFermeConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="13:00">13:00</option>
                                             <option value="13:30">13:30</option>
@@ -945,7 +1012,7 @@ const Fiche=()=>{
                                             <option value="16:30">16:30</option>
                                             <option value="17:00">17:00</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setSamediApremFermeConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="17:30">17:30</option>
                                             <option value="18:00">18:00</option>
@@ -964,7 +1031,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Matin</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setDimancheMatinOuvreConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="7:00">7:00</option>
                                             <option value="7:30">7:30</option>
@@ -973,7 +1040,7 @@ const Fiche=()=>{
                                             <option value="9:00">9:00</option>
                                             <option value="9:30">9:30</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setDimancheMatinFermeConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="10:00">10:00</option>
                                             <option value="10:30">10:30</option>
@@ -987,7 +1054,7 @@ const Fiche=()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Après-midi</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setDimancheApremOuvertConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="13:00">13:00</option>
                                             <option value="13:30">13:30</option>
@@ -999,7 +1066,7 @@ const Fiche=()=>{
                                             <option value="16:30">16:30</option>
                                             <option value="17:00">17:00</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setCaptTest(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setDimancheApremFermeConduite(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="17:30">17:30</option>
                                             <option value="18:00">18:00</option>
