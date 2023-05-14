@@ -34,8 +34,8 @@ routerFicheCouverture.post("/", upload.single('file'), async (req, res) => {
     }
   });
 
-  routerFicheCouverture.get('/:userPseudo', function (req, res) {
-    FicheCouverture.findOne({UserPseudo: req.params.userPseudo }, (err, data) => {
+  routerFicheCouverture.get('/:EcoleName', function (req, res) {
+    FicheCouverture.findOne({EcoleName: req.params.EcoleName }, (err, data) => {
        res.send(data)
        console.log(data)
      }

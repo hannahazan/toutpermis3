@@ -28,6 +28,9 @@
     font-weight: lighter;
   
 }
+.accompagnéP2{
+  display:none
+}
 .labelNombreEcole{
     color: #236468;
     font-size: 17px;
@@ -583,4 +586,51 @@
 }
 .containerInformations2{
   display: none;
+}
+/**********************************************/
+.containerTitreLien{
+  display: flex;
+  flex-direction: column;
+}
+.containerTitreLien2{
+  display:none
+}
+.containerTitreArrow{
+  display: flex;
+  flex-direction:row;
+  justify-content:center;
+  align-items: center;
+}
+.arrowFicheReturn{
+  filter: invert(60%) sepia(99%) saturate(290%) hue-rotate(126deg) brightness(89%) contrast(89%);
+  transform: rotate(180deg);
+  width: 35px;
+  position: relative;
+  right: 80px;
+  align-items: center;
+  top: 5px;
+}
+.containerFicheName{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.pAllerFiche{
+  font-size: 25px;
+  color: #236468;
+  margin: 0px;
+}
+.pLienFiche{
+  font-size: 30px;
+  color: #37beb4;
+  margin-left: 10px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.liseretLien{
+  width: 100%;
+  margin-bottom: 10px;
+  height: 1px;
+  background-color: #e8937c;
+  margin-top: 10px;
 }

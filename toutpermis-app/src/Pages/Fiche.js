@@ -7,6 +7,7 @@ import { set } from 'mongoose'
 import dropArrow from '../images/iconsAwesome/caret-down-solid.svg'
 import check from '../images/iconsAwesome/check-solid (1).svg'
 import couv from '../images/Rectangle 516.png'
+import arrow from '../images/iconsAwesome/arrow-right-solid.svg'
 
 
 const Fiche=()=>{
@@ -34,9 +35,16 @@ const Fiche=()=>{
     const [EcoleName,setEcoleName]=useState('')
     const [Create,setCreate]=useState(false)
     const [Couverture,setCouverture]=useState()
-    const [AllOfOne,setAllOfOne]=useState()
+    const [Logo,setLogo]=useState()
+    const [AllOfOne,setAllOfOne]=useState([])
     const [Fiche,setFiche]=useState()
     const [modify,setModify]=useState()
+
+    /***********************Les informations d'une seule fiche************************************** */
+    const [FicheLien,setFicheLien]=useState([])
+    const [couvertureLien,setCouvertureLien]=useState([])
+    const [LogoLien,setLogoLien]=useState([])
+    const [test,setTest]=useState(false)
 
     /*********************Horaires Bureau *************************************/
     const [LundiMatinOuvre,setLundiMatinOuvre]=useState('Fermé')
@@ -103,7 +111,7 @@ const Fiche=()=>{
   
     console.log(connectedUser)
 
-    /**************get toutes les fiches d'un seul utilisateur doit être
+    /**************get toutes les fiches d'un seul utilisateur, doit être
      utilisée lorsque les fiches ont déjà été créées et que l'utilisateur revient dessus************************ */
     const getAllOfOne=()=>{
         axios
@@ -115,13 +123,81 @@ const Fiche=()=>{
     })
     .catch((err) => console.error(err));
     }
+    useEffect(()=>{
+        getAllOfOne()
+    },[])
+    /***************** get info d'une fiche en particulier*************************** */
+    const getOneFiche=(LinkEcole)=>{
+        
+        axios
+    .get(`http://localhost:5000/FicheEcolePrincipale/creation/${LinkEcole}`)
+    .then((res) => {
+      console.log(setFicheLien(res.data))
+      setTest(true)
+      console.log('ca fonctionne pour le lien?')
+      ;
+    })
+    .catch((err) => console.error(err));
+        
+        axios
+    .get(`http://localhost:5000/FicheCouverture/${LinkEcole}`)
+    .then((res) => {
+      console.log(setCouvertureLien(res.data))
+      console.log('ca fonctionne dans getOnefiche?')
+      ;
+    })
+    .catch((err) => console.error(err));
+
+        axios
+    .get(`http://localhost:5000/FicheLogo/${LinkEcole}`)
+    .then((res) => {
+      console.log(setLogoLien(res.data))
+      console.log('ca fonctionne?')
+      
+      ;
+    })
+    .catch((err) => console.error(err));
     
+   
+    }
+    /****************************get infos liens *********************************************/
+     const getCouvertureLien=()=>{
+        axios
+    .get(`http://localhost:5000/FicheCouverture/${FicheLien.EcoleName}`)
+    .then((res) => {
+      console.log(setCouvertureLien(res.data))
+      console.log('ca fonctionne sûrement couvlien?')
+      ;
+    })
+    .catch((err) => console.error(err));
+    }
+
+     const getLogoLien=()=>{
+        axios
+        .get(`http://localhost:5000/FicheLogo/${FicheLien.EcoleName}`)
+        .then((res) => {
+          console.log(setLogoLien(res.data))
+          console.log('ca fonctionne sûrement logolien?')
+          ;
+        })
+        .catch((err) => console.error(err));
+     }
     /******************get part*****************************/
     const getCouverture=()=>{
         axios
-    .get(`http://localhost:5000/FicheCouverture/${connectedUser}`)
+    .get(`http://localhost:5000/FicheCouverture/${Fiche.EcoleName}`)
     .then((res) => {
       console.log(setCouverture(res.data))
+      console.log('ca fonctionne?')
+      ;
+    })
+    .catch((err) => console.error(err));
+    }
+    const getLogo=()=>{
+        axios
+    .get(`http://localhost:5000/FicheLogo/${Fiche.EcoleName}`)
+    .then((res) => {
+      console.log(setLogo(res.data))
       console.log('ca fonctionne?')
       ;
     })
@@ -190,12 +266,13 @@ DimancheApremOuvreConduite,DimancheApremFermeConduite}})
     }
 
     /**************upload part****************************/
-    async function onSubmit(e) {
+    async function onSubmitLien(e) {
         e.preventDefault();
         const data = new FormData();
         data.append('name','josephine')
         data.append('file',uploadCouv)
         data.append('UserPseudo',connectedUser)
+        data.append('EcoleName',FicheLien.EcoleName)
         const config = {
             headers: {
               'content-type': 'multipart/form-data'
@@ -204,7 +281,7 @@ DimancheApremOuvreConduite,DimancheApremFermeConduite}})
         
         axios.post("http://localhost:5000/FicheCouverture",data,config)
         .then((response)=>{(console.log(response.data))
-            getCouverture()
+            getCouvertureLien()
         }) 
         .catch(error => {
         console.log(error);
@@ -212,30 +289,91 @@ DimancheApremOuvreConduite,DimancheApremFermeConduite}})
         const dataLogo= new FormData
         dataLogo.append("name","martine")
         dataLogo.append('file',uploadLogo)
+        dataLogo.append('UserPseudo',connectedUser)
+        dataLogo.append('EcoleName',FicheLien.EcoleName)
 
         axios.post("http://localhost:5000/FicheLogo",dataLogo,config)
         .then((response)=>{(console.log(response.data))
+            getLogoLien()
         }) 
         .catch(error => {
         console.log(error);
         });
         
 }
-/***************************fonction récupération d'évènements******************************************** */
+/***********************************upload part lien/une fiche************************************************ */
+async function onSubmit(e) {
+    e.preventDefault();
+    const data = new FormData();
+    data.append('name','josephine')
+    data.append('file',uploadCouv)
+    data.append('UserPseudo',connectedUser)
+    data.append('EcoleName',Fiche.EcoleName)
+    const config = {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+    }
+    
+    axios.post("http://localhost:5000/FicheCouverture",data,config)
+    .then((response)=>{(console.log(response.data))
+        getCouverture()
+    }) 
+    .catch(error => {
+    console.log(error);
+    });
+    const dataLogo= new FormData
+    dataLogo.append("name","martine")
+    dataLogo.append('file',uploadLogo)
+    dataLogo.append('UserPseudo',connectedUser)
+    dataLogo.append('EcoleName',Fiche.EcoleName)
 
+    axios.post("http://localhost:5000/FicheLogo",dataLogo,config)
+    .then((response)=>{(console.log(response.data))
+        getLogo()
+    }) 
+    .catch(error => {
+    console.log(error);
+    });
+    
+}
+/***************************fonction récupération d'évènements******************************************** */
+const getBackInitiale=()=>{
+    setCreate(false)
+    setAddEcole(false)
+}
+const getBackInitialeLien=()=>{
+    setCreate(false)
+    setAddEcole(false)
+    setTest(false)
+}
     return(
         <div className='fiche'>
             <Navbar/>
             <main className='mainFiche'>
-                {Fiche===undefined?<h1 className='titreFiche'>Ma fiche</h1>:<h1 className='titreFiche'>{Fiche.EcoleName}</h1>}
-                <p className='accompagnéP'>Besoin d’être accompagné pour remplir ta fiche et
-                    attirer un max de candidats ?<br></br> 
-                    Clique ici, on t’as concocté un petit guide !
-                </p>
-                <button className={AddEcole===false?'buttonAddEcole':'buttonAddEcole2'} onClick={()=>{setAddEcole(true)}}>Ajouter un établissement de conduite</button>
-                <div className={AddEcole===true&&Create===false?'containerNomEtaButtonValider':'containerNomEtaButtonValider2'}>
-                    <input type='text' placeholder="Nom de l'établissement" className='inputNom' onChange={(e)=>{setEcoleName(e.target.value)}}></input>
-                    <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={createFiche}></input>
+                <div className={test===false?'containerTitreLien':'containerTitreLien2'}>
+                    <div className='containerTitreArrow'>
+                        {AddEcole===true && Create===false?<img src={arrow}  className='arrowFicheReturn' onClick={()=>{getBackInitiale()}}></img>:console.log('ouais')}
+                        {Fiche===undefined?<h1 className='titreFiche'>Mes fiches</h1>:<h1 className='titreFiche'>{Fiche.EcoleName}</h1>}
+                    </div>
+                    <p className={AllOfOne.length===0?'accompagnéP':'accompagnéP2'}>Besoin d’être accompagné pour remplir ta fiche et
+                        attirer un max de candidats ?<br></br> 
+                        Clique ici, on t’as concocté un petit guide !
+                    </p>
+                    {AllOfOne!=undefined && AddEcole===false?AllOfOne.map(
+                        (event,index)=>
+                        <div>
+                            <div className='containerFicheName'onClick={()=>{getOneFiche(event.EcoleName)}}>
+                                <p className='pAllerFiche'>Voir ma fiche : </p>
+                                <p key={index} className='pLienFiche'> {event.EcoleName}</p>
+                            </div>
+                            <div className='liseretLien'></div>
+                        </div> ):console.log('ok') }
+                    <button className={AddEcole===false?'buttonAddEcole':'buttonAddEcole2'} onClick={()=>{setAddEcole(true)}}>Ajouter un établissement de conduite</button>
+                    <div className={AddEcole===true&&Create===false?'containerNomEtaButtonValider':'containerNomEtaButtonValider2'}>
+                        <input type='text' placeholder="Nom de l'établissement" className='inputNom' onChange={(e)=>{setEcoleName(e.target.value)}}></input>
+                        <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={createFiche}></input>
+                    </div>
                 </div>
                 <div className={Create===true?'containerInformations':'containerInformations2'}>
                     <p className='pInformations'>Informations</p>
@@ -245,10 +383,10 @@ DimancheApremOuvreConduite,DimancheApremFermeConduite}})
                         <div className='uploadFront'>Modifier Couverture</div>
                         <input  type="file" id="imageFile" accept="image/*" className='uploadLogoHidden' onChange={(e)=>{setUploadLogo(e.target.files[0])}}></input>
                         <div className='uploadfrontLogo'>Modifier Logo</div>
-                        <div className='uploadLogo'>
+                        {Logo!=undefined?<img src={Logo.logoUrl}  className='uploadLogo'></img>:<div className='uploadLogo'>
                             <p className='pR'>R</p>
                             <p>C</p>
-                        </div>
+                        </div>}
                     </div>
                     <input   type='submit' className='buttonUpload' onClick={onSubmit} value={'Valider logo et couverture'}></input>
                     <div className='pTEAndLogoMinus'>
@@ -274,7 +412,893 @@ DimancheApremOuvreConduite,DimancheApremFermeConduite}})
                                 <img src={check} className={checkBateau===true?'checkTrue':'checkFalse'}></img>
                             </div>
                         </div>
-                        <input   type='submit' className='buttonValidBoxcase'  value={'Valider'} onClick={getAllOfOne}></input>
+                        <input   type='submit' className='buttonValidBoxcase'  value={'Valider'}></input>
+                    </div>
+                    <div className='pNDAndLogoMinus'>
+                        <p>Description</p>
+                        {MinusND===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusND===false?setMinusND(true):setMinusND(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusND===false?setMinusND(true):setMinusND(false)}}>-</p></div>}
+                    </div>
+                    <div className={MinusND===false?'containerNomDescription':'containerNomDescription2'}>
+                        <textarea type='text' placeholder='Descriptif' className='inputDescriptif' rows="10" cols="30"></textarea>
+                        <input   type='submit' className='buttonValidBoxcase' value={'Valider'}></input>
+                    </div>
+                    <div className='pLocalAndLogoMinus'>
+                        <p>Localisation</p>
+                        {MinusLocal===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusLocal===false?setMinusLocal(true):setMinusLocal(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusLocal===false?setMinusLocal(true):setMinusLocal(false)}}>-</p></div>}
+                    </div>
+                    <div className={MinusLocal===false?'containerLocalisation':'containerLocalisation2'}>
+                        <input type='text' placeholder='Adresse' className='inputNom'></input>
+                        <input type='number'id="tentacles" name="tentacles" className='inputNom' placeholder='code postal'></input>
+                        <input type='text' placeholder='Ville' className='inputNom'></input>
+                        <input   type='submit' className='buttonValidBoxcase' value={'Valider'}></input>
+                    </div>
+                    <div className='pContactAndLogoMinus'>
+                        <p>Contact</p>
+                        {MinusContact===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusContact===false?setMinusContact(true):setMinusContact(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusContact===false?setMinusContact(true):setMinusContact(false)}}>-</p></div>}
+                    </div>
+                    <div className={MinusContact===false?'containerLocalisation':'containerLocalisation2'}>
+                        <input type='text' placeholder='Adresse mail' className='inputNom'></input>
+                        <input type='number'id="tentacles" name="tentacles" className='inputNom' placeholder='Téléphone'></input>
+                        <input type='text' placeholder='site internet' className='inputNom'></input>
+                        <input   type='submit' className='buttonValidBoxcase' value={'Valider'}></input>
+                    </div>
+                    <div className='pContactAndLogoMinus'>
+                        <p>Horaires</p>
+                        {MinusHoraires===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusHoraires===false?setMinusHoraires(true):setMinusHoraires(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusHoraires===false?setMinusHoraires(true):setMinusHoraires(false)}}>-</p></div>}
+                    </div>
+                    <div className={MinusHoraires===false?'containerLocalisation':'containerLocalisation2'}>
+                        <div className='containerOngletBureauConduite'>
+                            <div className='containerLiseretOnglet'>
+                                <p className={OngletHoraires==='bureau'?'bureauTrue':'bureauFalse'}onClick={()=>{OngletHoraires==='bureau'?setOngletHoraires('conduite'):setOngletHoraires('bureau')}}>Bureau</p>
+                                <div className={OngletHoraires==='bureau'?'liseretOngletSelectionne':'liseretOngletSelectionne2'}></div>
+                            </div>
+                            <div>
+                                <p className={OngletHoraires==='bureau'?'bureauFalse':'bureauTrue'} onClick={()=>{OngletHoraires==='bureau'?setOngletHoraires('conduite'):setOngletHoraires('bureau')}}>Conduite</p>
+                                <div className={OngletHoraires==='bureau'?'liseretOngletSelectionneConduite2':'liseretOngletSelectionneConduite'}></div>
+                            </div>
+                        </div>
+                        <div className='liseretHoraires'></div>
+                        <div className={OngletHoraires==='bureau'?'containerHorairesBureau':'containerHorairesBureau2'}>
+                            <div className='containerHorairesCalendar'>
+                                <p>Lundi</p>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Matin</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setLundiMatinOuvre(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="7:00">7:00</option>
+                                            <option value="7:30">7:30</option>
+                                            <option value="8:00">8:00</option>
+                                            <option value="8:30">8:30</option>
+                                            <option value="9:00">9:00</option>
+                                            <option value="9:30">9:30</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setLundiMatinferme(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="10:00">10:00</option>
+                                            <option value="10:30">10:30</option>
+                                            <option value="11:00">11:00</option>
+                                            <option value="11:30">11:30</option>
+                                            <option value="12:00">12:00</option>
+                                            <option value="12:30">12:30</option>        
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Après-midi</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setLundiApremOuvre(e.target.value)}} >
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="13:00">13:00</option>
+                                            <option value="13:30">13:30</option>
+                                            <option value="14:00">14:00</option>
+                                            <option value="14:30">14:30</option>
+                                            <option value="15:00">15:00</option>
+                                            <option value="15:30">15:30</option>
+                                            <option value="16:00">16:00</option>
+                                            <option value="16:30">16:30</option>
+                                            <option value="17:00">17:00</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setLundiApremferme(e.target.value)}} >
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="17:30">17:30</option>
+                                            <option value="18:00">18:00</option>
+                                            <option value="18:30">18:30</option>
+                                            <option value="19:00">19:00</option>
+                                            <option value="19:30">19:30</option> 
+                                            <option value="20:00">20:00</option> 
+                                            <option value="20:30">20:30</option>  
+                                            <option value="21:00">21:00</option>    
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='containerHorairesCalendar'>
+                                <p>Mardi</p>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Matin</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setMardiMatinOuvre(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="7:00">7:00</option>
+                                            <option value="7:30">7:30</option>
+                                            <option value="8:00">8:00</option>
+                                            <option value="8:30">8:30</option>
+                                            <option value="9:00">9:00</option>
+                                            <option value="9:30">9:30</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setMardiMatinFerme(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="10:00">10:00</option>
+                                            <option value="10:30">10:30</option>
+                                            <option value="11:00">11:00</option>
+                                            <option value="11:30">11:30</option>
+                                            <option value="12:00">12:00</option>
+                                            <option value="12:30">12:30</option>        
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Après-midi</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setMardiApremOuvre(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="13:00">13:00</option>
+                                            <option value="13:30">13:30</option>
+                                            <option value="14:00">14:00</option>
+                                            <option value="14:30">14:30</option>
+                                            <option value="15:00">15:00</option>
+                                            <option value="15:30">15:30</option>
+                                            <option value="16:00">16:00</option>
+                                            <option value="16:30">16:30</option>
+                                            <option value="17:00">17:00</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setMardiApremFerme(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="17:30">17:30</option>
+                                            <option value="18:00">18:00</option>
+                                            <option value="18:30">18:30</option>
+                                            <option value="19:00">19:00</option>
+                                            <option value="19:30">19:30</option> 
+                                            <option value="20:00">20:00</option> 
+                                            <option value="20:30">20:30</option>  
+                                            <option value="21:00">21:00</option>    
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='containerHorairesCalendar'>
+                                <p>Mercredi</p>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Matin</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setMercrediMatinOuvre(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="7:00">7:00</option>
+                                            <option value="7:30">7:30</option>
+                                            <option value="8:00">8:00</option>
+                                            <option value="8:30">8:30</option>
+                                            <option value="9:00">9:00</option>
+                                            <option value="9:30">9:30</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setMercrediMatinFerme(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="10:00">10:00</option>
+                                            <option value="10:30">10:30</option>
+                                            <option value="11:00">11:00</option>
+                                            <option value="11:30">11:30</option>
+                                            <option value="12:00">12:00</option>
+                                            <option value="12:30">12:30</option>        
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Après-midi</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setMercrediApremOuvre(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="13:00">13:00</option>
+                                            <option value="13:30">13:30</option>
+                                            <option value="14:00">14:00</option>
+                                            <option value="14:30">14:30</option>
+                                            <option value="15:00">15:00</option>
+                                            <option value="15:30">15:30</option>
+                                            <option value="16:00">16:00</option>
+                                            <option value="16:30">16:30</option>
+                                            <option value="17:00">17:00</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setMercrediApremFerme(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="17:30">17:30</option>
+                                            <option value="18:00">18:00</option>
+                                            <option value="18:30">18:30</option>
+                                            <option value="19:00">19:00</option>
+                                            <option value="19:30">19:30</option> 
+                                            <option value="20:00">20:00</option> 
+                                            <option value="20:30">20:30</option>  
+                                            <option value="21:00">21:00</option>    
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='containerHorairesCalendar'>
+                                <p>Jeudi</p>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Matin</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setJeudiMatinOuvre(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="7:00">7:00</option>
+                                            <option value="7:30">7:30</option>
+                                            <option value="8:00">8:00</option>
+                                            <option value="8:30">8:30</option>
+                                            <option value="9:00">9:00</option>
+                                            <option value="9:30">9:30</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setJeudiMatinFerme(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="10:00">10:00</option>
+                                            <option value="10:30">10:30</option>
+                                            <option value="11:00">11:00</option>
+                                            <option value="11:30">11:30</option>
+                                            <option value="12:00">12:00</option>
+                                            <option value="12:30">12:30</option>        
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Après-midi</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setJeudiApremOuvre(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="13:00">13:00</option>
+                                            <option value="13:30">13:30</option>
+                                            <option value="14:00">14:00</option>
+                                            <option value="14:30">14:30</option>
+                                            <option value="15:00">15:00</option>
+                                            <option value="15:30">15:30</option>
+                                            <option value="16:00">16:00</option>
+                                            <option value="16:30">16:30</option>
+                                            <option value="17:00">17:00</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setJeudiApremFerme(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="17:30">17:30</option>
+                                            <option value="18:00">18:00</option>
+                                            <option value="18:30">18:30</option>
+                                            <option value="19:00">19:00</option>
+                                            <option value="19:30">19:30</option> 
+                                            <option value="20:00">20:00</option> 
+                                            <option value="20:30">20:30</option>  
+                                            <option value="21:00">21:00</option>    
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='containerHorairesCalendar'>
+                                <p>Vendredi</p>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Matin</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setVendrediMatinOuvre(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="7:00">7:00</option>
+                                            <option value="7:30">7:30</option>
+                                            <option value="8:00">8:00</option>
+                                            <option value="8:30">8:30</option>
+                                            <option value="9:00">9:00</option>
+                                            <option value="9:30">9:30</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setVendrediMatinFerme(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="10:00">10:00</option>
+                                            <option value="10:30">10:30</option>
+                                            <option value="11:00">11:00</option>
+                                            <option value="11:30">11:30</option>
+                                            <option value="12:00">12:00</option>
+                                            <option value="12:30">12:30</option>        
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Après-midi</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setVendrediApremOuvert(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="13:00">13:00</option>
+                                            <option value="13:30">13:30</option>
+                                            <option value="14:00">14:00</option>
+                                            <option value="14:30">14:30</option>
+                                            <option value="15:00">15:00</option>
+                                            <option value="15:30">15:30</option>
+                                            <option value="16:00">16:00</option>
+                                            <option value="16:30">16:30</option>
+                                            <option value="17:00">17:00</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setVendrediApremFerme(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="17:30">17:30</option>
+                                            <option value="18:00">18:00</option>
+                                            <option value="18:30">18:30</option>
+                                            <option value="19:00">19:00</option>
+                                            <option value="19:30">19:30</option> 
+                                            <option value="20:00">20:00</option> 
+                                            <option value="20:30">20:30</option>  
+                                            <option value="21:00">21:00</option>    
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='containerHorairesCalendar'>
+                                <p>Samedi</p>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Matin</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setSamediMatinOuvre(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="7:00">7:00</option>
+                                            <option value="7:30">7:30</option>
+                                            <option value="8:00">8:00</option>
+                                            <option value="8:30">8:30</option>
+                                            <option value="9:00">9:00</option>
+                                            <option value="9:30">9:30</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setSamediMatinFerme(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="10:00">10:00</option>
+                                            <option value="10:30">10:30</option>
+                                            <option value="11:00">11:00</option>
+                                            <option value="11:30">11:30</option>
+                                            <option value="12:00">12:00</option>
+                                            <option value="12:30">12:30</option>        
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Après-midi</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setSamediApremOuvert(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="13:00">13:00</option>
+                                            <option value="13:30">13:30</option>
+                                            <option value="14:00">14:00</option>
+                                            <option value="14:30">14:30</option>
+                                            <option value="15:00">15:00</option>
+                                            <option value="15:30">15:30</option>
+                                            <option value="16:00">16:00</option>
+                                            <option value="16:30">16:30</option>
+                                            <option value="17:00">17:00</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setSamediApremFerme(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="17:30">17:30</option>
+                                            <option value="18:00">18:00</option>
+                                            <option value="18:30">18:30</option>
+                                            <option value="19:00">19:00</option>
+                                            <option value="19:30">19:30</option> 
+                                            <option value="20:00">20:00</option> 
+                                            <option value="20:30">20:30</option>  
+                                            <option value="21:00">21:00</option>    
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='containerHorairesCalendar'>
+                                <p>Dimanche</p>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Matin</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setDimancheMatinOuvre(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="7:00">7:00</option>
+                                            <option value="7:30">7:30</option>
+                                            <option value="8:00">8:00</option>
+                                            <option value="8:30">8:30</option>
+                                            <option value="9:00">9:00</option>
+                                            <option value="9:30">9:30</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setDimancheMatinOuvre(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="10:00">10:00</option>
+                                            <option value="10:30">10:30</option>
+                                            <option value="11:00">11:00</option>
+                                            <option value="11:30">11:30</option>
+                                            <option value="12:00">12:00</option>
+                                            <option value="12:30">12:30</option>        
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Après-midi</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setDimancheApremOuvert(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="13:00">13:00</option>
+                                            <option value="13:30">13:30</option>
+                                            <option value="14:00">14:00</option>
+                                            <option value="14:30">14:30</option>
+                                            <option value="15:00">15:00</option>
+                                            <option value="15:30">15:30</option>
+                                            <option value="16:00">16:00</option>
+                                            <option value="16:30">16:30</option>
+                                            <option value="17:00">17:00</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setDimancheApremFerme(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="17:30">17:30</option>
+                                            <option value="18:00">18:00</option>
+                                            <option value="18:30">18:30</option>
+                                            <option value="19:00">19:00</option>
+                                            <option value="19:30">19:30</option> 
+                                            <option value="20:00">20:00</option> 
+                                            <option value="20:30">20:30</option>  
+                                            <option value="21:00">21:00</option>    
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <input   type='submit' className='buttonValidBoxcase' value={'Valider'}></input>
+                        </div>
+                        <div className={OngletHoraires==='bureau'?'containerHorairesConduite2':'containerHorairesConduite'}>
+                            <div className='containerHorairesCalendar'>
+                                <p>Lundi</p>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Matin</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setLundiMatinOuvreConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="7:00">7:00</option>
+                                            <option value="7:30">7:30</option>
+                                            <option value="8:00">8:00</option>
+                                            <option value="8:30">8:30</option>
+                                            <option value="9:00">9:00</option>
+                                            <option value="9:30">9:30</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setLundiMatinfermeConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="10:00">10:00</option>
+                                            <option value="10:30">10:30</option>
+                                            <option value="11:00">11:00</option>
+                                            <option value="11:30">11:30</option>
+                                            <option value="12:00">12:00</option>
+                                            <option value="12:30">12:30</option>        
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Après-midi</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setLundiApremOuvreConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="13:00">13:00</option>
+                                            <option value="13:30">13:30</option>
+                                            <option value="14:00">14:00</option>
+                                            <option value="14:30">14:30</option>
+                                            <option value="15:00">15:00</option>
+                                            <option value="15:30">15:30</option>
+                                            <option value="16:00">16:00</option>
+                                            <option value="16:30">16:30</option>
+                                            <option value="17:00">17:00</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setLundiApremfermeConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="17:30">17:30</option>
+                                            <option value="18:00">18:00</option>
+                                            <option value="18:30">18:30</option>
+                                            <option value="19:00">19:00</option>
+                                            <option value="19:30">19:30</option> 
+                                            <option value="20:00">20:00</option> 
+                                            <option value="20:30">20:30</option>  
+                                            <option value="21:00">21:00</option>    
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='containerHorairesCalendar'>
+                                <p>Mardi</p>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Matin</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setMardiMatinOuvreConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="7:00">7:00</option>
+                                            <option value="7:30">7:30</option>
+                                            <option value="8:00">8:00</option>
+                                            <option value="8:30">8:30</option>
+                                            <option value="9:00">9:00</option>
+                                            <option value="9:30">9:30</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setMardiMatinFermeConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="10:00">10:00</option>
+                                            <option value="10:30">10:30</option>
+                                            <option value="11:00">11:00</option>
+                                            <option value="11:30">11:30</option>
+                                            <option value="12:00">12:00</option>
+                                            <option value="12:30">12:30</option>        
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Après-midi</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setMardiApremOuvreConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="13:00">13:00</option>
+                                            <option value="13:30">13:30</option>
+                                            <option value="14:00">14:00</option>
+                                            <option value="14:30">14:30</option>
+                                            <option value="15:00">15:00</option>
+                                            <option value="15:30">15:30</option>
+                                            <option value="16:00">16:00</option>
+                                            <option value="16:30">16:30</option>
+                                            <option value="17:00">17:00</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setMardiApremFermeConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="17:30">17:30</option>
+                                            <option value="18:00">18:00</option>
+                                            <option value="18:30">18:30</option>
+                                            <option value="19:00">19:00</option>
+                                            <option value="19:30">19:30</option> 
+                                            <option value="20:00">20:00</option> 
+                                            <option value="20:30">20:30</option>  
+                                            <option value="21:00">21:00</option>    
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='containerHorairesCalendar'>
+                                <p>Mercredi</p>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Matin</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setMercrediMatinOuvreConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="7:00">7:00</option>
+                                            <option value="7:30">7:30</option>
+                                            <option value="8:00">8:00</option>
+                                            <option value="8:30">8:30</option>
+                                            <option value="9:00">9:00</option>
+                                            <option value="9:30">9:30</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setMercrediMatinFermeConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="10:00">10:00</option>
+                                            <option value="10:30">10:30</option>
+                                            <option value="11:00">11:00</option>
+                                            <option value="11:30">11:30</option>
+                                            <option value="12:00">12:00</option>
+                                            <option value="12:30">12:30</option>        
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Après-midi</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setMercrediApremOuvreConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="13:00">13:00</option>
+                                            <option value="13:30">13:30</option>
+                                            <option value="14:00">14:00</option>
+                                            <option value="14:30">14:30</option>
+                                            <option value="15:00">15:00</option>
+                                            <option value="15:30">15:30</option>
+                                            <option value="16:00">16:00</option>
+                                            <option value="16:30">16:30</option>
+                                            <option value="17:00">17:00</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setMercrediApremFermeConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="17:30">17:30</option>
+                                            <option value="18:00">18:00</option>
+                                            <option value="18:30">18:30</option>
+                                            <option value="19:00">19:00</option>
+                                            <option value="19:30">19:30</option> 
+                                            <option value="20:00">20:00</option> 
+                                            <option value="20:30">20:30</option>  
+                                            <option value="21:00">21:00</option>    
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='containerHorairesCalendar'>
+                                <p>Jeudi</p>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Matin</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setJeudiMatinOuvreConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="7:00">7:00</option>
+                                            <option value="7:30">7:30</option>
+                                            <option value="8:00">8:00</option>
+                                            <option value="8:30">8:30</option>
+                                            <option value="9:00">9:00</option>
+                                            <option value="9:30">9:30</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setJeudiMatinFermeConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="10:00">10:00</option>
+                                            <option value="10:30">10:30</option>
+                                            <option value="11:00">11:00</option>
+                                            <option value="11:30">11:30</option>
+                                            <option value="12:00">12:00</option>
+                                            <option value="12:30">12:30</option>        
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Après-midi</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setJeudiApremOuvreConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="13:00">13:00</option>
+                                            <option value="13:30">13:30</option>
+                                            <option value="14:00">14:00</option>
+                                            <option value="14:30">14:30</option>
+                                            <option value="15:00">15:00</option>
+                                            <option value="15:30">15:30</option>
+                                            <option value="16:00">16:00</option>
+                                            <option value="16:30">16:30</option>
+                                            <option value="17:00">17:00</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setJeudiApremFermeConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="17:30">17:30</option>
+                                            <option value="18:00">18:00</option>
+                                            <option value="18:30">18:30</option>
+                                            <option value="19:00">19:00</option>
+                                            <option value="19:30">19:30</option> 
+                                            <option value="20:00">20:00</option> 
+                                            <option value="20:30">20:30</option>  
+                                            <option value="21:00">21:00</option>    
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='containerHorairesCalendar'>
+                                <p>Vendredi</p>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Matin</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setVendrediMatinOuvreConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="7:00">7:00</option>
+                                            <option value="7:30">7:30</option>
+                                            <option value="8:00">8:00</option>
+                                            <option value="8:30">8:30</option>
+                                            <option value="9:00">9:00</option>
+                                            <option value="9:30">9:30</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setVendrediMatinFermeConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="10:00">10:00</option>
+                                            <option value="10:30">10:30</option>
+                                            <option value="11:00">11:00</option>
+                                            <option value="11:30">11:30</option>
+                                            <option value="12:00">12:00</option>
+                                            <option value="12:30">12:30</option>        
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Après-midi</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setVendrediApremOuvertConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="13:00">13:00</option>
+                                            <option value="13:30">13:30</option>
+                                            <option value="14:00">14:00</option>
+                                            <option value="14:30">14:30</option>
+                                            <option value="15:00">15:00</option>
+                                            <option value="15:30">15:30</option>
+                                            <option value="16:00">16:00</option>
+                                            <option value="16:30">16:30</option>
+                                            <option value="17:00">17:00</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setVendrediApremFermeConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="17:30">17:30</option>
+                                            <option value="18:00">18:00</option>
+                                            <option value="18:30">18:30</option>
+                                            <option value="19:00">19:00</option>
+                                            <option value="19:30">19:30</option> 
+                                            <option value="20:00">20:00</option> 
+                                            <option value="20:30">20:30</option>  
+                                            <option value="21:00">21:00</option>    
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='containerHorairesCalendar'>
+                                <p>Samedi</p>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Matin</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setSamediMatinOuvreConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="7:00">7:00</option>
+                                            <option value="7:30">7:30</option>
+                                            <option value="8:00">8:00</option>
+                                            <option value="8:30">8:30</option>
+                                            <option value="9:00">9:00</option>
+                                            <option value="9:30">9:30</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setSamediMatinFermeConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="10:00">10:00</option>
+                                            <option value="10:30">10:30</option>
+                                            <option value="11:00">11:00</option>
+                                            <option value="11:30">11:30</option>
+                                            <option value="12:00">12:00</option>
+                                            <option value="12:30">12:30</option>        
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Après-midi</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setSamediApremFermeConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="13:00">13:00</option>
+                                            <option value="13:30">13:30</option>
+                                            <option value="14:00">14:00</option>
+                                            <option value="14:30">14:30</option>
+                                            <option value="15:00">15:00</option>
+                                            <option value="15:30">15:30</option>
+                                            <option value="16:00">16:00</option>
+                                            <option value="16:30">16:30</option>
+                                            <option value="17:00">17:00</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setSamediApremFermeConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="17:30">17:30</option>
+                                            <option value="18:00">18:00</option>
+                                            <option value="18:30">18:30</option>
+                                            <option value="19:00">19:00</option>
+                                            <option value="19:30">19:30</option> 
+                                            <option value="20:00">20:00</option> 
+                                            <option value="20:30">20:30</option>  
+                                            <option value="21:00">21:00</option>    
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='containerHorairesCalendar'>
+                                <p>Dimanche</p>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Matin</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setDimancheMatinOuvreConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="7:00">7:00</option>
+                                            <option value="7:30">7:30</option>
+                                            <option value="8:00">8:00</option>
+                                            <option value="8:30">8:30</option>
+                                            <option value="9:00">9:00</option>
+                                            <option value="9:30">9:30</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setDimancheMatinFermeConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="10:00">10:00</option>
+                                            <option value="10:30">10:30</option>
+                                            <option value="11:00">11:00</option>
+                                            <option value="11:30">11:30</option>
+                                            <option value="12:00">12:00</option>
+                                            <option value="12:30">12:30</option>        
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className='containerBoxHorairesDay'>
+                                    <p>Après-midi</p>
+                                    <div className='containerDropBox'>
+                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setDimancheApremOuvertConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="13:00">13:00</option>
+                                            <option value="13:30">13:30</option>
+                                            <option value="14:00">14:00</option>
+                                            <option value="14:30">14:30</option>
+                                            <option value="15:00">15:00</option>
+                                            <option value="15:30">15:30</option>
+                                            <option value="16:00">16:00</option>
+                                            <option value="16:30">16:30</option>
+                                            <option value="17:00">17:00</option>   
+                                        </select>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setDimancheApremFermeConduite(e.target.value)}}>
+                                            <option value="Fermé">Fermé</option>
+                                            <option value="17:30">17:30</option>
+                                            <option value="18:00">18:00</option>
+                                            <option value="18:30">18:30</option>
+                                            <option value="19:00">19:00</option>
+                                            <option value="19:30">19:30</option> 
+                                            <option value="20:00">20:00</option> 
+                                            <option value="20:30">20:30</option>  
+                                            <option value="21:00">21:00</option>    
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <input   type='submit' className='buttonValidBoxcase' value={'Valider'}></input>
+                        </div>
+                    </div>
+                    <div className='pFormationAndLogoMinus'>
+                        <p>Formation</p>
+                        {MinusFormations===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusFormations===false?setMinusFormations(true):setMinusFormations(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusFormations===false?setMinusFormations(true):setMinusFormations(false)}}>-</p></div>}
+                    </div>
+                    <div className={MinusFormations===false?'containerFormation2':'containerFormation'}>
+                        <div className='containerOngletsFormation'>
+                            <div className={OngletFormations==='Auto'?'categorieOngletandLiseret2':'categorieOngletandLiseret'}onClick={()=>{setOngletFormations('Auto')}}>
+                                <p>Auto</p>
+                                <div className={OngletFormations==='Auto'?'liseretCateg':"liseretCateg2"}></div>
+                            </div>
+                            <div className={OngletFormations==='Moto'?'categorieOngletandLiseret2':'categorieOngletandLiseret'}onClick={()=>{setOngletFormations('Moto')}}>
+                                <p>2 Roues</p>
+                                <div className={OngletFormations==='Moto'?'liseretCateg':"liseretCateg2"}></div>
+                            </div>
+                            <div className={OngletFormations==='Bateau'?'categorieOngletandLiseret2':'categorieOngletandLiseret'}onClick={()=>{setOngletFormations('Bateau')}}>
+                                <p>Bateau</p>
+                                <div className={OngletFormations==='Bateau'?'liseretCateg':"liseretCateg2"}></div>
+                            </div>
+                            <div className={OngletFormations==='Stages'?'categorieOngletandLiseret2':'categorieOngletandLiseret'}onClick={()=>{setOngletFormations('Stages')}}>
+                                <p>Stages</p>
+                                <div className={OngletFormations==='Stages'?'liseretCateg':"liseretCateg2"}></div>
+                            </div>
+                        </div>
+                        <div className='liseretHoraires'></div>
+                        <div className='pForfaitAndLogoMinus'>
+                            <p>Nouveau forfait</p>
+                            {MinusAddFormations===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusAddFormations===false?setMinusAddFormations(true):setMinusAddFormations(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusFormations===false?setMinusAddFormations(true):setMinusAddFormations(false)}}>-</p></div>}
+                        </div>
+                        <div className={MinusAddFormations===false?'containerNomDescription':'containerNomDescription2'}>
+                            <input type='text' placeholder='Nom de la formation' className='inputNom' onChange={(e)=>setFormationName(e.target.value)}></input>
+                            <textarea type='text' placeholder='Descriptif de la formation' className='inputDescriptif' rows="10" cols="30"onChange={(e)=>setFormationDescriptif(e.target.value)}></textarea>
+                            <input type='number' placeholder='prix de la formation' className='inputNom' onChange={(e)=>{setFormationPrix(e.target.value)}}></input>
+                            <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={completFiche}></input>
+                        </div>
+                    </div>
+                </div>
+                <div className={test===true?'containerInformations':'containerInformations2'}>
+                    <div className='containerTitreArrow'>
+                        <img src={arrow}  className='arrowFicheReturn' onClick={()=>{getBackInitialeLien()}}></img>
+                        {FicheLien.length!=0?<h1 className='titreFiche'>{FicheLien.EcoleName}</h1>:<h1 className='titreFiche'>Ma fiche</h1>}
+                    </div>
+                    <p className='pInformations'>Informations</p>
+                    <div className='containerCouvUpload'>
+                    {couvertureLien.length!=0?<img src={couvertureLien.CouvertureUrl} className='imgCouverture'></img>: <img src={couv} className='imgCouverture'></img>}
+                        <input  type="file" id="imageFile" accept="image/*" placeholder='uploadCouv'  className='uploadHidden'onChange={(e)=>{setUploadCouv(e.target.files[0])}} multiple></input>
+                        <div className='uploadFront'>Modifier Couverture</div>
+                        <input  type="file" id="imageFile" accept="image/*" className='uploadLogoHidden' onChange={(e)=>{setUploadLogo(e.target.files[0])}}></input>
+                        <div className='uploadfrontLogo'>Modifier Logo</div>
+                        {LogoLien.length!=0?<img src={LogoLien.logoUrl}  className='uploadLogo'></img>:<div className='uploadLogo'>
+                            <p className='pR'>R</p>
+                            <p>C</p>
+                        </div>}
+                    </div>
+                    <input   type='submit' className='buttonUpload' onClick={onSubmitLien} value={'Valider logo et couverture'}></input>
+                    <div className='pTEAndLogoMinus'>
+                        <p>Type d'établissement</p>
+                        {MinusTE===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusTE===false?setMinusTE(true):setMinusTE(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusTE===false?setMinusTE(true):setMinusTE(false)}}>-</p></div>}
+                    </div>
+                    <div className={MinusTE===false?'containerButtonAndBoxcase2':'containerButtonAndBoxcase'}>
+                        <div className='containercheckBoxAndP'>
+                            <p>Auto-école</p>
+                            <div className={checkAuto===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{checkAuto===false?setCheckAuto(true):setCheckAuto(false)}}>
+                                <img src={check} className={checkAuto===true?'checkTrue':'checkFalse'}></img>
+                            </div>
+                        </div>
+                        <div className='containercheckBoxAndP'>
+                            <p>Moto-école</p>
+                            <div className={checkMoto===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{checkMoto===false?setCheckMoto(true):setCheckMoto(false)}}>
+                                <img src={check} className={checkMoto===true?'checkTrue':'checkFalse'}></img>
+                            </div>
+                        </div>
+                        <div className='containercheckBoxAndP'>
+                            <p>Bateau-école</p>
+                            <div className={checkBateau===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{checkBateau===false?setCheckbateau(true):setCheckbateau(false)}}>
+                                <img src={check} className={checkBateau===true?'checkTrue':'checkFalse'}></img>
+                            </div>
+                        </div>
+                        <input   type='submit' className='buttonValidBoxcase'  value={'Valider'}></input>
                     </div>
                     <div className='pNDAndLogoMinus'>
                         <p>Description</p>

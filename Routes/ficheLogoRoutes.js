@@ -18,8 +18,8 @@ routerFicheLogo.get('/', function (req, res) {
   })
   
 
-routerFicheLogo.get('/:pictureName', function (req, res) {
-   FicheLogo.findOne({ pictureName: req.params.pictureName }, (err, data) => {
+routerFicheLogo.get('/:EcoleName', function (req, res) {
+   FicheLogo.findOne({  EcoleName: req.params.EcoleName }, (err, data) => {
       res.send(data)
       console.log(data)
     }
@@ -41,6 +41,8 @@ routerFicheLogo.post("/", upload.single('file'), async (req, res) => {
       let myFicheLogo = new FicheLogo({
         logoUrl: req.file !==null? "/data/uploads/" + req.file.filename:"",
         pictureName:req.file.originalname,
+        UserPseudo:req.body.UserPseudo,
+        EcoleName:req.body.EcoleName   
       });
       await myFicheLogo.save();
       console.log(req.file)

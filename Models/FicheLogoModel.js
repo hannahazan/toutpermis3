@@ -3,6 +3,8 @@ const ficheLogoSchema = new mongoose.Schema(
     {
         logoUrl:String,
         pictureName:String,
+        UserPseudo:String,
+        EcoleName:String,
     });
  
      
