@@ -8,13 +8,18 @@ import dropArrow from '../images/iconsAwesome/caret-down-solid.svg'
 import check from '../images/iconsAwesome/check-solid (1).svg'
 import couv from '../images/Rectangle 516.png'
 import arrow from '../images/iconsAwesome/arrow-right-solid.svg'
+import trash from '../images/iconsAwesome/trash-solid.svg'
+import modif from '../images/iconsAwesome/gear-solid (1).svg'
+import Supprimer from '../component/pop-upSupprimer.js'
+
 
 
 const Fiche=()=>{
+    const{connectedUser}=useContext(getConnectedUser)
+
+    console.log(connectedUser)
     const [uploadCouv, setUploadCouv] = useState()
     const [uploadLogo,setUploadLogo]=useState()
-    const [onePicture,setOnePicture]=useState([])
-    const [Ecole,setEcole]=useState('')
     const [checkAuto,setCheckAuto]=useState(false)
     const [checkMoto,setCheckMoto]=useState(false)
     const [checkBateau,setCheckbateau]=useState(false)
@@ -27,24 +32,25 @@ const Fiche=()=>{
     const [MinusAddFormations,setMinusAddFormations]=useState(false)
     const [OngletHoraires,setOngletHoraires]=useState('bureau')
     const [OngletFormations,setOngletFormations]=useState('Auto')
-    const [captTest,setCaptTest]=useState()
     const [FormationName,setFormationName]=useState()
     const [FormationDescriptif,setFormationDescriptif]=useState()
     const [FormationPrix,setFormationPrix]=useState()
     const [AddEcole,setAddEcole]=useState(false)
     const [EcoleName,setEcoleName]=useState('')
     const [Create,setCreate]=useState(false)
-    const [Couverture,setCouverture]=useState()
-    const [Logo,setLogo]=useState()
-    const [AllOfOne,setAllOfOne]=useState([])
-    const [Fiche,setFiche]=useState()
+    const [Couverture,setCouverture]=useState([])
+    const [Logo,setLogo]=useState([])
+    const [Fiche,setFiche]=useState([])
     const [modify,setModify]=useState()
+   
+    /***************************Toutes les fiches d'un user*******************************************************/
+    const [AllOfOne,setAllOfOne]=useState([])
 
     /***********************Les informations d'une seule fiche************************************** */
     const [FicheLien,setFicheLien]=useState([])
     const [couvertureLien,setCouvertureLien]=useState([])
     const [LogoLien,setLogoLien]=useState([])
-    const [test,setTest]=useState(false)
+    const [test,setTest]=useState(false)//logique faire apparaitre le lien d'une fiche cliquée
 
     /*********************Horaires Bureau *************************************/
     const [LundiMatinOuvre,setLundiMatinOuvre]=useState('Fermé')
@@ -106,10 +112,36 @@ const Fiche=()=>{
     const [DimancheMatinFermeConduite,setDimancheMatinFermeConduite]=useState('Fermé')
     const [DimancheApremOuvreConduite,setDimancheApremOuvertConduite]=useState('Fermé')
     const [DimancheApremFermeConduite,setDimancheApremFermeConduite]=useState('Fermé')
+
+    /************PasBesoinDexplication***************** */
+    const [Explication,setExplication]=useState()
+    /******************popUpSuprimmer********************* */
+    const [EcoleSup,setEcoleSup]=useState(String)
+    const [CheckPopUpSupOpen,setCheckPopUpSupOpen]=useState(false)
+    const [CheckDelete,setCheckDelete]=useState(Boolean)
+   
     
-    const{connectedUser}=useContext(getConnectedUser)
-  
-    console.log(connectedUser)
+    useEffect(()=>{
+        console.log(`${CheckPopUpSupOpen} que se passe-t-il encore`)
+    })
+    /**************openPopUp*************** */
+    const OpenPopUp=(ecolePop)=>{
+        setEcoleSup(ecolePop)
+        setCheckPopUpSupOpen(true)
+    }
+    /**********************Delete fiche******************** */
+    const deleteOneFiche=(valeur)=>{
+    setCheckPopUpSupOpen(false)
+    setExplication(true)
+    axios
+   .delete(`http://localhost:5000/FicheEcolePrincipale/delete/${valeur}`)
+   .then((response)=>{(console.log(response.data))
+       getAllOfOne()
+   }) 
+   .catch(error => {
+   console.log(error);
+   })  
+  }
 
     /**************get toutes les fiches d'un seul utilisateur, doit être
      utilisée lorsque les fiches ont déjà été créées et que l'utilisateur revient dessus************************ */
@@ -126,6 +158,8 @@ const Fiche=()=>{
     useEffect(()=>{
         getAllOfOne()
     },[])
+
+   
     /***************** get info d'une fiche en particulier*************************** */
     const getOneFiche=(LinkEcole)=>{
         
@@ -157,8 +191,7 @@ const Fiche=()=>{
       ;
     })
     .catch((err) => console.error(err));
-    
-   
+     
     }
     /****************************get infos liens *********************************************/
      const getCouvertureLien=()=>{
@@ -214,8 +247,6 @@ const Fiche=()=>{
     .catch((err) => console.error(err));
     }
     useEffect(()=>{
-        console.log(Ecole)
-        console.log(captTest)
         console.log(MinusFormations)
         console.log(EcoleName)     
     },[])
@@ -252,7 +283,7 @@ DimancheApremOuvreConduite,DimancheApremFermeConduite}})
     
 }
 
-    /*****************createfiche************************************/
+/*****************createfiche************************************/
     async function createFiche() {
      axios
      .post("http://localhost:5000/FicheEcolePrincipale/test",{EcoleName:EcoleName,UserPseudo:connectedUser})
@@ -301,6 +332,10 @@ DimancheApremOuvreConduite,DimancheApremFermeConduite}})
         });
         
 }
+
+
+
+
 /***********************************upload part lien/une fiche************************************************ */
 async function onSubmit(e) {
     e.preventDefault();
@@ -341,20 +376,27 @@ async function onSubmit(e) {
 const getBackInitiale=()=>{
     setCreate(false)
     setAddEcole(false)
+    getAllOfOne()
+    setCouverture([])
+    setLogo([])
 }
 const getBackInitialeLien=()=>{
     setCreate(false)
     setAddEcole(false)
     setTest(false)
 }
+
+
     return(
         <div className='fiche'>
             <Navbar/>
+            
             <main className='mainFiche'>
+            
                 <div className={test===false?'containerTitreLien':'containerTitreLien2'}>
                     <div className='containerTitreArrow'>
-                        {AddEcole===true && Create===false?<img src={arrow}  className='arrowFicheReturn' onClick={()=>{getBackInitiale()}}></img>:console.log('ouais')}
-                        {Fiche===undefined?<h1 className='titreFiche'>Mes fiches</h1>:<h1 className='titreFiche'>{Fiche.EcoleName}</h1>}
+                        {AddEcole===true || Create===true?<img src={arrow}  className='arrowFicheReturn' onClick={()=>{getBackInitiale()}}></img>:console.log('ouais')}
+                        {Create===false || Fiche.length===0?<h1 className='titreFiche'>Mes fiches</h1>:<h1 className='titreFiche'>{Fiche.EcoleName}</h1>}
                     </div>
                     <p className={AllOfOne.length===0?'accompagnéP':'accompagnéP2'}>Besoin d’être accompagné pour remplir ta fiche et
                         attirer un max de candidats ?<br></br> 
@@ -363,13 +405,26 @@ const getBackInitialeLien=()=>{
                     {AllOfOne!=undefined && AddEcole===false?AllOfOne.map(
                         (event,index)=>
                         <div>
-                            <div className='containerFicheName'onClick={()=>{getOneFiche(event.EcoleName)}}>
-                                <p className='pAllerFiche'>Voir ma fiche : </p>
+                            <div className='containerFicheName'>
                                 <p key={index} className='pLienFiche'> {event.EcoleName}</p>
+                                <div className='containerIconLienFiche'>
+                                    <img src={modif} className='iconLien'onClick={()=>{getOneFiche(event.EcoleName)}}></img>
+                                    <img src={trash} className='iconLien' onClick={()=>{OpenPopUp(event.EcoleName)}}></img>
+                                </div>
                             </div>
                             <div className='liseretLien'></div>
                         </div> ):console.log('ok') }
                     <button className={AddEcole===false?'buttonAddEcole':'buttonAddEcole2'} onClick={()=>{setAddEcole(true)}}>Ajouter un établissement de conduite</button>
+                    <div className={CheckPopUpSupOpen===true?'containerPopupSupprimerFiche':'containerPopupSupprimerFiche2'}>
+                        <div className='containerDeplacementPopUp'>
+                            <p>Êtes-vous sûr de vouloir supprimer</p>
+                            <p className='pValuePopUp'>{EcoleSup}</p>
+                            <div className='containerButtonPopUpSup'>
+                                <button className='ButtonPopUpSup' onClick={()=>{deleteOneFiche(EcoleSup)}}>oui</button>
+                                <button className='ButtonPopUpSup' onClick={()=>{setCheckPopUpSupOpen(false)}}>non</button>
+                            </div>
+                        </div>
+                    </div>
                     <div className={AddEcole===true&&Create===false?'containerNomEtaButtonValider':'containerNomEtaButtonValider2'}>
                         <input type='text' placeholder="Nom de l'établissement" className='inputNom' onChange={(e)=>{setEcoleName(e.target.value)}}></input>
                         <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={createFiche}></input>
@@ -378,12 +433,12 @@ const getBackInitialeLien=()=>{
                 <div className={Create===true?'containerInformations':'containerInformations2'}>
                     <p className='pInformations'>Informations</p>
                     <div className='containerCouvUpload'>
-                    {Couverture!=undefined?<img src={Couverture.CouvertureUrl} className='imgCouverture'></img>: <img src={couv} className='imgCouverture'></img>}
+                    {Couverture.length!=0?<img src={Couverture.CouvertureUrl} className='imgCouverture'></img>: <img src={couv} className='imgCouverture'></img>}
                         <input  type="file" id="imageFile" accept="image/*" placeholder='uploadCouv'  className='uploadHidden'onChange={(e)=>{setUploadCouv(e.target.files[0])}} multiple></input>
                         <div className='uploadFront'>Modifier Couverture</div>
                         <input  type="file" id="imageFile" accept="image/*" className='uploadLogoHidden' onChange={(e)=>{setUploadLogo(e.target.files[0])}}></input>
                         <div className='uploadfrontLogo'>Modifier Logo</div>
-                        {Logo!=undefined?<img src={Logo.logoUrl}  className='uploadLogo'></img>:<div className='uploadLogo'>
+                        {Logo.length!=0?<img src={Logo.logoUrl}  className='uploadLogo'></img>:<div className='uploadLogo'>
                             <p className='pR'>R</p>
                             <p>C</p>
                         </div>}

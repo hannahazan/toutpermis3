@@ -95,5 +95,21 @@ routerFicheEcolePrincipale.get('/One/:UserPseudo', function (req, res) {
       res.json(201, post)
     })
   })
+  routerFicheEcolePrincipale.delete('/delete/:EcoleName',(req,res)=>{
+    FicheEcolePrincipale.findOneAndDelete({EcoleName:req.params.EcoleName},function(err,data){
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
 
   export default routerFicheEcolePrincipale

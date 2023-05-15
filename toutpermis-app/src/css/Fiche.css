@@ -1,5 +1,5 @@
 .fiche{
-    height: fit-content;
+    height: 100%;
     margin:0px;
     padding: 0px;
     background: linear-gradient(white,#FcF3F1);
@@ -606,7 +606,7 @@
   transform: rotate(180deg);
   width: 35px;
   position: relative;
-  right: 80px;
+  right: 15px;
   align-items: center;
   top: 5px;
 }
@@ -614,6 +614,9 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+  
+
 }
 .pAllerFiche{
   font-size: 25px;
@@ -626,11 +629,80 @@
   margin-left: 10px;
   margin-top: 0px;
   margin-bottom: 0px;
+  text-align: start;
+ 
 }
 .liseretLien{
   width: 100%;
   margin-bottom: 10px;
-  height: 1px;
-  background-color: #e8937c;
+  height: 2px;
+  background-color: #ebecf0;
   margin-top: 10px;
+}
+.iconLien{
+  filter: invert(21%) sepia(13%) saturate(4828%) hue-rotate(145deg) brightness(101%) contrast(94%);
+  width: 20px;
+}
+.containerIconLienFiche{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 20%;
+}
+
+/****************************popUp**************************************/
+.containerPopupSupprimerFiche{
+  height: 2000px;
+  width: 109%;
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #e8f3ff;
+  text-align: center;
+  font-size: 30px;
+  color: #236468;
+  bottom: 500px;
+  right: 15px;
+}
+.containerDeplacementPopUp{
+  position: relative;
+  bottom: 320px;
+}
+.containerPopupSupprimerFiche p{
+  margin:0px
+}
+.pValuePopUp{
+  color: #37beb4;
+}
+.containerPopupSupprimerFiche2{
+  display: none;
+}
+.containerButtonPopUpSup{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+}
+.ButtonPopUpSup{
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 50%;
+  height: 45px;
+  font-family: 'Poppins';
+  color: white;
+  border-radius: 12px;
+  align-items: center;
+  font-size: 25px;
+  font-weight: normal;
+  margin-top: 20px;
+  background-color: #37beb4;
+  margin-right: 20px;
+  margin-left: 20px;
 }
