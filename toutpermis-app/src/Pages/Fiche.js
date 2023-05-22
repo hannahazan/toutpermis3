@@ -3,14 +3,14 @@ import Navbar from '../component/Navbar'
 import { useEffect,useState,ChangeEvent,useContext } from 'react'
 import {InscriptionContext as getConnectedUser} from '../utilitaires/InscriptionContext'
 import axios from 'axios'
-import { set } from 'mongoose'
+import { now, set } from 'mongoose'
 import dropArrow from '../images/iconsAwesome/caret-down-solid.svg'
 import check from '../images/iconsAwesome/check-solid (1).svg'
 import couv from '../images/Rectangle 516.png'
 import arrow from '../images/iconsAwesome/arrow-right-solid.svg'
 import trash from '../images/iconsAwesome/trash-solid.svg'
 import modif from '../images/iconsAwesome/gear-solid (1).svg'
-import Supprimer from '../component/pop-upSupprimer.js'
+
 
 
 
@@ -42,6 +42,12 @@ const Fiche=()=>{
     const [Logo,setLogo]=useState([])
     const [Fiche,setFiche]=useState([])
     const [modify,setModify]=useState()
+
+
+    /****************************logique part: premières modifications apparition d'un nouveau boutton
+     * validé pour modifier une partie des données de la fiche************************************* */
+    const [valider,setValider]=useState(false)
+    const [validerHorBur,setValiderHorBur]=useState(false)
    
     /***************************Toutes les fiches d'un user*******************************************************/
     const [AllOfOne,setAllOfOne]=useState([])
@@ -113,13 +119,13 @@ const Fiche=()=>{
     const [DimancheApremOuvreConduite,setDimancheApremOuvertConduite]=useState('Fermé')
     const [DimancheApremFermeConduite,setDimancheApremFermeConduite]=useState('Fermé')
 
-    /************PasBesoinDexplication***************** */
-    const [Explication,setExplication]=useState()
+
     /******************popUpSuprimmer********************* */
     const [EcoleSup,setEcoleSup]=useState(String)
     const [CheckPopUpSupOpen,setCheckPopUpSupOpen]=useState(false)
     const [CheckDelete,setCheckDelete]=useState(Boolean)
-   
+    const [uniquIdForm,setUniqueIdForm]=useState(Number)
+    const [isFormDelete,setIsFormDelete]=useState(false)
     
     useEffect(()=>{
         console.log(`${CheckPopUpSupOpen} que se passe-t-il encore`)
@@ -129,10 +135,16 @@ const Fiche=()=>{
         setEcoleSup(ecolePop)
         setCheckPopUpSupOpen(true)
     }
+    const OpenPopUpForm=(ecolePop,id)=>{
+        setIsFormDelete(true)
+        setEcoleSup(ecolePop)
+        setUniqueIdForm(id)
+        setCheckPopUpSupOpen(true)
+    }
     /**********************Delete fiche******************** */
-    const deleteOneFiche=(valeur)=>{
-    setCheckPopUpSupOpen(false)
-    setExplication(true)
+    const deleteOneFiche=(valeur,id)=>{
+    if(isFormDelete===false)    
+   { setCheckPopUpSupOpen(false)
     axios
    .delete(`http://localhost:5000/FicheEcolePrincipale/delete/${valeur}`)
    .then((response)=>{(console.log(response.data))
@@ -140,7 +152,18 @@ const Fiche=()=>{
    }) 
    .catch(error => {
    console.log(error);
-   })  
+   })  }
+   else
+   setCheckPopUpSupOpen(false)
+   axios
+   .put(`http://localhost:5000/FicheEcolePrincipale/removeFormation/${valeur}`,{Formation:{"uniqueId":id}})
+   .then((response)=>{(console.log(response.data))
+       setIsFormDelete(false)
+       getFiche()
+   }) 
+   .catch(error => {
+   console.log(error);
+   }) 
   }
 
     /**************get toutes les fiches d'un seul utilisateur, doit être
@@ -241,7 +264,7 @@ const Fiche=()=>{
     .get(`http://localhost:5000/FicheEcolePrincipale/creation/${EcoleName}`)
     .then((res) => {
       console.log(setFiche(res.data))
-      console.log('ca fonctionne?')
+      console.log(Fiche)
       ;
     })
     .catch((err) => console.error(err));
@@ -256,13 +279,15 @@ const Fiche=()=>{
     })
    
     
-    /*************modification part *********/
+    /*************modification part ****************************************************/
    const completFiche=()=>
     {
+        const uniqueId= Date.now()
      let NouvelleForm={
         Nom:FormationName,
         Descriptif:FormationDescriptif,
         prix:FormationPrix,
+        uniqueId:uniqueId
      }
      axios
     .put(`http://localhost:5000/FicheEcolePrincipale/addFormation/${EcoleName}`,{Formation:NouvelleForm,HorairesBureau:{LundiMatinOuvre,LundiMatinFerme,LundiApremOuvre,LundiApremFerme,
@@ -274,13 +299,59 @@ MardiApremOuvreConduite,MardiApremFermeConduite,MercrediMatinOuvreConduite,Mercr
 MercrediApremFermeConduite,JeudiMatinOuvreConduite,JeudiMatinFermeConduite,JeudiApremOuvreConduite,JeudiApremFermeConduite,
 VendrediMatinOuvreConduite,VendrediMatinFermeConduite,VendrediApremOuvreConduite,VendrediApremFermeConduite,SamediMatinOuvreConduite,
 SamediMatinFermeConduite,SamediApremOuvreConduite,SamediApremFermeConduite,DimancheMatinOuvreConduite,DimancheMatinFermeConduite,
-DimancheApremOuvreConduite,DimancheApremFermeConduite}})
+DimancheApremOuvreConduite,DimancheApremFermeConduite},Bateau:checkBateau,Voiture:checkAuto,Moto:checkMoto})
     .then((response) => {
       console.log(setModify(response.data));
       console.log("ca marche")
     })
     .catch((err) => console.error(err));
     
+}
+const EcoleModif=()=>{
+    console.log('what')
+    axios
+    .put(`http://localhost:5000/FicheEcolePrincipale/${EcoleName}`,{Bateau:checkBateau,Voiture:checkAuto,Moto:checkMoto})
+    .then((response) => {
+        console.log(setModify(response.data));
+        setValider(true)
+        console.log("ca marche vraiment?")
+      })
+    .catch((err) => console.error(err)); 
+}
+
+const HorairesBureauModif=()=>{
+    axios
+    .put(`http://localhost:5000/FicheEcolePrincipale/addFormation/${EcoleName}`,{HorairesBureau:{LundiMatinOuvre,LundiMatinFerme,LundiApremOuvre,LundiApremFerme,
+MardiMatinOuvre,MardiMatinFerme,MardiApremOuvre,MardiApremFerme,MercrediMatinOuvre,MercrediMatinFerme,MercrediApremOuvre,MercrediApremFerme,JeudiMatinOuvre,JeudiMatinFerme,
+JeudiApremOuvre,JeudiApremFerme,VendrediMatinOuvre,VendrediMatinFerme,VendrediApremOuvre,VendrediApremFerme,SamediMatinOuvre,SamediMatinFerme,
+SamediApremOuvre,SamediApremFerme,DimancheMatinOuvre,DimancheMatinFerme,DimancheApremOuvre,DimancheApremFerme}})
+    .then((response) => {
+      console.log(setModify(response.data));
+      setValiderHorBur(true)
+      console.log("ca marche")
+    })
+    .catch((err) => console.error(err));
+}
+
+const formationsModif=()=>{
+    const uniqueId= Date.now()
+    let NouvelleForm={
+        Nom:FormationName,
+        Descriptif:FormationDescriptif,
+        prix:FormationPrix,
+        categorie:OngletFormations,
+        uniqueId:uniqueId
+     }
+     axios
+    .put(`http://localhost:5000/FicheEcolePrincipale/addFormation/${EcoleName}`,{Formation:NouvelleForm})
+    .then((response) => {
+        console.log(setModify(response.data));
+        setValider(true)
+        setMinusAddFormations(false)
+        getFiche()
+        console.log("ca marche vraiment? formations")
+      })
+    .catch((err) => console.error(err)); 
 }
 
 /*****************createfiche************************************/
@@ -296,7 +367,7 @@ DimancheApremOuvreConduite,DimancheApremFermeConduite}})
      setCreate(true)   
     }
 
-    /**************upload part****************************/
+    /**************upload part lien/une fiche****************************/
     async function onSubmitLien(e) {
         e.preventDefault();
         const data = new FormData();
@@ -336,7 +407,7 @@ DimancheApremOuvreConduite,DimancheApremFermeConduite}})
 
 
 
-/***********************************upload part lien/une fiche************************************************ */
+/***********************************upload part ************************************************ */
 async function onSubmit(e) {
     e.preventDefault();
     const data = new FormData();
@@ -379,20 +450,34 @@ const getBackInitiale=()=>{
     getAllOfOne()
     setCouverture([])
     setLogo([])
+    setValider(false)
 }
 const getBackInitialeLien=()=>{
     setCreate(false)
     setAddEcole(false)
     setTest(false)
 }
+useEffect(()=>{
+    console.log(typeof checkAuto)
+})
+
+
 
 
     return(
-        <div className='fiche'>
+        <div className={Create===true || test===true ?'fiche':'fiche2'}>
             <Navbar/>
-            
-            <main className='mainFiche'>
-            
+            <div className={CheckPopUpSupOpen===true?'containerPopupSupprimerFiche':'containerPopupSupprimerFiche2'}>
+                <div className='containerDeplacementPopUp'>
+                    <p>Êtes-vous sûr de vouloir supprimer</p>
+                    <p className='pValuePopUp'>{EcoleSup}</p>
+                    <div className='containerButtonPopUpSup'>
+                        <button className='ButtonPopUpSupOui' onClick={()=>{deleteOneFiche(EcoleSup,uniquIdForm)}}>oui</button>
+                        <button className='ButtonPopUpSupNon' onClick={()=>{setCheckPopUpSupOpen(false)}}>non</button>
+                    </div>
+                </div>
+            </div>
+            <main className={CheckPopUpSupOpen===true?'mainFiche2':'mainFiche'}>
                 <div className={test===false?'containerTitreLien':'containerTitreLien2'}>
                     <div className='containerTitreArrow'>
                         {AddEcole===true || Create===true?<img src={arrow}  className='arrowFicheReturn' onClick={()=>{getBackInitiale()}}></img>:console.log('ouais')}
@@ -414,17 +499,7 @@ const getBackInitialeLien=()=>{
                             </div>
                             <div className='liseretLien'></div>
                         </div> ):console.log('ok') }
-                    <button className={AddEcole===false?'buttonAddEcole':'buttonAddEcole2'} onClick={()=>{setAddEcole(true)}}>Ajouter un établissement de conduite</button>
-                    <div className={CheckPopUpSupOpen===true?'containerPopupSupprimerFiche':'containerPopupSupprimerFiche2'}>
-                        <div className='containerDeplacementPopUp'>
-                            <p>Êtes-vous sûr de vouloir supprimer</p>
-                            <p className='pValuePopUp'>{EcoleSup}</p>
-                            <div className='containerButtonPopUpSup'>
-                                <button className='ButtonPopUpSup' onClick={()=>{deleteOneFiche(EcoleSup)}}>oui</button>
-                                <button className='ButtonPopUpSup' onClick={()=>{setCheckPopUpSupOpen(false)}}>non</button>
-                            </div>
-                        </div>
-                    </div>
+                    <button className={AddEcole===false?'buttonAddEcole':'buttonAddEcole2'} onClick={()=>{setAddEcole(true)}}>Ajouter un établissement de conduite</button> 
                     <div className={AddEcole===true&&Create===false?'containerNomEtaButtonValider':'containerNomEtaButtonValider2'}>
                         <input type='text' placeholder="Nom de l'établissement" className='inputNom' onChange={(e)=>{setEcoleName(e.target.value)}}></input>
                         <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={createFiche}></input>
@@ -467,7 +542,8 @@ const getBackInitialeLien=()=>{
                                 <img src={check} className={checkBateau===true?'checkTrue':'checkFalse'}></img>
                             </div>
                         </div>
-                        <input   type='submit' className='buttonValidBoxcase'  value={'Valider'}></input>
+                        <input   type='submit' className={valider===false?'buttonValidBoxcase':'buttonValidBoxcase2'}  value={'Valider'} onClick={()=>{EcoleModif()}}></input>
+                        <input   type='submit' className={valider===true?'buttonValidBoxcaseModif':'buttonValidBoxcaseModif2'}  value={'Modification enregistrée'} ></input>
                     </div>
                     <div className='pNDAndLogoMinus'>
                         <p>Description</p>
@@ -892,7 +968,8 @@ const getBackInitialeLien=()=>{
                                     </div>
                                 </div>
                             </div>
-                            <input   type='submit' className='buttonValidBoxcase' value={'Valider'}></input>
+                            <input   type='submit' className={validerHorBur===false?'buttonValidBoxcase':'buttonValidBoxcase2'}  value={'Valider'} onClick={()=>{HorairesBureauModif()}}></input>
+                            <input   type='submit' className={validerHorBur===true?'buttonValidBoxcaseModif':'buttonValidBoxcaseModif2'}  value={'Modification enregistrée'} ></input>
                         </div>
                         <div className={OngletHoraires==='bureau'?'containerHorairesConduite2':'containerHorairesConduite'}>
                             <div className='containerHorairesCalendar'>
@@ -1301,15 +1378,75 @@ const getBackInitialeLien=()=>{
                         </div>
                         <div className='liseretHoraires'></div>
                         <div className='pForfaitAndLogoMinus'>
-                            <p>Nouveau forfait</p>
-                            {MinusAddFormations===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusAddFormations===false?setMinusAddFormations(true):setMinusAddFormations(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusFormations===false?setMinusAddFormations(true):setMinusAddFormations(false)}}>-</p></div>}
+                            <p className="pFormationFiche">Forfaits</p>
+                            <button  className={Fiche.length!=0 && Fiche.Formation.length===0?'buttonAjouter':'buttonAjouter2'} onClick={()=>{MinusAddFormations===false?setMinusAddFormations(true):setMinusAddFormations(false)}}>+ Nouveau forfait</button>
                         </div>
+                        <div className={Fiche.length!=0 && Fiche.Formation.length!=0?'containerNomPrixFormationFiche':'containerNomPrixFormationFiche2'}>
+                            <p>Nom</p>
+                            <p className='pPrixForfaitFiche'>Prix</p>
+                        </div>
+                        
+                        {Fiche.length!=0 && Fiche.Formation.length!=0?Fiche.Formation.map( 
+                        (event)=>
+                        event.categorie==='Auto'&& OngletFormations==='Auto'? 
+                        <div>
+                            <div className='containerForfaitMapFiche'>
+                                <p className='pForfaitsMap'> {event.Nom}</p>
+                                <div className='containerIconFormationPrixFiche'>
+                                    <p className='pPrixForfaitsFiche'>{event.prix}</p>
+                                    <div className='containerIconForfaitFiche'>
+                                        <img src={modif} className='iconForfaitFiche'onClick={()=>{getOneFiche(event.EcoleName)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleName,event.uniqueId)}}></img>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='liseretFormation'></div>
+                        </div>: event.categorie==='Moto'&& OngletFormations==='Moto'?<div>
+                            <div className='containerForfaitMapFiche'>
+                                <p className='pForfaitsMap'> {event.Nom}</p>
+                                <div className='containerIconFormationPrixFiche'>
+                                    <p className='pPrixForfaitsFiche'>{event.prix}</p>
+                                    <div className='containerIconForfaitFiche'>
+                                        <img src={modif} className='iconForfaitFiche'onClick={()=>{getOneFiche(event.EcoleName)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleName,event.uniqueId)}}></img>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='liseretFormation'></div>
+                        </div>: event.categorie==='Bateau'&& OngletFormations==='Bateau'?<div>
+                            <div className='containerForfaitMapFiche'>
+                                <p className='pForfaitsMap'> {event.Nom}</p>
+                                <div className='containerIconFormationPrixFiche'>
+                                    <p className='pPrixForfaitsFiche'>{event.prix}</p>
+                                    <div className='containerIconForfaitFiche'>
+                                        <img src={modif} className='iconForfaitFiche'onClick={()=>{getOneFiche(event.EcoleName)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleName,event.uniqueId)}}></img>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='liseretFormation'></div>
+                        </div>:event.categorie==='Stages'&& OngletFormations==='Stages'?<div>
+                            <div className='containerForfaitMapFiche'>
+                                <p className='pForfaitsMap'> {event.Nom}</p>
+                                <div className='containerIconFormationPrixFiche'>
+                                    <p className='pPrixForfaitsFiche'>{event.prix}</p>
+                                    <div className='containerIconForfaitFiche'>
+                                        <img src={modif} className='iconForfaitFiche'onClick={()=>{getOneFiche(event.EcoleName)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleName,event.uniqueId)}}></img>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='liseretFormation'></div>
+                        </div>:console.log('genial')
+                        ):console.log('ok') }
+                        <button  className={Fiche.length!=0 && Fiche.Formation.length!=0?'buttonAjouter3':'buttonAjouter2'} onClick={()=>{MinusAddFormations===false?setMinusAddFormations(true):setMinusAddFormations(false)}}>+ Nouveau forfait</button>    
                         <div className={MinusAddFormations===false?'containerNomDescription':'containerNomDescription2'}>
                             <input type='text' placeholder='Nom de la formation' className='inputNom' onChange={(e)=>setFormationName(e.target.value)}></input>
                             <textarea type='text' placeholder='Descriptif de la formation' className='inputDescriptif' rows="10" cols="30"onChange={(e)=>setFormationDescriptif(e.target.value)}></textarea>
                             <input type='number' placeholder='prix de la formation' className='inputNom' onChange={(e)=>{setFormationPrix(e.target.value)}}></input>
-                            <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={completFiche}></input>
+                            <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={()=>{formationsModif()}}></input>
                         </div>
+                        <p className="pFormationFiche">A la carte</p>
                     </div>
                 </div>
                 <div className={test===true?'containerInformations':'containerInformations2'}>

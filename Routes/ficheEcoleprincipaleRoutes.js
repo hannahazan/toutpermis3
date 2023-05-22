@@ -74,6 +74,24 @@ routerFicheEcolePrincipale.get('/One/:UserPseudo', function (req, res) {
       }
     })
   })
+  routerFicheEcolePrincipale.put('/removeFormation/:EcoleName',(req,res) => {
+    FicheEcolePrincipale.updateOne({EcoleName:req.params.EcoleName},{$pull:{Formation:req.body.Formation,HorairesBureau:req.body.HorairesBureau,HorairesConduite:req.body.HorairesConduite}},function(err,data){
+      console.log(req.body)
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
+  
   routerFicheEcolePrincipale.post('/test', function (req, res, next) {
     var myNewFiche = new FicheEcolePrincipale({
       EcoleName:req.body.EcoleName,

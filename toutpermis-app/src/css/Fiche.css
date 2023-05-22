@@ -1,8 +1,15 @@
 .fiche{
-    height: 100%;
+    height: fit-content;
     margin:0px;
     padding: 0px;
     background: linear-gradient(white,#FcF3F1);
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+.fiche2{
+    height: fit-content;
+    margin:0px;
+    padding: 0px;
     width: 100%;
     font-family: 'Poppins', sans-serif;
 }
@@ -13,6 +20,9 @@
     margin-left: 15px;
     margin-right: 15px;
     margin-top: 80px;
+}
+.mainFiche2{
+  display: none;
 }
 
 .titreFiche{
@@ -213,6 +223,9 @@
   align-self: self-end;
   margin-top: 13px;
  
+}
+.buttonValidBoxcase2{
+  display: none;
 }
 .pTEAndLogoMinus{
   display: flex;
@@ -532,7 +545,7 @@
   flex-direction: row;
   justify-content: space-between;
   color: #236468;
-  font-size: 19px;
+  font-size: 17px;
   align-items: center;
   height: 50px;
   margin-top: 15px;
@@ -623,6 +636,7 @@
   color: #236468;
   margin: 0px;
 }
+
 .pLienFiche{
   font-size: 30px;
   color: #37beb4;
@@ -652,8 +666,8 @@
 
 /****************************popUp**************************************/
 .containerPopupSupprimerFiche{
-  height: 2000px;
-  width: 109%;
+  height: 1842px;
+  width: 104%;
   position: relative;
   z-index: 3;
   display: flex;
@@ -669,7 +683,7 @@
 }
 .containerDeplacementPopUp{
   position: relative;
-  bottom: 320px;
+
 }
 .containerPopupSupprimerFiche p{
   margin:0px
@@ -686,7 +700,7 @@
   width: 100%;
   justify-content: center;
 }
-.ButtonPopUpSup{
+.ButtonPopUpSupNon{
   padding: 0px;
   margin: 0px;
   border: 0px;
@@ -703,6 +717,160 @@
   font-weight: normal;
   margin-top: 20px;
   background-color: #37beb4;
-  margin-right: 20px;
-  margin-left: 20px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.ButtonPopUpSupOui{
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 50%;
+  height: 45px;
+  font-family: 'Poppins';
+  color: white;
+  border-radius: 12px;
+  align-items: center;
+  font-size: 25px;
+  font-weight: normal;
+  margin-top: 20px;
+  background-color: #37beb4;
+  margin-right: 10px;
+    margin-left: 24px
+}
+/*********************************button valider se transforme**************************************************/
+.buttonValidBoxcaseModif{
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 66%;
+  height: 30px;
+  font-family: 'Poppins';
+  color: white;
+  border-radius: 15px;
+  align-items: center;
+  font-size: 17px;
+  font-weight: normal;
+  margin-bottom: 20px;
+  background-color: #37beb4;
+  align-self: self-end;
+  margin-top: 13px;
+}
+.buttonValidBoxcaseModif2{
+  display:none
+}
+
+/*********************************Formations**********************************************************/
+.pFormationFiche{
+  color:#236468;
+  font-size: 20px; 
+}
+.buttonAjouter{
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 42%;
+  height: 21px;
+  font-family: 'Poppins';
+  color: white;
+  border-radius: 15px;
+  align-items: center;
+  font-size: 15px;
+  font-weight: normal;
+  background-color: #e8937c;
+  
+}
+.buttonAjouter2{
+  display: none;
+}
+.buttonAjouter3{
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 42%;
+  height: 21px;
+  font-family: 'Poppins';
+  color: white;
+  border-radius: 15px;
+  align-items: center;
+  font-size: 15px;
+  font-weight: normal;
+  background-color: #e8937c;
+  align-self:self-end;
+  margin-top: 20px 
+}
+.containerIconFormationPrixFiche{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 34%;
+  color: #37beb4;
+  font-size: 18px;
+}
+.containerIconFormationPrixFiche p{
+    margin: 0px;
+}
+.liseretFormation{
+  width: 100%;
+  height: 2px;
+  background-color: #ebecf0;
+}
+.pForfaitsMap{
+  font-size: 20px;
+  color: #236468;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  text-align: start;
+}
+.containerNomPrixFormationFiche{
+  display:flex;
+  flex-direction: row;
+  color:#8fa6a7;
+  justify-content: space-between;
+  font-size: 18px;
+}
+.pPrixForfaitFiche{
+  position: relative;
+  right: 95px;
+}
+.containerNomPrixFormationFiche p{
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.containerForfaitMapFiche{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18px;
+}
+.iconForfaitFiche{
+  filter: invert(21%) sepia(13%) saturate(4828%) hue-rotate(145deg) brightness(101%) contrast(94%);
+  width: 15px;
+}
+.PNouveauForfaitFiche{
+  color: #6d888a;
+  font-size: 17px;
+}
+.containerNomPrixFormationFiche2{
+  display:none
+}
+.containerIconForfaitFiche{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width:45%
 }

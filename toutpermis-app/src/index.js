@@ -16,7 +16,6 @@ import PopupInscription from './component/PopupInscription';
 import Fiche from './Pages/Fiche'
 import { useEffect,useState,useContext } from 'react';
 import Navbar from './component/Navbar';
-import Supprimer from './component/pop-upSupprimer';
 
 
 const Path=window.location.pathname
@@ -38,7 +37,6 @@ root.render(
           <Route path='/profil'  element={<Profil/>}></Route>
           <Route path='/espacepro/connexion/profil' element={<Profil/>}></Route>
           <Route path='/testpopup'exact element={<PopupInscription/>}></Route>
-          <Route path='/supprimer' exact element={<Supprimer/>}></Route>
           <Route path='/profil/fiche' exact element={<Fiche/>}></Route>
           <Route path='/espacepro/inscriptionChoix/inscriptionFinale/profil/Fiche' exact element={<Fiche/>}></Route>
       </Routes>
