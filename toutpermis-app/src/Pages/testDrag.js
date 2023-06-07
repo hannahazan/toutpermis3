@@ -6,7 +6,9 @@ const testdrag=()=>{
     return(
         <div className='testDrag'>
             <p>hello</p>
+            <p>bonjour</p>
         </div>
+
     )
 }
 
