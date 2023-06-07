@@ -58,7 +58,58 @@ routerFicheEcolePrincipale.get('/One/:UserPseudo', function (req, res) {
     })
   })
  routerFicheEcolePrincipale.put('/addFormation/:EcoleName',(req,res) => {
-    FicheEcolePrincipale.updateOne({EcoleName:req.params.EcoleName},{$push:{Formation:req.body.Formation,HorairesBureau:req.body.HorairesBureau,HorairesConduite:req.body.HorairesConduite}},function(err,data){
+    FicheEcolePrincipale.updateOne({EcoleName:req.params.EcoleName},{$push:{Formation:{$each:[req.body.Formation],$position:0}}},function(err,data){
+      console.log(req.body)
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
+  routerFicheEcolePrincipale.put('/addHorairesBureau/:EcoleName',(req,res) => {
+    FicheEcolePrincipale.updateOne({EcoleName:req.params.EcoleName},{$push:{HorairesBureau:{$each:[req.body.HorairesBureau],$position:0}}},function(err,data){
+      console.log(req.body)
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
+  routerFicheEcolePrincipale.put('/addHorairesConduite/:EcoleName',(req,res) => {
+    FicheEcolePrincipale.updateOne({EcoleName:req.params.EcoleName},{$push:{HorairesConduite:{$each:[req.body.HorairesConduite],$position:0}}},function(err,data){
+      console.log(req.body)
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
+  routerFicheEcolePrincipale.put('/UpdateFormation/:EcoleName',(req,res) => {
+    FicheEcolePrincipale.updateOne({EcoleName:req.params.EcoleName},{$set:{"Formation.0":req.body.Formation.Name,"Formation.0":req.body.Formation.Descriptif}},function(err,data){
       console.log(req.body)
       if(err){
         res.sendStatus(404)
@@ -75,7 +126,7 @@ routerFicheEcolePrincipale.get('/One/:UserPseudo', function (req, res) {
     })
   })
   routerFicheEcolePrincipale.put('/removeFormation/:EcoleName',(req,res) => {
-    FicheEcolePrincipale.updateOne({EcoleName:req.params.EcoleName},{$pull:{Formation:req.body.Formation,HorairesBureau:req.body.HorairesBureau,HorairesConduite:req.body.HorairesConduite}},function(err,data){
+    FicheEcolePrincipale.updateOne({EcoleName:req.params.EcoleName},{$pull:{Formation:req.body.Formation}},function(err,data){
       console.log(req.body)
       if(err){
         res.sendStatus(404)

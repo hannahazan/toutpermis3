@@ -16,6 +16,7 @@ import PopupInscription from './component/PopupInscription';
 import Fiche from './Pages/Fiche'
 import { useEffect,useState,useContext } from 'react';
 import Navbar from './component/Navbar';
+import TestDrag from './Pages/testDrag.js';
 
 
 const Path=window.location.pathname
@@ -27,6 +28,7 @@ root.render(
       <Routes>
           <Route path="/"  element={<LandingPage/>}/>
           <Route path="/tunnelEcole" excat element={<TunnelEcole/>}/>
+          <Route path="/testDrag" excat element={<TestDrag/>}/>
           <Route path="/tunnelEcoleFormation" exact element={<TunnelEcoleFormation/>}></Route>
           <Route path="/tunnelEcoleVehicules" exact element={<TunnelEcoleVehicules/>}></Route>
           <Route path="/espacepro" exact element={<EspacePro/>}></Route>

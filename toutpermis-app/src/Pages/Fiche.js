@@ -10,6 +10,7 @@ import couv from '../images/Rectangle 516.png'
 import arrow from '../images/iconsAwesome/arrow-right-solid.svg'
 import trash from '../images/iconsAwesome/trash-solid.svg'
 import modif from '../images/iconsAwesome/gear-solid (1).svg'
+import cross from '../images/iconsAwesome/xmark-solid (1).svg'
 
 
 
@@ -42,12 +43,14 @@ const Fiche=()=>{
     const [Logo,setLogo]=useState([])
     const [Fiche,setFiche]=useState([])
     const [modify,setModify]=useState()
+    const [DescriptionEcole,setDescriptionEcole]=useState(null)
 
 
     /****************************logique part: premières modifications apparition d'un nouveau boutton
      * validé pour modifier une partie des données de la fiche************************************* */
     const [valider,setValider]=useState(false)
     const [validerHorBur,setValiderHorBur]=useState(false)
+    const [ValiderHorairesConduites,setValiderHorairesConduites]=useState(false)
    
     /***************************Toutes les fiches d'un user*******************************************************/
     const [AllOfOne,setAllOfOne]=useState([])
@@ -118,14 +121,19 @@ const Fiche=()=>{
     const [DimancheMatinFermeConduite,setDimancheMatinFermeConduite]=useState('Fermé')
     const [DimancheApremOuvreConduite,setDimancheApremOuvertConduite]=useState('Fermé')
     const [DimancheApremFermeConduite,setDimancheApremFermeConduite]=useState('Fermé')
-
-
+    const [isCategorieFormation,setIsCategorieFormation]=useState(false)
+    /************************Seconde Modification du type d'établissement change le button "modifications enregistrées********** */
+    const [ModifTypesEtablissement,setModifTypesEtablissement]=useState(false)
+    /***************logique apparition descriptif après validation et modification descriptif**************/
+    const [isDescriptif,setIsdescriptif]=useState(false)
+    const [isDescriptifModif,setIsDescriptifModif]=useState(false)
     /******************popUpSuprimmer********************* */
     const [EcoleSup,setEcoleSup]=useState(String)
     const [CheckPopUpSupOpen,setCheckPopUpSupOpen]=useState(false)
     const [CheckDelete,setCheckDelete]=useState(Boolean)
     const [uniquIdForm,setUniqueIdForm]=useState(Number)
     const [isFormDelete,setIsFormDelete]=useState(false)
+    const [FormationNameSup,setFormationNameSup]=useState(null)
     
     useEffect(()=>{
         console.log(`${CheckPopUpSupOpen} que se passe-t-il encore`)
@@ -135,12 +143,97 @@ const Fiche=()=>{
         setEcoleSup(ecolePop)
         setCheckPopUpSupOpen(true)
     }
-    const OpenPopUpForm=(ecolePop,id)=>{
+    const OpenPopUpForm=(ecolePop,id,NameForm)=>{
         setIsFormDelete(true)
         setEcoleSup(ecolePop)
         setUniqueIdForm(id)
         setCheckPopUpSupOpen(true)
+        setFormationNameSup(NameForm)
     }
+    /****************modification formation et delete Hook********************** */
+    const [ModifFormation,setModifFormation]=useState(false)
+    const [ModificationFormationNom,setModificationFormationNom]=useState(null)
+    const [ModificationFormationDescriptif,setModificationFormationDescriptif]=useState(null)
+    const [ModificationFormationPrix,setModificationFormationPrix]=useState(null)
+    const [ModifFormSup,setModifFormSup]=useState(null)
+    /****************modification formation logique fonction*************************** */
+    const OpenModifFormation=(Name,Descriptif,Prix,sup)=>{
+        setModifFormation(true)
+        setModificationFormationNom(Name)
+        setModificationFormationDescriptif(Descriptif)
+        setModificationFormationPrix(Prix)
+        setModifFormSup(sup)
+        setIsCategorieFormation(false)
+    }
+    /**********container formation logique et function *************** */
+    let testCategorie='Auto'
+    const isOngletFormationsameAsFicheCategorie=(OngletCategorie)=>{
+        console.log("heu ouais")
+        setOngletFormations(OngletCategorie)
+        testCategorie=OngletCategorie
+        if(Fiche.Formation){
+            console.log("what")
+            for(let i=0;i<Fiche.Formation.length;i++){
+               if(Fiche.Formation[i].categorie===testCategorie){
+                    setIsCategorieFormation(true)
+                    console.log(Fiche.Formation[i].categorie)
+                    console.log(OngletFormations)
+                    break
+               }
+               else{
+               setIsCategorieFormation(false)
+               }
+            }
+        }
+    }
+
+    const letContainerFormationdesappear=()=>{
+        setIsCategorieFormation(false)
+        setMinusAddFormations(true)
+    }
+    const letContainerAppear=()=>{
+        setIsCategorieFormation(true)
+        setModifFormation(false)
+    }
+
+ 
+    /**********************Modification types d'établissement avant et après le premier valider******************************** */
+    const ModifSecondTypeEtablissement=(Hook,setHook)=>{
+        if(Hook===false && valider===false){
+            setHook(true)
+        }
+        else if (Hook===false && valider===true){
+            setModifTypesEtablissement(true)
+            console.log(ModifTypesEtablissement)
+            setHook(true)
+        }
+        else if (Hook===true && valider===true){
+            setModifTypesEtablissement(true)
+            setHook(false)
+        }
+        else{
+        setHook(true)
+    }
+  }
+  const testHook=(test,test2)=>{
+    if(test2===false)
+    {test(true)}
+    else{
+        test(false)
+    }
+  }
+
+  const ModifSecondTypeEtabissementRequest =()=>{
+        console.log('what')
+        axios
+        .put(`http://localhost:5000/FicheEcolePrincipale/${EcoleName}`,{Bateau:checkBateau,Voiture:checkAuto,Moto:checkMoto})
+        .then((response) => {
+            console.log(setModify(response.data));
+            setModifTypesEtablissement(false)
+            console.log("ca marche vraiment?")
+          })
+        .catch((err) => console.error(err)); 
+  }
     /**********************Delete fiche******************** */
     const deleteOneFiche=(valeur,id)=>{
     if(isFormDelete===false)    
@@ -165,7 +258,15 @@ const Fiche=()=>{
    console.log(error);
    }) 
   }
-
+  const deleteOneFormation=()=>{
+    axios
+   .put(`http://localhost:5000/FicheEcolePrincipale/removeFormation/${Fiche.EcoleName}`,{Formation:{"uniqueId":ModifFormSup}})
+   .then((response)=>{(console.log(response.data))
+    getFiche()
+   }) 
+   .catch(error => {
+   console.log(error);
+   })  }
     /**************get toutes les fiches d'un seul utilisateur, doit être
      utilisée lorsque les fiches ont déjà été créées et que l'utilisateur revient dessus************************ */
     const getAllOfOne=()=>{
@@ -278,30 +379,43 @@ const Fiche=()=>{
               
     })
    
-    
+    /******************open formulaire descriptif modif et ferme apparition descriptif************************ */
+    const closeApperçusDescriptifEtModdif=()=>{
+        setIsdescriptif(false)
+        setIsDescriptifModif(true)
+        setDescriptionEcole(Fiche.Descriptif)
+    }
+    /***************close formulaire descriptif et ouvre apparition descriptif************************ */
+    const closeFormulaireDescriptifOpenApperçusDescriptif=()=>{
+        setIsdescriptif(true)
+        setIsDescriptifModif(false)
+    }
     /*************modification part ****************************************************/
-   const completFiche=()=>
+   const DescriptifModif=()=>{
+    axios
+    .put(`http://localhost:5000/FicheEcolePrincipale/${EcoleName}`,{Descriptif:DescriptionEcole})
+    .then((response)=>{setModify(response.data)
+        console.log("tout est ok bien sûr que tout est ok...mais à qui tu parles? on compense la solitude comme on peut...pillule bleu...ça rime") 
+        setIsdescriptif(true)
+        setIsDescriptifModif(false)
+        getFiche()
+      
+    })
+    .catch((err) => console.error(err));
+   }
+   const HorairesConduiteModif=()=>
     {
-        const uniqueId= Date.now()
-     let NouvelleForm={
-        Nom:FormationName,
-        Descriptif:FormationDescriptif,
-        prix:FormationPrix,
-        uniqueId:uniqueId
-     }
      axios
-    .put(`http://localhost:5000/FicheEcolePrincipale/addFormation/${EcoleName}`,{Formation:NouvelleForm,HorairesBureau:{LundiMatinOuvre,LundiMatinFerme,LundiApremOuvre,LundiApremFerme,
-MardiMatinOuvre,MardiMatinFerme,MardiApremOuvre,MardiApremFerme,MercrediMatinOuvre,MercrediMatinFerme,MercrediApremOuvre,MercrediApremFerme,JeudiMatinOuvre,JeudiMatinFerme,
-JeudiApremOuvre,JeudiApremFerme,VendrediMatinOuvre,VendrediMatinFerme,VendrediApremOuvre,VendrediApremFerme,SamediMatinOuvre,SamediMatinFerme,
-SamediApremOuvre,SamediApremFerme,DimancheMatinOuvre,DimancheMatinFerme,DimancheApremOuvre,DimancheApremFerme},HorairesConduite:{LundiMatinOuvreConduite,LundiMatinFermeConduite,LundiApremOuvreConduite,
+    .put(`http://localhost:5000/FicheEcolePrincipale/addHorairesConduite/${EcoleName}`,{HorairesConduite:{LundiMatinOuvreConduite,LundiMatinFermeConduite,LundiApremOuvreConduite,
 LundiApremFermeConduite,MardiMatinOuvreConduite,MardiMatinFermeConduite,MardiApremOuvreConduite,MardiMatinFermeConduite,
 MardiApremOuvreConduite,MardiApremFermeConduite,MercrediMatinOuvreConduite,MercrediMatinFermeConduite,MercrediApremOuvreConduite,
 MercrediApremFermeConduite,JeudiMatinOuvreConduite,JeudiMatinFermeConduite,JeudiApremOuvreConduite,JeudiApremFermeConduite,
 VendrediMatinOuvreConduite,VendrediMatinFermeConduite,VendrediApremOuvreConduite,VendrediApremFermeConduite,SamediMatinOuvreConduite,
 SamediMatinFermeConduite,SamediApremOuvreConduite,SamediApremFermeConduite,DimancheMatinOuvreConduite,DimancheMatinFermeConduite,
-DimancheApremOuvreConduite,DimancheApremFermeConduite},Bateau:checkBateau,Voiture:checkAuto,Moto:checkMoto})
+DimancheApremOuvreConduite,DimancheApremFermeConduite}})
     .then((response) => {
       console.log(setModify(response.data));
+      setValiderHorairesConduites(true)
       console.log("ca marche")
     })
     .catch((err) => console.error(err));
@@ -321,7 +435,7 @@ const EcoleModif=()=>{
 
 const HorairesBureauModif=()=>{
     axios
-    .put(`http://localhost:5000/FicheEcolePrincipale/addFormation/${EcoleName}`,{HorairesBureau:{LundiMatinOuvre,LundiMatinFerme,LundiApremOuvre,LundiApremFerme,
+    .put(`http://localhost:5000/FicheEcolePrincipale/addHorairesBureau/${EcoleName}`,{HorairesBureau:{LundiMatinOuvre,LundiMatinFerme,LundiApremOuvre,LundiApremFerme,
 MardiMatinOuvre,MardiMatinFerme,MardiApremOuvre,MardiApremFerme,MercrediMatinOuvre,MercrediMatinFerme,MercrediApremOuvre,MercrediApremFerme,JeudiMatinOuvre,JeudiMatinFerme,
 JeudiApremOuvre,JeudiApremFerme,VendrediMatinOuvre,VendrediMatinFerme,VendrediApremOuvre,VendrediApremFerme,SamediMatinOuvre,SamediMatinFerme,
 SamediApremOuvre,SamediApremFerme,DimancheMatinOuvre,DimancheMatinFerme,DimancheApremOuvre,DimancheApremFerme}})
@@ -346,10 +460,30 @@ const formationsModif=()=>{
     .put(`http://localhost:5000/FicheEcolePrincipale/addFormation/${EcoleName}`,{Formation:NouvelleForm})
     .then((response) => {
         console.log(setModify(response.data));
-        setValider(true)
         setMinusAddFormations(false)
+        setIsCategorieFormation(true)
         getFiche()
         console.log("ca marche vraiment? formations")
+      })
+    .catch((err) => console.error(err)); 
+}
+const ModifFormationSecond=()=>{
+    const uniqueId= Date.now()
+    let NouvelleForm={
+        Nom:ModificationFormationNom,
+        Descriptif:ModificationFormationDescriptif,
+        prix:ModificationFormationPrix,
+        categorie:OngletFormations,
+        uniqueId:uniqueId
+     }
+     axios
+    .put(`http://localhost:5000/FicheEcolePrincipale/addFormation/${EcoleName}`,{Formation:NouvelleForm})
+    .then((response) => {
+        console.log(setModify(response.data));
+        setModifFormation(false)
+        setIsCategorieFormation(true)
+        deleteOneFormation()
+        console.log("ca marche vraiment? formations modification")
       })
     .catch((err) => console.error(err)); 
 }
@@ -444,6 +578,22 @@ async function onSubmit(e) {
     
 }
 /***************************fonction récupération d'évènements******************************************** */
+const initialeSelected=()=>{
+    const element=document.getElementsByTagName("select")
+
+    let newelement=[]
+    for(let i=0;i<=element.length;i++){
+      
+     if(i)   
+    { newelement.push(element[i].selectedIndex=0)
+        console.log(newelement)
+        return
+  
+} 
+    else console.log("c'est quoi ton pb")  
+    } 
+    
+}
 const getBackInitiale=()=>{
     setCreate(false)
     setAddEcole(false)
@@ -451,16 +601,48 @@ const getBackInitiale=()=>{
     setCouverture([])
     setLogo([])
     setValider(false)
+    setCheckAuto(false)
+    setCheckMoto(false)
+    setCheckbateau(false)
+    setMinusTE(false)
+    setMinusND(false)
+    setMinusLocal(false)
+    setMinusContact(false)
+    setMinusHoraires(false)
+    setMinusFormations(false)
+    setOngletHoraires('bureau')
+    setOngletFormations('Auto')
+    setValiderHorBur(false)
+    setValiderHorairesConduites(false)
+    setIsdescriptif(false)
+    setIsCategorieFormation(false)
+    for(let i=0;i<=55;i++)
+    {document.getElementsByTagName('select')[i].selectedIndex=0
+    console.log("moi je m'appelle weshden")
+    }
+   
 }
 const getBackInitialeLien=()=>{
     setCreate(false)
     setAddEcole(false)
     setTest(false)
 }
+const resetForm=()=>{
+    document.getElementById("resetDescriptif").reset()
+}
+
+
 useEffect(()=>{
     console.log(typeof checkAuto)
+    //console.log(`${Fiche.Formation[0].Formation.Nom}je ne comprend pas`)
+    console.log(ModifFormSup)
+    console.log(Fiche.EcoleName)
+    console.log(LundiMatinOuvreConduite)
+    console.log(Fiche.Descriptif)
+    console.log(checkAuto)
+    console.log(`${ModifTypesEtablissement} c'est celui-ci le type d'établissement`)
+    console.log(`${valider} ça c'est valider`)
 })
-
 
 
 
@@ -470,7 +652,7 @@ useEffect(()=>{
             <div className={CheckPopUpSupOpen===true?'containerPopupSupprimerFiche':'containerPopupSupprimerFiche2'}>
                 <div className='containerDeplacementPopUp'>
                     <p>Êtes-vous sûr de vouloir supprimer</p>
-                    <p className='pValuePopUp'>{EcoleSup}</p>
+                    {isFormDelete===false?<p className='pValuePopUp'>{EcoleSup}</p>:<p className='pValuePopUp'>{FormationNameSup}</p>}
                     <div className='containerButtonPopUpSup'>
                         <button className='ButtonPopUpSupOui' onClick={()=>{deleteOneFiche(EcoleSup,uniquIdForm)}}>oui</button>
                         <button className='ButtonPopUpSupNon' onClick={()=>{setCheckPopUpSupOpen(false)}}>non</button>
@@ -506,7 +688,7 @@ useEffect(()=>{
                     </div>
                 </div>
                 <div className={Create===true?'containerInformations':'containerInformations2'}>
-                    <p className='pInformations'>Informations</p>
+                    <p className='pInformations'>Informations</p> 
                     <div className='containerCouvUpload'>
                     {Couverture.length!=0?<img src={Couverture.CouvertureUrl} className='imgCouverture'></img>: <img src={couv} className='imgCouverture'></img>}
                         <input  type="file" id="imageFile" accept="image/*" placeholder='uploadCouv'  className='uploadHidden'onChange={(e)=>{setUploadCouv(e.target.files[0])}} multiple></input>
@@ -519,6 +701,7 @@ useEffect(()=>{
                         </div>}
                     </div>
                     <input   type='submit' className='buttonUpload' onClick={onSubmit} value={'Valider logo et couverture'}></input>
+                    
                     <div className='pTEAndLogoMinus'>
                         <p>Type d'établissement</p>
                         {MinusTE===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusTE===false?setMinusTE(true):setMinusTE(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusTE===false?setMinusTE(true):setMinusTE(false)}}>-</p></div>}
@@ -526,33 +709,42 @@ useEffect(()=>{
                     <div className={MinusTE===false?'containerButtonAndBoxcase2':'containerButtonAndBoxcase'}>
                         <div className='containercheckBoxAndP'>
                             <p>Auto-école</p>
-                            <div className={checkAuto===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{checkAuto===false?setCheckAuto(true):setCheckAuto(false)}}>
+                            <div className={checkAuto===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{ModifSecondTypeEtablissement(checkAuto,setCheckAuto)}}>
                                 <img src={check} className={checkAuto===true?'checkTrue':'checkFalse'}></img>
                             </div>
                         </div>
                         <div className='containercheckBoxAndP'>
                             <p>Moto-école</p>
-                            <div className={checkMoto===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{checkMoto===false?setCheckMoto(true):setCheckMoto(false)}}>
+                            <div className={checkMoto===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{ModifSecondTypeEtablissement(checkMoto,setCheckMoto)}}>
                                 <img src={check} className={checkMoto===true?'checkTrue':'checkFalse'}></img>
                             </div>
                         </div>
                         <div className='containercheckBoxAndP'>
                             <p>Bateau-école</p>
-                            <div className={checkBateau===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{checkBateau===false?setCheckbateau(true):setCheckbateau(false)}}>
+                            <div className={checkBateau===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{ModifSecondTypeEtablissement(checkBateau,setCheckbateau)}}>
                                 <img src={check} className={checkBateau===true?'checkTrue':'checkFalse'}></img>
                             </div>
                         </div>
                         <input   type='submit' className={valider===false?'buttonValidBoxcase':'buttonValidBoxcase2'}  value={'Valider'} onClick={()=>{EcoleModif()}}></input>
-                        <input   type='submit' className={valider===true?'buttonValidBoxcaseModif':'buttonValidBoxcaseModif2'}  value={'Modification enregistrée'} ></input>
+                        <input   type='submit' className={valider===true && ModifTypesEtablissement===false?'buttonValidBoxcaseModif':valider===true && ModifTypesEtablissement===true?'buttonValidBoxcaseModif3':'buttonValidBoxcaseModif2'}  value={ModifTypesEtablissement===false?'Modification enregistrée':'valider'} onClick={()=>{ModifSecondTypeEtabissementRequest()}}></input>
                     </div>
                     <div className='pNDAndLogoMinus'>
                         <p>Description</p>
                         {MinusND===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusND===false?setMinusND(true):setMinusND(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusND===false?setMinusND(true):setMinusND(false)}}>-</p></div>}
                     </div>
-                    <div className={MinusND===false?'containerNomDescription':'containerNomDescription2'}>
-                        <textarea type='text' placeholder='Descriptif' className='inputDescriptif' rows="10" cols="30"></textarea>
-                        <input   type='submit' className='buttonValidBoxcase' value={'Valider'}></input>
+                    <div className={isDescriptif===true && MinusND===true?'containerpDescriptifFicheModificonForfaitFiche':'containerpDescriptifFicheModificonForfaitFiche2'}>
+                        {isDescriptif===true?<p className='pDescriptifFicheModif'>{Fiche.Descriptif}</p>:<p>hello</p>}
+                        <img src={modif} className='iconForfaitFiche' onClick={()=>{closeApperçusDescriptifEtModdif()}}></img>
                     </div>
+                    <form className={MinusND===false || isDescriptif===true || isDescriptifModif===true?'containerNomDescription':'containerNomDescription2'} id='resetDescriptif'>
+                        <textarea type='text' placeholder='Descriptif' className='inputDescriptif' rows="10" cols="30" id='resetDescriptif' onChange={(e)=>{setDescriptionEcole(e.target.value)}}></textarea>
+                        <input   type='reset' className='buttonValidBoxcase' value={'Valider'} onClick={()=>{DescriptifModif()}}></input>
+                    </form>
+                    <form className={isDescriptifModif===false?'containerNomDescription':'containerNomDescription2'} id='resetDescriptif'>
+                        <img src={cross} className='fermerFormFormationModifFiche' onClick={()=>{closeFormulaireDescriptifOpenApperçusDescriptif()}}></img>
+                        <textarea type='text' placeholder='Descriptif' className='inputDescriptif'value={DescriptionEcole} rows="10" cols="30"  id='resetDescriptif' onChange={(e)=>{setDescriptionEcole(e.target.value)}}></textarea>
+                        <input   type='reset' className='buttonValidBoxcase' value={'Valider'} onClick={()=>{DescriptifModif()}}></input>
+                    </form>
                     <div className='pLocalAndLogoMinus'>
                         <p>Localisation</p>
                         {MinusLocal===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusLocal===false?setMinusLocal(true):setMinusLocal(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusLocal===false?setMinusLocal(true):setMinusLocal(false)}}>-</p></div>}
@@ -595,7 +787,7 @@ useEffect(()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Matin</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setLundiMatinOuvre(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2" id='selectHoraireBureauMatinLundiOuvert' onChange={(e)=>{setLundiMatinOuvre(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="7:00">7:00</option>
                                             <option value="7:30">7:30</option>
@@ -604,7 +796,7 @@ useEffect(()=>{
                                             <option value="9:00">9:00</option>
                                             <option value="9:30">9:30</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setLundiMatinferme(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2"  onChange={(e)=>{setLundiMatinferme(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="10:00">10:00</option>
                                             <option value="10:30">10:30</option>
@@ -618,7 +810,7 @@ useEffect(()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Après-midi</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setLundiApremOuvre(e.target.value)}} >
+                                        <select name="Horaires1" className="Horaires2"  onChange={(e)=>{setLundiApremOuvre(e.target.value)}} >
                                             <option value="Fermé">Fermé</option>
                                             <option value="13:00">13:00</option>
                                             <option value="13:30">13:30</option>
@@ -630,7 +822,7 @@ useEffect(()=>{
                                             <option value="16:30">16:30</option>
                                             <option value="17:00">17:00</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setLundiApremferme(e.target.value)}} >
+                                        <select name="Horaires" className="Horaires2"  id='selectHoraireBureauApremLundiferme' onChange={(e)=>{setLundiApremferme(e.target.value)}} >
                                             <option value="Fermé">Fermé</option>
                                             <option value="17:30">17:30</option>
                                             <option value="18:00">18:00</option>
@@ -649,7 +841,7 @@ useEffect(()=>{
                                 <div className='containerBoxHorairesDay'>
                                     <p>Matin</p>
                                     <div className='containerDropBox'>
-                                        <select name="Horaires1" className="Horaires2" onChange={(e)=>{setMardiMatinOuvre(e.target.value)}}>
+                                        <select name="Horaires1" className="Horaires2"  onChange={(e)=>{setMardiMatinOuvre(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="7:00">7:00</option>
                                             <option value="7:30">7:30</option>
@@ -928,7 +1120,7 @@ useEffect(()=>{
                                             <option value="9:00">9:00</option>
                                             <option value="9:30">9:30</option>   
                                         </select>
-                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setDimancheMatinOuvre(e.target.value)}}>
+                                        <select name="Horaires" className="Horaires2" onChange={(e)=>{setDimancheMatinFerme(e.target.value)}}>
                                             <option value="Fermé">Fermé</option>
                                             <option value="10:00">10:00</option>
                                             <option value="10:30">10:30</option>
@@ -1350,7 +1542,8 @@ useEffect(()=>{
                                     </div>
                                 </div>
                             </div>
-                            <input   type='submit' className='buttonValidBoxcase' value={'Valider'}></input>
+                            <input type='submit'   className={ValiderHorairesConduites===false?'buttonValidBoxcase':'buttonValidBoxcase2'} value={'Valider'} onClick={()=>{HorairesConduiteModif()}}></input>
+                            <input   type='submit' className={ValiderHorairesConduites===true?'buttonValidBoxcaseModif':'buttonValidBoxcaseModif2'}  value={'Modification enregistrée'} ></input>
                         </div>
                     </div>
                     <div className='pFormationAndLogoMinus'>
@@ -1359,19 +1552,19 @@ useEffect(()=>{
                     </div>
                     <div className={MinusFormations===false?'containerFormation2':'containerFormation'}>
                         <div className='containerOngletsFormation'>
-                            <div className={OngletFormations==='Auto'?'categorieOngletandLiseret2':'categorieOngletandLiseret'}onClick={()=>{setOngletFormations('Auto')}}>
+                            <div className={OngletFormations==='Auto'?'categorieOngletandLiseret2':'categorieOngletandLiseret'}onClick={()=>{isOngletFormationsameAsFicheCategorie('Auto')}}>
                                 <p>Auto</p>
                                 <div className={OngletFormations==='Auto'?'liseretCateg':"liseretCateg2"}></div>
                             </div>
-                            <div className={OngletFormations==='Moto'?'categorieOngletandLiseret2':'categorieOngletandLiseret'}onClick={()=>{setOngletFormations('Moto')}}>
+                            <div className={OngletFormations==='Moto'?'categorieOngletandLiseret2':'categorieOngletandLiseret'}onClick={()=>{isOngletFormationsameAsFicheCategorie('Moto')}}>
                                 <p>2 Roues</p>
                                 <div className={OngletFormations==='Moto'?'liseretCateg':"liseretCateg2"}></div>
                             </div>
-                            <div className={OngletFormations==='Bateau'?'categorieOngletandLiseret2':'categorieOngletandLiseret'}onClick={()=>{setOngletFormations('Bateau')}}>
+                            <div className={OngletFormations==='Bateau'?'categorieOngletandLiseret2':'categorieOngletandLiseret'}onClick={()=>{isOngletFormationsameAsFicheCategorie('Bateau')}}>
                                 <p>Bateau</p>
                                 <div className={OngletFormations==='Bateau'?'liseretCateg':"liseretCateg2"}></div>
                             </div>
-                            <div className={OngletFormations==='Stages'?'categorieOngletandLiseret2':'categorieOngletandLiseret'}onClick={()=>{setOngletFormations('Stages')}}>
+                            <div className={OngletFormations==='Stages'?'categorieOngletandLiseret2':'categorieOngletandLiseret'}onClick={()=>{isOngletFormationsameAsFicheCategorie('Stages')}}>
                                 <p>Stages</p>
                                 <div className={OngletFormations==='Stages'?'liseretCateg':"liseretCateg2"}></div>
                             </div>
@@ -1379,48 +1572,48 @@ useEffect(()=>{
                         <div className='liseretHoraires'></div>
                         <div className='pForfaitAndLogoMinus'>
                             <p className="pFormationFiche">Forfaits</p>
-                            <button  className={Fiche.length!=0 && Fiche.Formation.length===0?'buttonAjouter':'buttonAjouter2'} onClick={()=>{MinusAddFormations===false?setMinusAddFormations(true):setMinusAddFormations(false)}}>+ Nouveau forfait</button>
+                            <button  className={Fiche.length!=0 && isCategorieFormation===false?'buttonAjouter':'buttonAjouter2'} onClick={()=>{setMinusAddFormations(true)}}>+ Nouveau forfait</button>
                         </div>
-                        <div className={Fiche.length!=0 && Fiche.Formation.length!=0?'containerNomPrixFormationFiche':'containerNomPrixFormationFiche2'}>
+                        <div className={isCategorieFormation===true?'containerPrixNomFormation':'containerPrixNomFormation2'}>
+                            <div className={Fiche.length!=0 && Fiche.Formation.length!=0?'containerNomPrixFormationFiche':'containerNomPrixFormationFiche2'}>
                             <p>Nom</p>
                             <p className='pPrixForfaitFiche'>Prix</p>
-                        </div>
-                        
+                            </div>
                         {Fiche.length!=0 && Fiche.Formation.length!=0?Fiche.Formation.map( 
                         (event)=>
                         event.categorie==='Auto'&& OngletFormations==='Auto'? 
-                        <div>
+                        <div > 
                             <div className='containerForfaitMapFiche'>
                                 <p className='pForfaitsMap'> {event.Nom}</p>
                                 <div className='containerIconFormationPrixFiche'>
                                     <p className='pPrixForfaitsFiche'>{event.prix}</p>
                                     <div className='containerIconForfaitFiche'>
-                                        <img src={modif} className='iconForfaitFiche'onClick={()=>{getOneFiche(event.EcoleName)}}></img>
-                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleName,event.uniqueId)}}></img>
+                                        <img src={modif} className='iconForfaitFiche'onClick={()=>{OpenModifFormation(event.Nom,event.Descriptif,event.prix,event.uniqueId)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleName,event.uniqueId,event.Nom)}}></img>
                                     </div>
                                 </div>
                             </div>
                             <div className='liseretFormation'></div>
-                        </div>: event.categorie==='Moto'&& OngletFormations==='Moto'?<div>
+                        </div>: event.categorie==='Moto'&& OngletFormations==='Moto'?<div >
                             <div className='containerForfaitMapFiche'>
                                 <p className='pForfaitsMap'> {event.Nom}</p>
                                 <div className='containerIconFormationPrixFiche'>
                                     <p className='pPrixForfaitsFiche'>{event.prix}</p>
                                     <div className='containerIconForfaitFiche'>
-                                        <img src={modif} className='iconForfaitFiche'onClick={()=>{getOneFiche(event.EcoleName)}}></img>
-                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleName,event.uniqueId)}}></img>
+                                        <img src={modif} className='iconForfaitFiche'onClick={()=>{OpenModifFormation(event.Nom,event.Descriptif,event.prix,event.uniqueId)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleName,event.uniqueId,event.Nom)}}></img>
                                     </div>
                                 </div>
                             </div>
                             <div className='liseretFormation'></div>
-                        </div>: event.categorie==='Bateau'&& OngletFormations==='Bateau'?<div>
+                        </div>: event.categorie==='Bateau'&& OngletFormations==='Bateau'?<div >
                             <div className='containerForfaitMapFiche'>
                                 <p className='pForfaitsMap'> {event.Nom}</p>
                                 <div className='containerIconFormationPrixFiche'>
                                     <p className='pPrixForfaitsFiche'>{event.prix}</p>
                                     <div className='containerIconForfaitFiche'>
-                                        <img src={modif} className='iconForfaitFiche'onClick={()=>{getOneFiche(event.EcoleName)}}></img>
-                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleName,event.uniqueId)}}></img>
+                                        <img src={modif} className='iconForfaitFiche'onClick={()=>{OpenModifFormation(event.Nom,event.Descriptif,event.prix,event.uniqueId)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleName,event.uniqueId,event.Nom)}}></img>
                                     </div>
                                 </div>
                             </div>
@@ -1431,20 +1624,33 @@ useEffect(()=>{
                                 <div className='containerIconFormationPrixFiche'>
                                     <p className='pPrixForfaitsFiche'>{event.prix}</p>
                                     <div className='containerIconForfaitFiche'>
-                                        <img src={modif} className='iconForfaitFiche'onClick={()=>{getOneFiche(event.EcoleName)}}></img>
-                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleName,event.uniqueId)}}></img>
+                                        <img src={modif} className='iconForfaitFiche'onClick={()=>{OpenModifFormation(event.Nom,event.Descriptif,event.prix,event.uniqueId)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleName,event.uniqueId,event.Nom)}}></img>
                                     </div>
                                 </div>
                             </div>
                             <div className='liseretFormation'></div>
                         </div>:console.log('genial')
                         ):console.log('ok') }
-                        <button  className={Fiche.length!=0 && Fiche.Formation.length!=0?'buttonAjouter3':'buttonAjouter2'} onClick={()=>{MinusAddFormations===false?setMinusAddFormations(true):setMinusAddFormations(false)}}>+ Nouveau forfait</button>    
+                        </div>
+                        <button  className={Fiche.length!=0 && isCategorieFormation===true && ModifFormation===false && MinusAddFormations===false?'buttonAjouter3':'buttonAjouter2'} onClick={()=>{letContainerFormationdesappear()}}>+ Nouveau forfait</button>
+                          
                         <div className={MinusAddFormations===false?'containerNomDescription':'containerNomDescription2'}>
+                            <img src={cross} className='fermerFormFormationModifFiche'onClick={()=>{setMinusAddFormations(false)}}></img>
                             <input type='text' placeholder='Nom de la formation' className='inputNom' onChange={(e)=>setFormationName(e.target.value)}></input>
                             <textarea type='text' placeholder='Descriptif de la formation' className='inputDescriptif' rows="10" cols="30"onChange={(e)=>setFormationDescriptif(e.target.value)}></textarea>
                             <input type='number' placeholder='prix de la formation' className='inputNom' onChange={(e)=>{setFormationPrix(e.target.value)}}></input>
                             <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={()=>{formationsModif()}}></input>
+                        </div>
+                        <div className={ModifFormation===false?'containerNomDescription':'containerNomDescription2'}>
+                            <div className='containerModifFormationPAndCross'>
+                                <p>Modifier Formation</p>
+                                <img src={cross} className='fermerFormFormationModifFiche2'onClick={()=>{letContainerAppear()}}></img>
+                            </div> 
+                            <input type='text' placeholder='Nom de la formation' className='inputNom' value={ModificationFormationNom} onChange={(e)=>{setModificationFormationNom(e.target.value)}}></input>
+                            <textarea type='text' placeholder='Descriptif de la formation' className='inputDescriptif' rows="10" cols="30" value={ModificationFormationDescriptif} onChange={(e)=>{setModificationFormationDescriptif(e.target.value)}}></textarea>
+                            <input type='number' placeholder='prix de la formation' className='inputNom' value={ModificationFormationPrix} onChange={(e)=>{setModificationFormationPrix(e.target.value)}}></input>
+                            <input   type='submit' className='buttonValidModifForm' value={'Valider modifications'} onClick={()=>{ModifFormationSecond()}}></input>
                         </div>
                         <p className="pFormationFiche">A la carte</p>
                     </div>
@@ -2331,7 +2537,7 @@ useEffect(()=>{
                             <input type='text' placeholder='Nom de la formation' className='inputNom' onChange={(e)=>setFormationName(e.target.value)}></input>
                             <textarea type='text' placeholder='Descriptif de la formation' className='inputDescriptif' rows="10" cols="30"onChange={(e)=>setFormationDescriptif(e.target.value)}></textarea>
                             <input type='number' placeholder='prix de la formation' className='inputNom' onChange={(e)=>{setFormationPrix(e.target.value)}}></input>
-                            <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={completFiche}></input>
+                            <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={()=>{HorairesConduiteModif()}}></input>
                         </div>
                     </div>
                 </div>   
