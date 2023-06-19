@@ -7,7 +7,7 @@ const ficheLogoSchema = new mongoose.Schema(
         EcoleName:String,
     });
  
-     
+
  const FicheLogo= mongoose.model('FicheLogo',ficheLogoSchema);
  
  

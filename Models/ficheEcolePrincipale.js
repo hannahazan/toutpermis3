@@ -8,6 +8,7 @@ const ficheEcolePrincipaleSchema = new mongoose.Schema(
         Voiture:Boolean,
         Moto:Boolean,
         Formation:Array,
+        FormationCarte:Array,
         HorairesBureau:Array,
         HorairesConduite:Array,
         Mail:String,

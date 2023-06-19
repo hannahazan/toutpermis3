@@ -53,4 +53,23 @@ routerFicheLogo.post("/", upload.single('file'), async (req, res) => {
     }
   });
 
+  routerFicheLogo.delete('/delete/:EcoleName',(req,res)=>{
+    FicheLogo.findOneAndDelete({EcoleName:req.params.EcoleName},function(err,data){
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
+
+  
+
   export default routerFicheLogo

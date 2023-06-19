@@ -122,6 +122,20 @@ const Fiche=()=>{
     const [DimancheApremOuvreConduite,setDimancheApremOuvertConduite]=useState('Fermé')
     const [DimancheApremFermeConduite,setDimancheApremFermeConduite]=useState('Fermé')
     const [isCategorieFormation,setIsCategorieFormation]=useState(false)
+    /***************************Formations a la carte*************************** */
+    const [IsCategorieCarte,setIsCategorieCarte]=useState(false)
+    const [MinusAddCarte,setMinusAddCarte]=useState(false)
+    const [FormationCarteName,setFormationCarteName]=useState(String)
+    const [FormationCarteDescriptif,setFormationCarteDescriptif]=useState(String)
+    const [FormationCartePrix,setFormationCartePrix]=useState(String)
+    const [ModifFormationCarte,setModifFormationCarte]=useState(false)
+    const [ModificationFormationCarteNom,setModificationFormationCarteNom]=useState(String)
+    const [ModificationFormationCarteDescriptif,setModificationFormationCarteDescriptif]=useState(String)
+    const [ModificationFormationCartePrix,setModificationFormationCartePrix]=useState(String)
+    const [ModifCarteSup,setModifCarteSup]=useState(null)
+    const [isFormCarteDelete,setisFormCarteDelete]=useState(false)
+    /*******************************getFicheFormation********************************************************/
+    const [FicheFormation,setFicheFormation]=useState([])
     /************************Seconde Modification du type d'établissement change le button "modifications enregistrées********** */
     const [ModifTypesEtablissement,setModifTypesEtablissement]=useState(false)
     /***************logique apparition descriptif après validation et modification descriptif**************/
@@ -150,6 +164,16 @@ const Fiche=()=>{
         setCheckPopUpSupOpen(true)
         setFormationNameSup(NameForm)
     }
+    const OpenPopUpFormCarte=(ecolePop,id,NameForm)=>{
+        setisFormCarteDelete(true)
+        setEcoleSup(ecolePop)
+        setUniqueIdForm(id)
+        setCheckPopUpSupOpen(true)
+        setFormationNameSup(NameForm)
+    }
+    useEffect(()=>{
+        console.log(`${isFormCarteDelete} tu la vois ma fucking variable?!!!`)
+    })
     /****************modification formation et delete Hook********************** */
     const [ModifFormation,setModifFormation]=useState(false)
     const [ModificationFormationNom,setModificationFormationNom]=useState(null)
@@ -165,28 +189,83 @@ const Fiche=()=>{
         setModifFormSup(sup)
         setIsCategorieFormation(false)
     }
+    /******************modification formation carte logique fonction ********************** */
+    const OpenModifFormationCarte=(Name,Descriptif,Prix,sup)=>{
+        setModifFormationCarte(true)
+        setModificationFormationCarteNom(Name)
+        setModificationFormationCarteDescriptif(Descriptif)
+        setModificationFormationCartePrix(Prix)
+        setModifCarteSup(sup)
+        setIsCategorieCarte(false)
+    }
     /**********container formation logique et function *************** */
     let testCategorie='Auto'
     const isOngletFormationsameAsFicheCategorie=(OngletCategorie)=>{
         console.log("heu ouais")
         setOngletFormations(OngletCategorie)
         testCategorie=OngletCategorie
-        if(Fiche.Formation){
+        if(Fiche.Formation.length!=0){
             console.log("what")
+            console.log(isCategorieFormation)
             for(let i=0;i<Fiche.Formation.length;i++){
                if(Fiche.Formation[i].categorie===testCategorie){
+                    console.log('pourquoi tu rentres là-dedans')
                     setIsCategorieFormation(true)
                     console.log(Fiche.Formation[i].categorie)
                     console.log(OngletFormations)
                     break
                }
                else{
+               console.log("rentre plutôt la-dedans")
+               setIsCategorieFormation(false)
+               }     
+            }
+        }
+        else {
+            setIsCategorieFormation(false)}
+        if(Fiche.FormationCarte.length!=0){
+            console.log("mais lol")
+            console.log(isCategorieFormation)
+            for(let j=0;j<Fiche.FormationCarte.length;j++){
+               if(Fiche.FormationCarte[j].categorie===testCategorie){
+                    console.log('pourquoi tu rentres là-dedans')
+                    setIsCategorieCarte(true)
+                    console.log(Fiche.FormationCarte[j].categorie)
+                    console.log(OngletFormations)
+                    break
+               }
+               else{
+               console.log("rentre plutôt la-dedans")
+               setIsCategorieCarte(false)
+               }     
+            }
+        }
+    
+        else {
+            setIsCategorieCarte(false)}
+    }
+   /* const isOngletFormationsameAsFicheCategorieDelete=()=>{
+        alert("ha bon")
+        setOngletFormations(OngletFormations)
+        testCategorie=OngletFormations
+        alert(testCategorie)
+        alert(Fiche.Formation.length)
+            for(let i=0;i<FicheFormation.Formation.length;i++){
+               if(FicheFormation.Formation[i].categorie===testCategorie){
+                    console.log('pourquoi tu rentres là-dedans')
+                    alert(FicheFormation.Formation[i].categorie)
+                    setIsCategorieFormation(true)
+                    alert(isCategorieFormation)
+                    console.log(FicheFormation.Formation[i].categorie)
+                    console.log(OngletFormations)
+                    break
+               }
+               else{
+               console.log("rentre plutôt la-dedans")
                setIsCategorieFormation(false)
                }
             }
-        }
-    }
-
+    }*/
     const letContainerFormationdesappear=()=>{
         setIsCategorieFormation(false)
         setMinusAddFormations(true)
@@ -195,8 +274,24 @@ const Fiche=()=>{
         setIsCategorieFormation(true)
         setModifFormation(false)
     }
+    const letContainerAppearFromFormationAdd=()=>{
+        setIsCategorieFormation(true)
+        setMinusAddFormations(false)
+    }
 
- 
+    /***********************Formations cartes logique container résultat****************************************** */
+    const letContainerFormationCartedesappear=()=>{
+        setIsCategorieCarte(false)
+        setMinusAddCarte(true)
+    }
+    const letContainerCarteAppear=()=>{
+        setIsCategorieCarte(true)
+        setModifFormationCarte(false)
+    }
+    const letContainerAppearFromAddCarte=()=>{
+        setIsCategorieCarte(true)
+        setMinusAddCarte(false)
+    }
     /**********************Modification types d'établissement avant et après le premier valider******************************** */
     const ModifSecondTypeEtablissement=(Hook,setHook)=>{
         if(Hook===false && valider===false){
@@ -236,7 +331,7 @@ const Fiche=()=>{
   }
     /**********************Delete fiche******************** */
     const deleteOneFiche=(valeur,id)=>{
-    if(isFormDelete===false)    
+    if(isFormDelete===false && isFormCarteDelete===false)    
    { setCheckPopUpSupOpen(false)
     axios
    .delete(`http://localhost:5000/FicheEcolePrincipale/delete/${valeur}`)
@@ -246,21 +341,49 @@ const Fiche=()=>{
    .catch(error => {
    console.log(error);
    })  }
-   else
+   else if(isFormCarteDelete){ 
+    setCheckPopUpSupOpen(false)
+    console.log('ici')
+    axios
+    .put(`http://localhost:5000/FicheEcolePrincipale/removeFormationCarte/${valeur}`,{FormationCarte:{"uniqueId":id}})
+    .then((response)=>{(console.log(response.data))
+      console.log("je ne comprend pas")
+        setisFormCarteDelete(false)
+        //getFicheFormation()
+        getFiche()
+        
+    }) 
+    .catch(error => {
+    console.log(error);
+    })   }
+   else 
+  { 
    setCheckPopUpSupOpen(false)
    axios
    .put(`http://localhost:5000/FicheEcolePrincipale/removeFormation/${valeur}`,{Formation:{"uniqueId":id}})
    .then((response)=>{(console.log(response.data))
+     console.log("je ne comprend pas POURQUOI TU PASSE Là")
        setIsFormDelete(false)
+       //getFicheFormation()
        getFiche()
+       
    }) 
    .catch(error => {
    console.log(error);
-   }) 
+   }) }
   }
   const deleteOneFormation=()=>{
     axios
    .put(`http://localhost:5000/FicheEcolePrincipale/removeFormation/${Fiche.EcoleName}`,{Formation:{"uniqueId":ModifFormSup}})
+   .then((response)=>{(console.log(response.data))
+    getFiche()
+   }) 
+   .catch(error => {
+   console.log(error);
+   })  }
+   const deleteOneFormationCarte=()=>{
+    axios
+   .put(`http://localhost:5000/FicheEcolePrincipale/removeFormationCarte/${Fiche.EcoleName}`,{FormationCarte:{"uniqueId":ModifCarteSup}})
    .then((response)=>{(console.log(response.data))
     getFiche()
    }) 
@@ -364,12 +487,27 @@ const Fiche=()=>{
         axios
     .get(`http://localhost:5000/FicheEcolePrincipale/creation/${EcoleName}`)
     .then((res) => {
-      console.log(setFiche(res.data))
+      setFiche(res.data) 
       console.log(Fiche)
+      //isOngletFormationsameAsFicheCategorie(OngletFormations)
       ;
     })
     .catch((err) => console.error(err));
     }
+    /*const getFicheFormation=()=>{
+        axios
+    .get(`http://localhost:5000/FicheEcolePrincipale/creation/${EcoleName}`)
+    .then((res) => {
+     console.log(setFicheFormation(res.data) )
+     alert('Après')
+     console.log(`${FicheFormation} je suis la fiche formation`) 
+     isOngletFormationsameAsFicheCategorieDelete()
+      ;
+    })
+    .catch((err) => console.error(err));
+    }*/
+    
+   
     useEffect(()=>{
         console.log(MinusFormations)
         console.log(EcoleName)     
@@ -484,6 +622,47 @@ const ModifFormationSecond=()=>{
         setIsCategorieFormation(true)
         deleteOneFormation()
         console.log("ca marche vraiment? formations modification")
+      })
+    .catch((err) => console.error(err)); 
+}
+
+const formationCarteModif=()=>{
+    const uniqueId= Date.now()
+    let NouvelleForm={
+        Nom:FormationCarteName,
+        Descriptif:FormationCarteDescriptif,
+        prix:FormationCartePrix,
+        categorie:OngletFormations,
+        uniqueId:uniqueId
+     }
+     axios
+    .put(`http://localhost:5000/FicheEcolePrincipale/addFormationCarte/${EcoleName}`,{FormationCarte:NouvelleForm})
+    .then((response) => {
+        console.log(setModify(response.data));
+        setMinusAddCarte(false)
+        setIsCategorieCarte(true)
+        getFiche()
+        console.log("ca marche vraiment? carte")
+      })
+    .catch((err) => console.error(err)); 
+}
+const ModifFormationCarteSecond=()=>{
+    const uniqueId= Date.now()
+    let NouvelleForm={
+        Nom:ModificationFormationCarteNom,
+        Descriptif:ModificationFormationCarteDescriptif,
+        prix:ModificationFormationCartePrix,
+        categorie:OngletFormations,
+        uniqueId:uniqueId
+     }
+     axios
+    .put(`http://localhost:5000/FicheEcolePrincipale/addFormationCarte/${EcoleName}`,{FormationCarte:NouvelleForm})
+    .then((response) => {
+        console.log(setModify(response.data));
+        setModifFormationCarte(false)
+        setIsCategorieCarte(true)
+        deleteOneFormationCarte()
+        console.log("ca marche vraiment? carte modification")
       })
     .catch((err) => console.error(err)); 
 }
@@ -616,6 +795,8 @@ const getBackInitiale=()=>{
     setValiderHorairesConduites(false)
     setIsdescriptif(false)
     setIsCategorieFormation(false)
+    setIsCategorieCarte(false)
+    setMinusAddCarte(false)
     for(let i=0;i<=55;i++)
     {document.getElementsByTagName('select')[i].selectedIndex=0
     console.log("moi je m'appelle weshden")
@@ -652,7 +833,7 @@ useEffect(()=>{
             <div className={CheckPopUpSupOpen===true?'containerPopupSupprimerFiche':'containerPopupSupprimerFiche2'}>
                 <div className='containerDeplacementPopUp'>
                     <p>Êtes-vous sûr de vouloir supprimer</p>
-                    {isFormDelete===false?<p className='pValuePopUp'>{EcoleSup}</p>:<p className='pValuePopUp'>{FormationNameSup}</p>}
+                    {isFormDelete===false && isFormCarteDelete===false?<p className='pValuePopUp'>{EcoleSup}</p>:<p className='pValuePopUp'>{FormationNameSup}</p>}
                     <div className='containerButtonPopUpSup'>
                         <button className='ButtonPopUpSupOui' onClick={()=>{deleteOneFiche(EcoleSup,uniquIdForm)}}>oui</button>
                         <button className='ButtonPopUpSupNon' onClick={()=>{setCheckPopUpSupOpen(false)}}>non</button>
@@ -700,8 +881,7 @@ useEffect(()=>{
                             <p>C</p>
                         </div>}
                     </div>
-                    <input   type='submit' className='buttonUpload' onClick={onSubmit} value={'Valider logo et couverture'}></input>
-                    
+                    <input   type='submit' className='buttonUpload' onClick={onSubmit} value={'Valider logo et couverture'}></input> 
                     <div className='pTEAndLogoMinus'>
                         <p>Type d'établissement</p>
                         {MinusTE===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusTE===false?setMinusTE(true):setMinusTE(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusTE===false?setMinusTE(true):setMinusTE(false)}}>-</p></div>}
@@ -1574,7 +1754,7 @@ useEffect(()=>{
                             <p className="pFormationFiche">Forfaits</p>
                             <button  className={Fiche.length!=0 && isCategorieFormation===false?'buttonAjouter':'buttonAjouter2'} onClick={()=>{setMinusAddFormations(true)}}>+ Nouveau forfait</button>
                         </div>
-                        <div className={isCategorieFormation===true?'containerPrixNomFormation':'containerPrixNomFormation2'}>
+                        <div className={isCategorieFormation===true ?'containerPrixNomFormation':'containerPrixNomFormation2'}>
                             <div className={Fiche.length!=0 && Fiche.Formation.length!=0?'containerNomPrixFormationFiche':'containerNomPrixFormationFiche2'}>
                             <p>Nom</p>
                             <p className='pPrixForfaitFiche'>Prix</p>
@@ -1633,10 +1813,9 @@ useEffect(()=>{
                         </div>:console.log('genial')
                         ):console.log('ok') }
                         </div>
-                        <button  className={Fiche.length!=0 && isCategorieFormation===true && ModifFormation===false && MinusAddFormations===false?'buttonAjouter3':'buttonAjouter2'} onClick={()=>{letContainerFormationdesappear()}}>+ Nouveau forfait</button>
-                          
+                        <button  className={Fiche.length!=0 && isCategorieFormation===true && ModifFormation===false && MinusAddFormations===false?'buttonAjouter3':'buttonAjouter2'} onClick={()=>{letContainerFormationdesappear()}}>+ Nouveau forfait</button>   
                         <div className={MinusAddFormations===false?'containerNomDescription':'containerNomDescription2'}>
-                            <img src={cross} className='fermerFormFormationModifFiche'onClick={()=>{setMinusAddFormations(false)}}></img>
+                            <img src={cross} className='fermerFormFormationModifFiche'onClick={()=>{letContainerAppearFromFormationAdd()}}></img>
                             <input type='text' placeholder='Nom de la formation' className='inputNom' onChange={(e)=>setFormationName(e.target.value)}></input>
                             <textarea type='text' placeholder='Descriptif de la formation' className='inputDescriptif' rows="10" cols="30"onChange={(e)=>setFormationDescriptif(e.target.value)}></textarea>
                             <input type='number' placeholder='prix de la formation' className='inputNom' onChange={(e)=>{setFormationPrix(e.target.value)}}></input>
@@ -1652,7 +1831,87 @@ useEffect(()=>{
                             <input type='number' placeholder='prix de la formation' className='inputNom' value={ModificationFormationPrix} onChange={(e)=>{setModificationFormationPrix(e.target.value)}}></input>
                             <input   type='submit' className='buttonValidModifForm' value={'Valider modifications'} onClick={()=>{ModifFormationSecond()}}></input>
                         </div>
-                        <p className="pFormationFiche">A la carte</p>
+                        <div className='pForfaitAndLogoMinus'>
+                            <p className="pFormationFiche">A la carte</p>
+                            <button  className={Fiche.length!=0 && IsCategorieCarte===false?'buttonAjouter':'buttonAjouter2'} onClick={()=>{setMinusAddCarte(true)}}>+ Nouveau service</button>
+                        </div>
+                        <div className={IsCategorieCarte===true ?'containerPrixNomFormation':'containerPrixNomFormation2'}>
+                            <div className={Fiche.length!=0 && Fiche.FormationCarte.length!=0?'containerNomPrixFormationFiche':'containerNomPrixFormationFiche2'}>
+                            <p>Service</p>
+                            <p className='pPrixForfaitFiche'>Prix</p>
+                            </div>
+                        {Fiche.length!=0 && Fiche.FormationCarte.length!=0?Fiche.FormationCarte.map( 
+                        (event)=>
+                        event.categorie==='Auto'&& OngletFormations==='Auto'? 
+                        <div > 
+                            <div className='containerForfaitMapFiche'>
+                                <p className='pForfaitsMap'> {event.Nom}</p>
+                                <div className='containerIconFormationPrixFiche'>
+                                    <p className='pPrixForfaitsFiche'>{event.prix}</p>
+                                    <div className='containerIconForfaitFiche'>
+                                        <img src={modif} className='iconForfaitFiche'onClick={()=>{ OpenModifFormationCarte(event.Nom,event.Descriptif,event.prix,event.uniqueId)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpFormCarte(Fiche.EcoleName,event.uniqueId,event.Nom)}}></img>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='liseretFormation'></div>
+                        </div>: event.categorie==='Moto'&& OngletFormations==='Moto'?<div >
+                            <div className='containerForfaitMapFiche'>
+                                <p className='pForfaitsMap'> {event.Nom}</p>
+                                <div className='containerIconFormationPrixFiche'>
+                                    <p className='pPrixForfaitsFiche'>{event.prix}</p>
+                                    <div className='containerIconForfaitFiche'>
+                                        <img src={modif} className='iconForfaitFiche'onClick={()=>{ OpenModifFormationCarte(event.Nom,event.Descriptif,event.prix,event.uniqueId)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpFormCarte(Fiche.EcoleName,event.uniqueId,event.Nom)}}></img>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='liseretFormation'></div>
+                        </div>: event.categorie==='Bateau'&& OngletFormations==='Bateau'?<div >
+                            <div className='containerForfaitMapFiche'>
+                                <p className='pForfaitsMap'> {event.Nom}</p>
+                                <div className='containerIconFormationPrixFiche'>
+                                    <p className='pPrixForfaitsFiche'>{event.prix}</p>
+                                    <div className='containerIconForfaitFiche'>
+                                        <img src={modif} className='iconForfaitFiche'onClick={()=>{ OpenModifFormationCarte(event.Nom,event.Descriptif,event.prix,event.uniqueId)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpFormCarte(Fiche.EcoleName,event.uniqueId,event.Nom)}}></img>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='liseretFormation'></div>
+                        </div>:event.categorie==='Stages'&& OngletFormations==='Stages'?<div>
+                            <div className='containerForfaitMapFiche'>
+                                <p className='pForfaitsMap'> {event.Nom}</p>
+                                <div className='containerIconFormationPrixFiche'>
+                                    <p className='pPrixForfaitsFiche'>{event.prix}</p>
+                                    <div className='containerIconForfaitFiche'>
+                                        <img src={modif} className='iconForfaitFiche'onClick={()=>{ OpenModifFormationCarte(event.Nom,event.Descriptif,event.prix,event.uniqueId)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpFormCarte(Fiche.EcoleName,event.uniqueId,event.Nom)}}></img>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='liseretFormation'></div>
+                        </div>:console.log('genial')
+                        ):console.log('ok') }
+                        </div>
+                        <button  className={Fiche.length!=0 && IsCategorieCarte===true && ModifFormation===false && MinusAddCarte===false?'buttonAjouter3':'buttonAjouter2'} onClick={()=>{letContainerFormationCartedesappear()}}>+ Nouveau service</button>   
+                        <div className={MinusAddCarte===false?'containerNomDescription':'containerNomDescription2'}>
+                            <img src={cross} className='fermerFormFormationModifFiche'onClick={()=>{letContainerAppearFromAddCarte()}}></img>
+                            <input type='text' placeholder='Nom de la formation' className='inputNom' onChange={(e)=>setFormationCarteName(e.target.value)}></input>
+                            <textarea type='text' placeholder='Descriptif de la formation' className='inputDescriptif' rows="10" cols="30"onChange={(e)=>setFormationCarteDescriptif(e.target.value)}></textarea>
+                            <input type='number' placeholder='prix de la formation' className='inputNom' onChange={(e)=>{setFormationCartePrix(e.target.value)}}></input>
+                            <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={()=>{formationCarteModif()}}></input>
+                        </div>
+                        <div className={ModifFormationCarte===false?'containerNomDescription':'containerNomDescription2'}>
+                            <div className='containerModifFormationPAndCross'>
+                                <p>Modifier Service</p>
+                                <img src={cross} className='fermerFormFormationModifFiche2'onClick={()=>{letContainerCarteAppear()}}></img>
+                            </div> 
+                            <input type='text' placeholder='Nom de la formation' className='inputNom' value={ModificationFormationCarteNom} onChange={(e)=>{setModificationFormationCarteNom(e.target.value)}}></input>
+                            <textarea type='text' placeholder='Descriptif de la formation' className='inputDescriptif' rows="10" cols="30" value={ModificationFormationCarteDescriptif} onChange={(e)=>{setModificationFormationCarteDescriptif(e.target.value)}}></textarea>
+                            <input type='number' placeholder='prix de la formation' className='inputNom' value={ModificationFormationCartePrix} onChange={(e)=>{setModificationFormationCartePrix(e.target.value)}}></input>
+                            <input   type='submit' className='buttonValidModifForm' value={'Valider modifications'} onClick={()=>{ModifFormationCarteSecond()}}></input>
+                        </div>   
                     </div>
                 </div>
                 <div className={test===true?'containerInformations':'containerInformations2'}>

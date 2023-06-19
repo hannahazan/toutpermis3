@@ -74,6 +74,23 @@ routerFicheEcolePrincipale.get('/One/:UserPseudo', function (req, res) {
       }
     })
   })
+  routerFicheEcolePrincipale.put('/addFormationCarte/:EcoleName',(req,res) => {
+    FicheEcolePrincipale.updateOne({EcoleName:req.params.EcoleName},{$push:{FormationCarte:{$each:[req.body.FormationCarte],$position:0}}},function(err,data){
+      console.log(req.body)
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
   routerFicheEcolePrincipale.put('/addHorairesBureau/:EcoleName',(req,res) => {
     FicheEcolePrincipale.updateOne({EcoleName:req.params.EcoleName},{$push:{HorairesBureau:{$each:[req.body.HorairesBureau],$position:0}}},function(err,data){
       console.log(req.body)
@@ -127,6 +144,23 @@ routerFicheEcolePrincipale.get('/One/:UserPseudo', function (req, res) {
   })
   routerFicheEcolePrincipale.put('/removeFormation/:EcoleName',(req,res) => {
     FicheEcolePrincipale.updateOne({EcoleName:req.params.EcoleName},{$pull:{Formation:req.body.Formation}},function(err,data){
+      console.log(req.body)
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
+  routerFicheEcolePrincipale.put('/removeFormationCarte/:EcoleName',(req,res) => {
+    FicheEcolePrincipale.updateOne({EcoleName:req.params.EcoleName},{$pull:{FormationCarte:req.body.FormationCarte}},function(err,data){
       console.log(req.body)
       if(err){
         res.sendStatus(404)
