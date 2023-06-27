@@ -24,15 +24,24 @@ routerFicheCouverture.post("/", upload.single('file'), async (req, res) => {
         UserPseudo:req.body.UserPseudo,
         CouvertureUrl: req.file !==null? "/data/uploads/" + req.file.filename:"",
         PictureName:req.file.originalname, 
+        idCouv:req.body.idCouv
       });
       await myFicheCouverture.save();
       console.log(req.file)
       console.log(req.body)
-      res.json({ message: "Created" });
+      res.json({ message: "Created couv" });
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
   });
+  routerFicheCouverture.get('/AvecId/:idCouv', function (req, res) {
+    FicheCouverture.findOne({idCouv: req.params.idCouv }, (err, data) => {
+       res.send(data)
+       console.log(data)
+     }
+     )
+   });
+ 
 
   routerFicheCouverture.get('/:EcoleName', function (req, res) {
     FicheCouverture.findOne({EcoleName: req.params.EcoleName }, (err, data) => {

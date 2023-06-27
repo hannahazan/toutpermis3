@@ -5,6 +5,7 @@ const ficheCouverture = new mongoose.Schema(
         UserPseudo:String,
         CouvertureUrl:String,
         PictureName:String,
+        idCouv:Number,
     });
  
      

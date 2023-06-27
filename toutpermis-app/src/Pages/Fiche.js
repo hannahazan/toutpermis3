@@ -11,6 +11,7 @@ import arrow from '../images/iconsAwesome/arrow-right-solid.svg'
 import trash from '../images/iconsAwesome/trash-solid.svg'
 import modif from '../images/iconsAwesome/gear-solid (1).svg'
 import cross from '../images/iconsAwesome/xmark-solid (1).svg'
+import picEquipe from '../images/CardImage/Rectangle 519.png'
 
 
 
@@ -148,10 +149,24 @@ const Fiche=()=>{
     const [uniquIdForm,setUniqueIdForm]=useState(Number)
     const [isFormDelete,setIsFormDelete]=useState(false)
     const [FormationNameSup,setFormationNameSup]=useState(null)
-    
-    useEffect(()=>{
-        console.log(`${CheckPopUpSupOpen} que se passe-t-il encore`)
-    })
+    /**************************identifier logo et couv****************************************************/
+    const [IdLogo,setIdLogo]=useState(Number)
+    const [LogoNew,setLogoNew]=useState([])
+    const [couvNew,setCouvNew]=useState([])
+    /***************************info upload Equipes********************************************************** */
+    const [EquipesInfo,setEquipesInfo]=useState([])
+    const [UploadEquipes,setUploadEquipes]=useState(null)
+    const [MinusEquipe,setMinusEquipe]=useState(false)
+    const [MinusAddMembre,setMinusAddMembre]=useState(false)
+    const [NameMemberEquipe,setNameMemberEquipe]=useState(String)
+    const [FonctionMemberEquipe,setFonctionMemberEquipe]=useState(String)
+    const [OpenPopUpDeleteFromEquipe,setOpenPopUpDeleteFromEquipe]=useState(false)
+    const [NameEquipe,setNameEquipe]=useState(String)
+    const [IdEquipe,setIdEquipe]=useState(String)
+    const [EquipeUrl,setEquipeUrl]=useState(String)
+    const [EquipePictureName,setEquipePictureName]=useState(String)
+    const [ModifyEquipe,setModifyEquipe]=useState(false)
+    const [IdEquipeModify,setIdEquipeModify]=useState(String)
     /**************openPopUp*************** */
     const OpenPopUp=(ecolePop)=>{
         setEcoleSup(ecolePop)
@@ -171,8 +186,23 @@ const Fiche=()=>{
         setCheckPopUpSupOpen(true)
         setFormationNameSup(NameForm)
     }
+    const closePopupWithoutDeleting=()=>{
+        setCheckPopUpSupOpen(false)
+        setisFormCarteDelete(false)
+        setIsFormDelete(false)
+        setOpenPopUpDeleteFromEquipe(false)
+    }
+    const OpenPopUpGeneral=(HookOpen,HookOpenFrom,HookId,id,HookName,Name)=>{
+        HookOpen(true)
+        HookId(id)
+        HookName(Name)
+        HookOpenFrom(true)
+    }
     useEffect(()=>{
         console.log(`${isFormCarteDelete} tu la vois ma fucking variable?!!!`)
+        console.log(`${OpenPopUpDeleteFromEquipe} la variable bool équipe`)
+        console.log(`${NameEquipe} la variable Nom équipe`)
+        console.log(`${IdEquipe} la variable id équipe`)
     })
     /****************modification formation et delete Hook********************** */
     const [ModifFormation,setModifFormation]=useState(false)
@@ -256,7 +286,7 @@ const Fiche=()=>{
                     alert(FicheFormation.Formation[i].categorie)
                     setIsCategorieFormation(true)
                     alert(isCategorieFormation)
-                    console.log(FicheFormation.Formation[i].categorie)
+                    console.log(FicheFormation.Formation[i].categorie)setEcoleNameget
                     console.log(OngletFormations)
                     break
                }
@@ -331,7 +361,7 @@ const Fiche=()=>{
   }
     /**********************Delete fiche******************** */
     const deleteOneFiche=(valeur,id)=>{
-    if(isFormDelete===false && isFormCarteDelete===false)    
+    if(isFormDelete===false && isFormCarteDelete===false && OpenPopUpDeleteFromEquipe==false)    
    { setCheckPopUpSupOpen(false)
     axios
    .delete(`http://localhost:5000/FicheEcolePrincipale/delete/${valeur}`)
@@ -356,6 +386,16 @@ const Fiche=()=>{
     .catch(error => {
     console.log(error);
     })   }
+    else if(OpenPopUpDeleteFromEquipe){
+        setCheckPopUpSupOpen(false)
+        axios
+        .delete(`http://localhost:5000/FicheEquipes/delete/${IdEquipe}`)
+        .then((response)=>{(console.log(response.data))
+            console.log("je suis bien ici")
+              setOpenPopUpDeleteFromEquipe(false)
+              //getFicheFormation()
+              getEquipe()
+    })}
    else 
   { 
    setCheckPopUpSupOpen(false)
@@ -463,26 +503,34 @@ const Fiche=()=>{
         .catch((err) => console.error(err));
      }
     /******************get part*****************************/
-    const getCouverture=()=>{
+
+    const getCouverturewithId=()=>{
         axios
-    .get(`http://localhost:5000/FicheCouverture/${Fiche.EcoleName}`)
+        .get(`http://localhost:5000/FicheCouverture/AvecId/${IdLogo}`)
+        .then((res) => {
+          console.log(setCouvNew(res.data))
+          console.log('ca fonctionne?')
+          ;
+        })
+        .catch((err) => console.error(err));
+        }
+    
+
+    const getLogowithId=()=>{
+        axios
+    .get(`http://localhost:5000/FicheLogo/AvecId/${IdLogo}`)
     .then((res) => {
-      console.log(setCouverture(res.data))
-      console.log('ca fonctionne?')
+      console.log(setLogoNew(res.data))
+      console.log('ca fonctionne pour le nouveau logo?')
       ;
     })
     .catch((err) => console.error(err));
     }
-    const getLogo=()=>{
-        axios
-    .get(`http://localhost:5000/FicheLogo/${Fiche.EcoleName}`)
-    .then((res) => {
-      console.log(setLogo(res.data))
-      console.log('ca fonctionne?')
-      ;
+   
+    useEffect(()=>{
+        console.log(`${LogoNew} voyons voir ça`)
     })
-    .catch((err) => console.error(err));
-    }
+
     const getFiche=()=>{
         axios
     .get(`http://localhost:5000/FicheEcolePrincipale/creation/${EcoleName}`)
@@ -494,19 +542,6 @@ const Fiche=()=>{
     })
     .catch((err) => console.error(err));
     }
-    /*const getFicheFormation=()=>{
-        axios
-    .get(`http://localhost:5000/FicheEcolePrincipale/creation/${EcoleName}`)
-    .then((res) => {
-     console.log(setFicheFormation(res.data) )
-     alert('Après')
-     console.log(`${FicheFormation} je suis la fiche formation`) 
-     isOngletFormationsameAsFicheCategorieDelete()
-      ;
-    })
-    .catch((err) => console.error(err));
-    }*/
-    
    
     useEffect(()=>{
         console.log(MinusFormations)
@@ -516,6 +551,18 @@ const Fiche=()=>{
         console.log(uploadCouv)   
               
     })
+
+    const getEquipe=()=>{
+        axios
+        .get(`http://localhost:5000/FicheEquipes/${EcoleName}`)
+        .then((res) => {
+          setEquipesInfo(res.data) 
+          console.log(EquipesInfo)
+          ;
+        })
+        .catch((err) => console.error(err));
+    }
+
    
     /******************open formulaire descriptif modif et ferme apparition descriptif************************ */
     const closeApperçusDescriptifEtModdif=()=>{
@@ -701,11 +748,13 @@ const ModifFormationCarteSecond=()=>{
         .catch(error => {
         console.log(error);
         });
+       
         const dataLogo= new FormData
         dataLogo.append("name","martine")
         dataLogo.append('file',uploadLogo)
         dataLogo.append('UserPseudo',connectedUser)
         dataLogo.append('EcoleName',FicheLien.EcoleName)
+        
 
         axios.post("http://localhost:5000/FicheLogo",dataLogo,config)
         .then((response)=>{(console.log(response.data))
@@ -728,6 +777,7 @@ async function onSubmit(e) {
     data.append('file',uploadCouv)
     data.append('UserPseudo',connectedUser)
     data.append('EcoleName',Fiche.EcoleName)
+    data.append("idCouv",IdLogo)
     const config = {
         headers: {
           'content-type': 'multipart/form-data'
@@ -736,7 +786,7 @@ async function onSubmit(e) {
     
     axios.post("http://localhost:5000/FicheCouverture",data,config)
     .then((response)=>{(console.log(response.data))
-        getCouverture()
+        getCouverturewithId()
     }) 
     .catch(error => {
     console.log(error);
@@ -746,33 +796,113 @@ async function onSubmit(e) {
     dataLogo.append('file',uploadLogo)
     dataLogo.append('UserPseudo',connectedUser)
     dataLogo.append('EcoleName',Fiche.EcoleName)
+    dataLogo.append("idLogo",IdLogo)
+    
 
     axios.post("http://localhost:5000/FicheLogo",dataLogo,config)
     .then((response)=>{(console.log(response.data))
-        getLogo()
+        getLogowithId()
     }) 
     .catch(error => {
     console.log(error);
     });
     
 }
-/***************************fonction récupération d'évènements******************************************** */
-const initialeSelected=()=>{
-    const element=document.getElementsByTagName("select")
 
-    let newelement=[]
-    for(let i=0;i<=element.length;i++){
-      
-     if(i)   
-    { newelement.push(element[i].selectedIndex=0)
-        console.log(newelement)
-        return
-  
-} 
-    else console.log("c'est quoi ton pb")  
-    } 
+async function onSubmitEquipes(e) {
+    e.preventDefault();
+    const dataEquipes= new FormData
+    dataEquipes.append("name","martine")
+    dataEquipes.append('file',UploadEquipes)
+    dataEquipes.append('UserPseudo',connectedUser)
+    dataEquipes.append('EcoleName',Fiche.EcoleName)
+    dataEquipes.append("idEquipes",IdLogo)
+    dataEquipes.append("Fonction",FonctionMemberEquipe)
+    dataEquipes.append("Nom",NameMemberEquipe)
+    dataEquipes.append("logoUrl",EquipeUrl)
+    dataEquipes.append("pictureName",EquipePictureName)
+    const config = {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+    }
+    
+    axios.post("http://localhost:5000/FicheEquipes",dataEquipes,config)
+    .then((response)=>{(console.log(response.data))
+     getEquipe()
+     setMinusAddMembre(false)
+     setUploadEquipes(null)
+    }) 
+    .catch(error => {
+    console.log(error);
+    });
     
 }
+async function onSubmitModifyEquipes(e) {
+    e.preventDefault();
+    const dataEquipes= new FormData
+    dataEquipes.append("name","martine")
+    dataEquipes.append('file',UploadEquipes)
+    dataEquipes.append('UserPseudo',connectedUser)
+    dataEquipes.append('EcoleName',Fiche.EcoleName)
+    dataEquipes.append("idEquipes",IdLogo)
+    dataEquipes.append("Fonction",FonctionMemberEquipe)
+    dataEquipes.append("Nom",NameMemberEquipe)
+    dataEquipes.append("logoUrl",EquipeUrl)
+    dataEquipes.append("pictureName",EquipePictureName)
+    const config = {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+    }
+    
+    axios.post("http://localhost:5000/FicheEquipes",dataEquipes,config)
+    .then((response)=>{(console.log(response.data))
+     setUploadEquipes(null)
+    }) 
+    .catch(error => {
+    console.log(error);
+    });
+    
+    axios
+    .delete(`http://localhost:5000/FicheEquipes/delete/${IdEquipeModify}`)
+    .then((response)=>{(console.log(response.data))
+        getEquipe()
+        setModifyEquipe(false)
+        setUploadEquipes(null)
+       }) 
+    .catch(error => {
+        console.log(error);
+        });
+    
+}
+
+
+const uploadLogoId=(e)=>{
+    setUploadLogo(e.target.files[0])
+    const idtyLogo=Date.now()
+    setIdLogo(idtyLogo)
+}
+const uploadCouvId=(e)=>{
+    setUploadCouv(e.target.files[0])
+    const idtyLogo=Date.now()
+    setIdLogo(idtyLogo)
+}
+const uploadEquipesId=(e)=>{
+    setUploadEquipes(e.target.files[0])
+    const idtyLogo=Date.now()
+    setIdLogo(idtyLogo)
+}
+const ModifUploadEquipe=(pictureName,url,id,name,fonction)=>{
+    setEquipePictureName(pictureName)
+    setEquipeUrl(url)
+    setModifyEquipe(true)
+    setIdEquipeModify(id)
+    setNameMemberEquipe(name)
+    setFonctionMemberEquipe(fonction)
+}
+/***************************fonction récupération d'évènements******************************************** */
+
 const getBackInitiale=()=>{
     setCreate(false)
     setAddEcole(false)
@@ -801,15 +931,15 @@ const getBackInitiale=()=>{
     {document.getElementsByTagName('select')[i].selectedIndex=0
     console.log("moi je m'appelle weshden")
     }
+    setCouvNew([])
+    setLogoNew([])
+    setEquipesInfo([])
    
 }
 const getBackInitialeLien=()=>{
     setCreate(false)
     setAddEcole(false)
     setTest(false)
-}
-const resetForm=()=>{
-    document.getElementById("resetDescriptif").reset()
 }
 
 
@@ -831,12 +961,12 @@ useEffect(()=>{
         <div className={Create===true || test===true ?'fiche':'fiche2'}>
             <Navbar/>
             <div className={CheckPopUpSupOpen===true?'containerPopupSupprimerFiche':'containerPopupSupprimerFiche2'}>
-                <div className='containerDeplacementPopUp'>
+                <div className={isFormDelete===true || isFormCarteDelete==true?'containerDeplacementPopUpDelete':OpenPopUpDeleteFromEquipe==true?'containerDeplacementPopUpDeleteEquipe':'containerDeplacementPopUp'}>
                     <p>Êtes-vous sûr de vouloir supprimer</p>
                     {isFormDelete===false && isFormCarteDelete===false?<p className='pValuePopUp'>{EcoleSup}</p>:<p className='pValuePopUp'>{FormationNameSup}</p>}
                     <div className='containerButtonPopUpSup'>
                         <button className='ButtonPopUpSupOui' onClick={()=>{deleteOneFiche(EcoleSup,uniquIdForm)}}>oui</button>
-                        <button className='ButtonPopUpSupNon' onClick={()=>{setCheckPopUpSupOpen(false)}}>non</button>
+                        <button className='ButtonPopUpSupNon' onClick={()=>{closePopupWithoutDeleting()}}>non</button>
                     </div>
                 </div>
             </div>
@@ -871,12 +1001,12 @@ useEffect(()=>{
                 <div className={Create===true?'containerInformations':'containerInformations2'}>
                     <p className='pInformations'>Informations</p> 
                     <div className='containerCouvUpload'>
-                    {Couverture.length!=0?<img src={Couverture.CouvertureUrl} className='imgCouverture'></img>: <img src={couv} className='imgCouverture'></img>}
-                        <input  type="file" id="imageFile" accept="image/*" placeholder='uploadCouv'  className='uploadHidden'onChange={(e)=>{setUploadCouv(e.target.files[0])}} multiple></input>
+                    {couvNew.length!=0?<img src={couvNew.CouvertureUrl} className='imgCouverture'></img>: <img src={couv} className='imgCouverture'></img>}
+                        <input  type="file" id="imageFile" accept="image/*" placeholder='uploadCouv'  className='uploadHidden'onChange={(e)=>{uploadCouvId(e)}} multiple></input>
                         <div className='uploadFront'>Modifier Couverture</div>
-                        <input  type="file" id="imageFile" accept="image/*" className='uploadLogoHidden' onChange={(e)=>{setUploadLogo(e.target.files[0])}}></input>
+                        <input  type="file" id="imageFile" accept="image/*" className='uploadLogoHidden' onChange={(e)=>{uploadLogoId(e)}}></input>
                         <div className='uploadfrontLogo'>Modifier Logo</div>
-                        {Logo.length!=0?<img src={Logo.logoUrl}  className='uploadLogo'></img>:<div className='uploadLogo'>
+                        {LogoNew.length!=0?<img src={LogoNew.logoUrl}  className='uploadLogo'></img>:<div className='uploadLogo'>
                             <p className='pR'>R</p>
                             <p>C</p>
                         </div>}
@@ -1913,7 +2043,52 @@ useEffect(()=>{
                             <input   type='submit' className='buttonValidModifForm' value={'Valider modifications'} onClick={()=>{ModifFormationCarteSecond()}}></input>
                         </div>   
                     </div>
+                    <div className='pFormationAndLogoMinus'>
+                        <p>Equipe</p>
+                        {MinusEquipe===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusEquipe===false?setMinusEquipe(true):setMinusEquipe(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusEquipe===false?setMinusEquipe(true):setMinusEquipe(false)}}>-</p></div>}
+                    </div>
+                    <div className={MinusEquipe===false?'containerFormation2':'containerFormation'}>
+                        <div className='pForfaitAndLogoMinusEquipe'>
+                                <button  className={EquipesInfo.length==0 && MinusAddMembre==false?'buttonAjouterMembre':'buttonAjouterMembre2'} onClick={()=>{setMinusAddMembre(true)}}>+ Nouveau collaborateur</button>
+                        </div>
+                        <div className={MinusAddMembre===false?'containerNomDescription':'containerNomDescription2'}>
+                            <img src={cross} className='fermerFormFormationModifFiche'onClick={()=>{setMinusAddMembre(false)}}></img>
+                            <input  type="file" id="imageFile" accept="image/*"  placeholder='uploadEquipes' className='UploadEquipe'  onChange={(e)=>{uploadEquipesId(e)}} multiple></input>
+                            {UploadEquipes==null?<div  className='PhotoEquipe'>Télécharger Photo</div>:<div  className='PhotoEquipe'>Photo téléchargée</div>}
+                            <input type='text' placeholder='Nom' className='inputNom' onChange={(e)=>setNameMemberEquipe(e.target.value)}></input>
+                            <input type='text' placeholder='Fonction' className='inputNom'onChange={(e)=>setFonctionMemberEquipe(e.target.value)}></input>
+                            <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={onSubmitEquipes}></input>
+                        </div>
+                        <div className={ModifyEquipe===false?'containerNomDescription':'containerNomDescription2'}>
+                            <img src={cross} className='fermerFormFormationModifFiche'onClick={()=>{setModifyEquipe(false)}}></img>
+                            <img src={EquipeUrl} className={UploadEquipes==null?'PhotoEquipeModif':'PhotoEquipeModif2'}></img>
+                            <input  type="file" id="imageFile" accept="image/*"  placeholder='uploadEquipes' className='UploadEquipe'  onChange={(e)=>{uploadEquipesId(e)}} multiple></input>
+                            {UploadEquipes==null?<div  className='PhotoEquipe'>modifier photo</div>:<div  className='PhotoEquipe'>Photo modifiée</div>}
+                            <input type='text' placeholder='Nom' className='inputNom' value={NameMemberEquipe} onChange={(e)=>setNameMemberEquipe(e.target.value)}></input>
+                            <input type='text' placeholder='Fonction' className='inputNom' value={FonctionMemberEquipe} onChange={(e)=>setFonctionMemberEquipe(e.target.value)}></input>
+                            <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={onSubmitModifyEquipes}></input>
+                        </div>
+                        <div className={EquipesInfo.length!=0 && MinusAddMembre==false && ModifyEquipe==false?'containerEquipeInfo':'containerEquipeInfo2'}>
+                            {EquipesInfo.map((equi)=>
+                            <div className='containerPhotoIconEquipe'>
+                                <div className='cardInfoEquipe'> 
+                                {!equi.logoUrl? <img src={picEquipe} className='picEquipeDefault'></img>:<img src={equi.logoUrl} className='picEquipe'></img>}
+                                    <p className='NomEquipe'>{equi.Nom}</p>
+                                    <p className='FonctionEquipe'>{equi.Fonction}</p>          
+                                </div>
+                                <div className='liseretEquipeCard'></div>
+                                <div className='containerIconEquipe'>
+                                        <img src={modif} onClick={()=>{ModifUploadEquipe(equi.pictureName,equi.logoUrl,equi._id,equi.Nom,equi.Fonction)}} className='iconForfaitFiche'></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpGeneral(setCheckPopUpSupOpen,setOpenPopUpDeleteFromEquipe,setIdEquipe,equi._id,setNameEquipe,equi.Nom)}}></img>
+                                </div>
+                            </div>
+                            )}
+                        </div>
+                        <button  className={EquipesInfo!=0 && MinusAddMembre===false && ModifyEquipe==false?'buttonAjouterMembreBottom':'buttonAjouterMembre2'} onClick={()=>{setMinusAddMembre(true)}}>+ Nouveau collaborateur</button>
+                    </div>
                 </div>
+
+
                 <div className={test===true?'containerInformations':'containerInformations2'}>
                     <div className='containerTitreArrow'>
                         <img src={arrow}  className='arrowFicheReturn' onClick={()=>{getBackInitialeLien()}}></img>

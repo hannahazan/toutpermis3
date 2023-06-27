@@ -25,6 +25,15 @@ routerFicheLogo.get('/:EcoleName', function (req, res) {
     }
     )
   });
+  
+  routerFicheLogo.get('/AvecId/:idLogo', function (req, res) {
+    FicheLogo.findOne({idLogo: req.params.idLogo }, (err, data) => {
+       res.send(data)
+       console.log(data)
+     }
+     )
+   });
+ 
 
 // **CreatePost**/////////////////////////////////////////////////////
 routerFicheLogo.post("/", upload.single('file'), async (req, res) => {
@@ -42,7 +51,8 @@ routerFicheLogo.post("/", upload.single('file'), async (req, res) => {
         logoUrl: req.file !==null? "/data/uploads/" + req.file.filename:"",
         pictureName:req.file.originalname,
         UserPseudo:req.body.UserPseudo,
-        EcoleName:req.body.EcoleName   
+        EcoleName:req.body.EcoleName, 
+        idLogo:req.body.idLogo  
       });
       await myFicheLogo.save();
       console.log(req.file)
@@ -53,8 +63,8 @@ routerFicheLogo.post("/", upload.single('file'), async (req, res) => {
     }
   });
 
-  routerFicheLogo.delete('/delete/:EcoleName',(req,res)=>{
-    FicheLogo.findOneAndDelete({EcoleName:req.params.EcoleName},function(err,data){
+  routerFicheLogo.delete('/delete/:_id',(req,res)=>{
+    FicheLogo.findOneAndDelete({_id:req.params._id},function(err,data){
       if(err){
         res.sendStatus(404)
       }

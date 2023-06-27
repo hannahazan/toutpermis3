@@ -685,9 +685,18 @@
   bottom: 500px;
   right: 15px;
 }
+/**********nouvelle position en fonction d'où la poup est déclenchée*************************/
 .containerDeplacementPopUp{
   position: relative;
 
+}
+.containerDeplacementPopUpDelete{
+  top: 405px;
+  position: relative;
+}
+.containerDeplacementPopUpDeleteEquipe{
+  position: relative;
+  top: 311px;
 }
 .containerPopupSupprimerFiche p{
   margin:0px
@@ -974,4 +983,170 @@
   background-color: #37beb4;
   align-self: self-end;
   margin-top: 13px;
+}
+.buttonAjouterMembre{
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 66%;
+  height: 21px;
+  font-family: 'Poppins';
+  color: white;
+  border-radius: 15px;
+  align-items: center;
+  font-size: 15px;
+  font-weight: normal;
+  background-color: #e8937c;
+ margin-top: 15px;
+}
+.buttonAjouterMembreBottom{
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 66%;
+  height: 21px;
+  font-family: 'Poppins';
+  color: white;
+  border-radius: 15px;
+  align-items: center;
+  font-size: 15px;
+  font-weight: normal;
+  background-color: #e8937c;
+  align-self: self-end;
+}
+.UploadEquipe{
+  position: relative;
+  z-index: 1;
+  top: 37px;
+  height: 50px;
+  margin: 0px;
+  opacity: 0;
+}
+.PhotoEquipe{
+  height: 40px;
+  text-align: center;
+  width: 240px;
+  padding-top: 10px;
+  background-color: #37beb4;
+  color: white;
+  border-radius: 15px;
+  font-size: 19px;
+  position: relative;
+  bottom: 22px;
+}
+
+.containerEquipeInfo{
+  display: flex;
+  flex-direction: row; 
+  overflow-x: scroll;
+  margin-bottom: 35px;
+  margin-top: 15px;
+}
+.picEquipe{
+  width:auto;
+  background-color: white;
+  border-radius: 12px;
+  height: 150px;
+}
+.picEquipeDefault{
+  width: 100%;
+  background-color: white;
+  border-radius: 12px;
+  height: 119px;
+}
+.cardInfoEquipe{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height:20px
+}
+.cardInfoEquipe p{
+  margin: 0px;
+  width: fit-content;
+}
+.containerEquipeInfo2{
+  display: none;
+}
+.buttonAjouterMembre2{
+  display:none
+}
+.FiltreEquipe{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex: 0 0 auto;
+  width: 100%;
+  height: 150px;
+  background-color: #236468;
+  position: relative;
+  position: 2;
+  z-index: 2;
+  bottom: 200px;
+  opacity: 0.75;
+  border-radius: 12px;
+}
+.containerIconEquipe{
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+  height: 20px;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+.containerImgFiltreEquipe{
+  display: flex;
+  flex-direction:row ;
+}
+.containerPhotoIconEquipe{
+  display: flex;
+  flex-direction: column;
+  width: 227px;
+  height: 235px;
+  background-color: white;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  border-radius: 12px;
+  border: solid 1px #dfe1e6;
+  background-color: #f8f9f9;
+  flex: 0 0 auto;
+  margin-left: 10px;
+}
+.NomEquipe{
+  color: #e8937c;
+  margin-top: 10px !important;
+}
+.FonctionEquipe{
+  margin: 0px;
+  color: #236468;
+}
+.liseretEquipeCard{
+  width: 73%;
+  height: 2px;
+  background-color: #ebecf0;
+  margin-top: 5px
+}
+.pForfaitAndLogoMinusEquipe{
+  display: flex;
+  flex-direction: row;
+  justify-content:end;
+  color: #236468;
+  font-size: 17px;
+  align-items: center;
+  height: fit-content;
+}
+.PhotoEquipeModif{
+  width: 50%;
+  height: auto;
+  border-radius: 12px;
+}
+.PhotoEquipeModif2{
+  display:none
+
 }
