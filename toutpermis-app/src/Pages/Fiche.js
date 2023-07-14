@@ -12,6 +12,8 @@ import trash from '../images/iconsAwesome/trash-solid.svg'
 import modif from '../images/iconsAwesome/gear-solid (1).svg'
 import cross from '../images/iconsAwesome/xmark-solid (1).svg'
 import picEquipe from '../images/CardImage/Rectangle 519.png'
+import picVéhicule from '../images/CardImage/véhiculeDefaut.jpg'
+
 
 
 
@@ -153,7 +155,7 @@ const Fiche=()=>{
     const [IdLogo,setIdLogo]=useState(Number)
     const [LogoNew,setLogoNew]=useState([])
     const [couvNew,setCouvNew]=useState([])
-    /***************************info upload Equipes********************************************************** */
+    /***************************info upload Equipes***********************************************************/
     const [EquipesInfo,setEquipesInfo]=useState([])
     const [UploadEquipes,setUploadEquipes]=useState(null)
     const [MinusEquipe,setMinusEquipe]=useState(false)
@@ -167,6 +169,59 @@ const Fiche=()=>{
     const [EquipePictureName,setEquipePictureName]=useState(String)
     const [ModifyEquipe,setModifyEquipe]=useState(false)
     const [IdEquipeModify,setIdEquipeModify]=useState(String)
+    /***************************info upload véhicule***********************************************************/
+    const [VéhiculeInfo,setVéhiculeInfo]=useState([])
+    const [UploadVéhicule,setUploadVéhicule]=useState(null)
+    const [MinusVéhicule,setMinusVéhicule]=useState(false)
+    const [MinusAddVéhicule,setMinusAddVéhicule]=useState(false)
+    const [NameMemberVéhicule,setNameMemberVéhicule]=useState(String)
+    const [FonctionVéhicule,setFonctionVéhicule]=useState(String)
+    const [OpenPopUpDeleteFromvéhicule,setOpenPopUpDeleteFromVéhicule]=useState(false)
+    const [NameVéhicule,setNameVéhicule]=useState(String)
+    const [IdVéhicule,setIdVéhicule]=useState(String)
+    const [VéhiculeUrl,setVéhiculeUrl]=useState(String)
+    const [VéhiculePictureName,setVéhiculePictureName]=useState(String)
+    const [ModifyVéhicule,setModifyVéhicule]=useState(false)
+    const [IdVéhiculeModify,setIdVéhiculeModify]=useState(String)
+    /********************inclusivité***********************************/
+    const [MinusTEInclusive,setMinusTEInclusive]=useState(false)
+    const [MinusTEILangue,setMinusTELangue]=useState(false)
+    const [MinusTEIAccompHandi,setMinusTEAccompHandi]=useState(false)
+    const [MinusTEICognitif,setMinusTECognitif]=useState(false)
+    const [MinusTEIAuditif,setMinusTEAuditif]=useState(false)
+    const [MinusTEIAmménage,setMinusTEAmménage]=useState(false)
+    const [MinusTEIMoteur,setMinusTEMoteur]=useState(false)
+    const [CheckPara,setCheckPara]=useState(false)
+    const [CheckTetra,setCheckTetra]=useState(false)
+    const [CheckHemi,setCheckHemi]=useState(false)
+    const [CheckAmpuSup,setCheckAmpuSup]=useState(false)
+    const [CheckAmpuInf,setCheckAmpuInf]=useState(false)
+    const [MinusTEISurdité,setMinusTESurdité]=useState(false)
+    const [checkSigne,setCheckSigne]=useState(false)
+    const [checkLabiale,setCheckLabiale]=useState(false)
+    const [checkDefAud,setCheckDefAud]=useState(false)
+    const [checkDys,setCheckDys]=useState(false)
+    const [checkTDAH,setCheckTDAH]=useState(false)
+    const [checkBoule,setCheckBoule]=useState(false)
+    const [checkCombiné,setCheckcombiné]=useState(false)
+    const [checkCercle,setCheckCercle]=useState(false)
+    const [checkPedalier,setCheckPedalier]=useState(false)
+    const [checkAnglais,setCheckAnglais]=useState(false)
+    const [checkEspagnol,setCheckEspagnol]=useState(false)
+    const [checkAllemand,setCheckAllemand]=useState(false)
+    const [checkPortugais,setCheckPortugais]=useState(false)
+    const [checkItalien,setCheckItalien]=useState(false)
+    const [ValiderInclusive,setValiderinclusive]=useState(false)
+    const [ModifySecondInclusive,setModifySecondInclusive]=useState(false)
+    /*****************Paiement******************************/
+    const [MinusTEPaiement,setMinusTEPaiement]=useState(false)
+    const [checkBancaire,setCheckBancaire]=useState(false)
+    const [checkEspeces,setCheckEspece]=useState(false)
+    const [checkCheque,setCheckCheque]=useState(false)
+    const [checkCadeau,setCheckCadeau]=useState(false)
+    const [ValiderPaiment,setValiderPaiment]=useState(false)
+    const [ModifySecondPaiement,setModifySecondPaiment]=useState(false)
+        
     /**************openPopUp*************** */
     const OpenPopUp=(ecolePop)=>{
         setEcoleSup(ecolePop)
@@ -274,28 +329,7 @@ const Fiche=()=>{
         else {
             setIsCategorieCarte(false)}
     }
-   /* const isOngletFormationsameAsFicheCategorieDelete=()=>{
-        alert("ha bon")
-        setOngletFormations(OngletFormations)
-        testCategorie=OngletFormations
-        alert(testCategorie)
-        alert(Fiche.Formation.length)
-            for(let i=0;i<FicheFormation.Formation.length;i++){
-               if(FicheFormation.Formation[i].categorie===testCategorie){
-                    console.log('pourquoi tu rentres là-dedans')
-                    alert(FicheFormation.Formation[i].categorie)
-                    setIsCategorieFormation(true)
-                    alert(isCategorieFormation)
-                    console.log(FicheFormation.Formation[i].categorie)setEcoleNameget
-                    console.log(OngletFormations)
-                    break
-               }
-               else{
-               console.log("rentre plutôt la-dedans")
-               setIsCategorieFormation(false)
-               }
-            }
-    }*/
+
     const letContainerFormationdesappear=()=>{
         setIsCategorieFormation(false)
         setMinusAddFormations(true)
@@ -324,22 +358,59 @@ const Fiche=()=>{
     }
     /**********************Modification types d'établissement avant et après le premier valider******************************** */
     const ModifSecondTypeEtablissement=(Hook,setHook)=>{
+        console.log('je rentre dans aucune condition')
         if(Hook===false && valider===false){
             setHook(true)
+            console.log('je rentre dans la 1er check')
         }
         else if (Hook===false && valider===true){
             setModifTypesEtablissement(true)
             console.log(ModifTypesEtablissement)
             setHook(true)
+            console.log('je rentre dans la seconde check')
         }
         else if (Hook===true && valider===true){
             setModifTypesEtablissement(true)
             setHook(false)
+            console.log('je rentre dans la 3eme check')
+        }
+        else if(Hook==true && valider==false){
+            setHook(false)
         }
         else{
         setHook(true)
+        console.log('je rentre dans la dernière check')
     }
   }
+
+  const ModifSecondCheckBox=(Hook,setHook,HookValide,setHookModify)=>{
+    console.log('je rentre dans aucune condition')
+    if(Hook===false && HookValide==false){
+        setHook(true)
+        console.log('je rentre dans la 1er check')
+    }
+    else if (Hook===false && HookValide===true){
+        setHookModify(true)
+        setHook(true)
+        console.log('je rentre dans la seconde check')
+    }
+    else if (Hook===true && HookValide===true){
+        setHookModify(true)
+        setHook(false)
+        console.log('je rentre dans la 3eme check')
+    }
+    else if(Hook==true && HookValide==false){
+        setHook(false)
+    }
+    else{
+    setHook(true)
+    console.log('je rentre dans la dernière check')
+}
+}
+  useEffect(()=>{
+    console.log(`${checkAuto} auto checkBox`)
+    console.log(`${valider} valider checkbox`)
+  })
   const testHook=(test,test2)=>{
     if(test2===false)
     {test(true)}
@@ -359,9 +430,35 @@ const Fiche=()=>{
           })
         .catch((err) => console.error(err)); 
   }
+  const ModifSecondPaiementRequest =()=>{
+    console.log('what')
+    axios
+    .put(`http://localhost:5000/FicheEcolePrincipale/${EcoleName}`,{Cadeau:checkCadeau,Especes:checkEspeces,Bancaire:checkBancaire,Cheque:checkCheque})
+    .then((response) => {
+        console.log(setModify(response.data));
+        setModifySecondPaiment(false)
+        console.log("ca marche vraiment?")
+      })
+    .catch((err) => console.error(err)); 
+}
+
+const ModifSecondInclusive=()=>{
+    console.log('dans le paiement')
+    axios
+    .put(`http://localhost:5000/FicheEcolePrincipale/${EcoleName}`,{Espagnol:checkEspagnol,Anglais:checkAnglais,Portugais:checkPortugais,Italien:checkItalien,Boule:checkBoule,
+    Combine:checkCombiné,Cercle:checkCercle,Para:CheckPara,Tetra:CheckTetra,Hemi:CheckHemi,AmpuMI:CheckAmpuInf,AmpuMs:CheckAmpuSup
+    ,Dys:checkDys,TDAH:checkTDAH, SurPartielle:checkLabiale,Surcomplete:checkSigne,Allemand:checkAllemand
+})
+    .then((response) => {
+        console.log(setModify(response.data));
+        setModifySecondInclusive(false)
+        console.log("dans le paiement et ça marche")
+      })
+    .catch((err) => console.error(err)); 
+}
     /**********************Delete fiche******************** */
     const deleteOneFiche=(valeur,id)=>{
-    if(isFormDelete===false && isFormCarteDelete===false && OpenPopUpDeleteFromEquipe==false)    
+    if(isFormDelete===false && isFormCarteDelete===false && OpenPopUpDeleteFromEquipe==false && OpenPopUpDeleteFromvéhicule==false)    
    { setCheckPopUpSupOpen(false)
     axios
    .delete(`http://localhost:5000/FicheEcolePrincipale/delete/${valeur}`)
@@ -395,6 +492,16 @@ const Fiche=()=>{
               setOpenPopUpDeleteFromEquipe(false)
               //getFicheFormation()
               getEquipe()
+    })}
+    else if(OpenPopUpDeleteFromvéhicule){
+        setCheckPopUpSupOpen(false)
+        axios
+        .delete(`http://localhost:5000/FicheVehicule/delete/${IdVéhicule}`)
+        .then((response)=>{(console.log(response.data))
+            console.log("je suis bien ici dans un véhicule")
+              setOpenPopUpDeleteFromVéhicule(false)
+              //getFicheFormation()
+              getVéhicule()
     })}
    else 
   { 
@@ -563,6 +670,16 @@ const Fiche=()=>{
         .catch((err) => console.error(err));
     }
 
+    const getVéhicule=()=>{
+        axios
+        .get(`http://localhost:5000/FicheVehicule/${EcoleName}`)
+        .then((res) => {
+          setVéhiculeInfo(res.data) 
+          console.log(EquipesInfo)
+          ;
+        })
+        .catch((err) => console.error(err));
+    }
    
     /******************open formulaire descriptif modif et ferme apparition descriptif************************ */
     const closeApperçusDescriptifEtModdif=()=>{
@@ -614,6 +731,49 @@ const EcoleModif=()=>{
         console.log(setModify(response.data));
         setValider(true)
         console.log("ca marche vraiment?")
+      })
+    .catch((err) => console.error(err)); 
+}
+const PaiementModif=()=>{
+    console.log('dans le paiement')
+    axios
+    .put(`http://localhost:5000/FicheEcolePrincipale/${EcoleName}`,{Cadeau:checkCadeau,Especes:checkEspeces,Bancaire:checkBancaire,Cheque:checkCheque})
+    .then((response) => {
+        console.log(setModify(response.data));
+        setValiderPaiment(true)
+        console.log("dans le paiement et ça marche")
+      })
+    .catch((err) => console.error(err)); 
+}
+
+        /*Espagnol:Boolean,
+        Anglais:Boolean,
+        Portugais:Boolean,
+        Italien:Boolean,
+        Boule:Boolean,
+        Combiné:Boolean,
+        Cercle:Boolean,
+        Pedalier:Boolean,
+        Para:Boolean,
+        Tetra:Boolean,
+        Hemi:Boolean,
+        AmpuMI:Boolean,
+        AmpuMS:Boolean,
+        Dys:Boolean,
+        TDAH:Boolean,
+        SurPartielle:Boolean,
+        Surcomplete:Boolean,*/
+const InclusiveModif=()=>{
+    console.log('dans le paiement')
+    axios
+    .put(`http://localhost:5000/FicheEcolePrincipale/${EcoleName}`,{Espagnol:checkEspagnol,Anglais:checkAnglais,Portugais:checkPortugais,Italien:checkItalien,Boule:checkBoule,
+    Combine:checkCombiné,Cercle:checkCercle,Para:CheckPara,Tetra:CheckTetra,Hemi:CheckHemi,AmpuMI:CheckAmpuInf,AmpuMs:CheckAmpuSup
+    ,Dys:checkDys,TDAH:checkTDAH, SurPartielle:checkLabiale,Surcomplete:checkSigne,Allemand:checkAllemand
+})
+    .then((response) => {
+        console.log(setModify(response.data));
+        setValiderinclusive(true)
+        console.log("dans le paiement et ça marche")
       })
     .catch((err) => console.error(err)); 
 }
@@ -838,6 +998,71 @@ async function onSubmitEquipes(e) {
     });
     
 }
+async function onSubmitVéhicule(e) {
+    e.preventDefault();
+    const dataVéhicule= new FormData
+    dataVéhicule.append("name","martine")
+    dataVéhicule.append('file',UploadVéhicule)
+    dataVéhicule.append('UserPseudo',connectedUser)
+    dataVéhicule.append('EcoleName',Fiche.EcoleName)
+    dataVéhicule.append("idVéhicule",IdLogo)
+    dataVéhicule.append("Fonction",FonctionVéhicule)
+    dataVéhicule.append("Nom",NameVéhicule)
+    dataVéhicule.append("logoUrl",VéhiculeUrl)
+    dataVéhicule.append("pictureName",VéhiculePictureName)
+    const config = {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+    }
+    
+    axios.post("http://localhost:5000/FicheVehicule",dataVéhicule,config)
+    .then((response)=>{(console.log(response.data))
+     getVéhicule()
+     setMinusAddVéhicule(false)
+     setUploadVéhicule(null)
+    }) 
+    .catch(error => {
+    console.log(error);
+    });
+    
+}
+async function onSubmitModifyVéhicule(e) {
+    e.preventDefault();
+    const dataVéhicule= new FormData
+    dataVéhicule.append("name","martine")
+    dataVéhicule.append('file',UploadVéhicule)
+    dataVéhicule.append('UserPseudo',connectedUser)
+    dataVéhicule.append('EcoleName',Fiche.EcoleName)
+    dataVéhicule.append("idVéhicule",IdLogo)
+    dataVéhicule.append("Fonction",FonctionVéhicule)
+    dataVéhicule.append("Nom",NameVéhicule)
+    dataVéhicule.append("logoUrl",VéhiculeUrl)
+    dataVéhicule.append("pictureName",VéhiculePictureName)
+    const config = {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+    }
+    
+    axios.post("http://localhost:5000/FicheVehicule",dataVéhicule,config)
+    .then((response)=>{(console.log(response.data))
+    }) 
+    .catch(error => {
+    console.log(error);
+    });
+    axios
+    .delete(`http://localhost:5000/FicheVehicule/delete/${IdVéhiculeModify}`)
+    .then((response)=>{(console.log(response.data))     
+        getVéhicule()
+        setModifyVéhicule(false)
+        setUploadVéhicule(null)
+       }) 
+    .catch(error => {
+        console.log(error);
+        });
+    
+}
 async function onSubmitModifyEquipes(e) {
     e.preventDefault();
     const dataEquipes= new FormData
@@ -867,6 +1092,7 @@ async function onSubmitModifyEquipes(e) {
     axios
     .delete(`http://localhost:5000/FicheEquipes/delete/${IdEquipeModify}`)
     .then((response)=>{(console.log(response.data))
+        
         getEquipe()
         setModifyEquipe(false)
         setUploadEquipes(null)
@@ -893,6 +1119,11 @@ const uploadEquipesId=(e)=>{
     const idtyLogo=Date.now()
     setIdLogo(idtyLogo)
 }
+const uploadVehiculeId=(e)=>{
+    setUploadVéhicule(e.target.files[0])
+    const idtyLogo=Date.now()
+    setIdLogo(idtyLogo)
+}
 const ModifUploadEquipe=(pictureName,url,id,name,fonction)=>{
     setEquipePictureName(pictureName)
     setEquipeUrl(url)
@@ -900,6 +1131,14 @@ const ModifUploadEquipe=(pictureName,url,id,name,fonction)=>{
     setIdEquipeModify(id)
     setNameMemberEquipe(name)
     setFonctionMemberEquipe(fonction)
+}
+const ModifUploadVéhicule=(pictureName,url,id,name,fonction)=>{
+    setVéhiculePictureName(pictureName)
+    setVéhiculeUrl(url)
+    setModifyVéhicule(true)
+    setIdVéhiculeModify(id)
+    setNameVéhicule(name)
+    setFonctionVéhicule(fonction)
 }
 /***************************fonction récupération d'évènements******************************************** */
 
@@ -934,7 +1173,7 @@ const getBackInitiale=()=>{
     setCouvNew([])
     setLogoNew([])
     setEquipesInfo([])
-   
+    setVéhiculeInfo([])
 }
 const getBackInitialeLien=()=>{
     setCreate(false)
@@ -961,7 +1200,7 @@ useEffect(()=>{
         <div className={Create===true || test===true ?'fiche':'fiche2'}>
             <Navbar/>
             <div className={CheckPopUpSupOpen===true?'containerPopupSupprimerFiche':'containerPopupSupprimerFiche2'}>
-                <div className={isFormDelete===true || isFormCarteDelete==true?'containerDeplacementPopUpDelete':OpenPopUpDeleteFromEquipe==true?'containerDeplacementPopUpDeleteEquipe':'containerDeplacementPopUp'}>
+                <div className={isFormDelete===true || isFormCarteDelete==true?'containerDeplacementPopUpDelete':OpenPopUpDeleteFromEquipe==true || OpenPopUpDeleteFromvéhicule==true?'containerDeplacementPopUpDeleteEquipe':'containerDeplacementPopUp'}>
                     <p>Êtes-vous sûr de vouloir supprimer</p>
                     {isFormDelete===false && isFormCarteDelete===false?<p className='pValuePopUp'>{EcoleSup}</p>:<p className='pValuePopUp'>{FormationNameSup}</p>}
                     <div className='containerButtonPopUpSup'>
@@ -2068,7 +2307,7 @@ useEffect(()=>{
                             <input type='text' placeholder='Fonction' className='inputNom' value={FonctionMemberEquipe} onChange={(e)=>setFonctionMemberEquipe(e.target.value)}></input>
                             <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={onSubmitModifyEquipes}></input>
                         </div>
-                        <div className={EquipesInfo.length!=0 && MinusAddMembre==false && ModifyEquipe==false?'containerEquipeInfo':'containerEquipeInfo2'}>
+                        <div className={EquipesInfo.length!=0 && EquipesInfo.length!=1 && MinusAddMembre==false && ModifyEquipe==false?'containerEquipeInfo': EquipesInfo.length==1 && MinusAddMembre==false && ModifyEquipe==false?'containerEquipeInfo3':'containerEquipeInfo2'}>
                             {EquipesInfo.map((equi)=>
                             <div className='containerPhotoIconEquipe'>
                                 <div className='cardInfoEquipe'> 
@@ -2086,9 +2325,235 @@ useEffect(()=>{
                         </div>
                         <button  className={EquipesInfo!=0 && MinusAddMembre===false && ModifyEquipe==false?'buttonAjouterMembreBottom':'buttonAjouterMembre2'} onClick={()=>{setMinusAddMembre(true)}}>+ Nouveau collaborateur</button>
                     </div>
+
+                    <div className='pTEAndLogoMinusPaiement'>
+                        <p>Paiement acceptés</p>
+                        {MinusTEPaiement===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusTEPaiement===false?setMinusTEPaiement(true):setMinusTEPaiement(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusTEPaiement===false?setMinusTEPaiement(true):setMinusTEPaiement(false)}}>-</p></div>}
+                    </div>
+                    <div className={MinusTEPaiement===false?'containerButtonAndBoxcase2':'containerButtonAndBoxcase'}>
+                        <div className='containercheckBoxAndP'>
+                            <p>Carte Bancaire</p>
+                            <div className={checkBancaire===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{ModifSecondCheckBox(checkBancaire,setCheckBancaire,ValiderPaiment,setModifySecondPaiment)}}>
+                                <img src={check} className={checkBancaire===true?'checkTrue':'checkFalse'}></img>
+                            </div>
+                        </div>
+                        <div className='containercheckBoxAndP'>
+                            <p>Espèces</p>
+                            <div className={checkEspeces===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{ModifSecondCheckBox(checkEspeces,setCheckEspece,ValiderPaiment,setModifySecondPaiment)}}>
+                                <img src={check} className={checkEspeces===true?'checkTrue':'checkFalse'}></img>
+                            </div>
+                        </div>
+                        <div className='containercheckBoxAndP'>
+                            <p>Chèque</p>
+                            <div className={checkCheque===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{ModifSecondCheckBox(checkCheque,setCheckCheque,ValiderPaiment,setModifySecondPaiment)}}>
+                                <img src={check} className={checkCheque===true?'checkTrue':'checkFalse'}></img>
+                            </div>
+                        </div>
+                        <div className='containercheckBoxAndP'>
+                            <p>Carte et chèque cadeau</p>
+                            <div className={checkCadeau===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{ModifSecondCheckBox(checkCadeau,setCheckCadeau,ValiderPaiment,setModifySecondPaiment)}}>
+                                <img src={check} className={checkCadeau===true?'checkTrue':'checkFalse'}></img>
+                            </div>
+                        </div>
+                        <input   type='submit' className={ValiderPaiment===false?'buttonValidBoxcase':'buttonValidBoxcase2'}  value={'Valider'} onClick={()=>{PaiementModif()}}></input>
+                        <input   type='submit' className={ValiderPaiment===true && ModifySecondPaiement===false?'buttonValidBoxcaseModif':ValiderPaiment===true && ModifySecondPaiement===true?'buttonValidBoxcaseModif3':'buttonValidBoxcaseModif2'}  value={ModifySecondPaiement===false?'Modification enregistrée':'valider'} onClick={()=>{ModifSecondPaiementRequest()}}></input>
+                    </div>
+                    <div className='pFormationAndLogoMinus'>
+                        <p>Véhicules</p>
+                        {MinusVéhicule===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusVéhicule===false?setMinusVéhicule(true):setMinusVéhicule(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusVéhicule===false?setMinusVéhicule(true):setMinusVéhicule(false)}}>-</p></div>}
+                    </div>
+                    <div className={MinusVéhicule===false?'containerFormation2':'containerFormation'}>
+                        <div className='pForfaitAndLogoMinusEquipe'>
+                                <button  className={VéhiculeInfo.length==0 && MinusAddVéhicule==false?'buttonAjouterMembre':'buttonAjouterMembre2'} onClick={()=>{setMinusAddVéhicule(true)}}>+ Nouveau véhicule</button>
+                        </div>
+                        <div className={MinusAddVéhicule===false?'containerNomDescription':'containerNomDescription2'}>
+                            <img src={cross} className='fermerFormFormationModifFiche'onClick={()=>{setMinusAddVéhicule(false)}}></img>
+                            <input  type="file" id="imageFile" accept="image/*"  placeholder='uploadEquipes' className='UploadEquipe'  onChange={(e)=>{uploadVehiculeId(e)}} multiple></input>
+                            {UploadVéhicule==null?<div  className='PhotoEquipe'>Télécharger Photo</div>:<div  className='PhotoEquipe'>Photo téléchargée</div>}
+                            <input type='text' placeholder='Nom' className='inputNom' onChange={(e)=>setNameVéhicule(e.target.value)}></input>
+                            <input type='text' placeholder='Fonction' className='inputNom'onChange={(e)=>setFonctionVéhicule(e.target.value)}></input>
+                            <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={onSubmitVéhicule}></input>
+                        </div>
+                        <div className={ModifyVéhicule===false?'containerNomDescription':'containerNomDescription2'}>
+                            <img src={cross} className='fermerFormFormationModifFiche'onClick={()=>{setModifyVéhicule(false)}}></img>
+                            <img src={VéhiculeUrl} className={UploadVéhicule==null?'PhotoEquipeModif':'PhotoEquipeModif2'}></img>
+                            <input  type="file" id="imageFile" accept="image/*"  placeholder='uploadEquipes' className='UploadEquipe'  onChange={(e)=>{uploadVehiculeId(e)}} multiple></input>
+                            {UploadEquipes==null?<div  className='PhotoEquipe'>modifier photo</div>:<div  className='PhotoEquipe'>Photo modifiée</div>}
+                            <input type='text' placeholder='Nom' className='inputNom' value={NameVéhicule} onChange={(e)=>setNameVéhicule(e.target.value)}></input>
+                            <input type='text' placeholder='Fonction' className='inputNom' value={FonctionVéhicule} onChange={(e)=>setFonctionVéhicule(e.target.value)}></input>
+                            <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={onSubmitModifyVéhicule}></input>
+                        </div>
+                        <div className={VéhiculeInfo.length!=0 && VéhiculeInfo.length!=1 && MinusAddVéhicule==false && ModifyVéhicule==false?'containerEquipeInfo':VéhiculeInfo.length==1 && MinusAddVéhicule==false && ModifyVéhicule==false?'containerEquipeInfo3':'containerEquipeInfo2'}>
+                            {VéhiculeInfo.map((vehi)=>
+                            <div className='containerPhotoIconEquipe'>
+                                {console.log(VéhiculeInfo)}
+                                <div className='cardInfoEquipe'> 
+                                {!vehi.logoUrl? <img src={picVéhicule} className='picEquipeDefault'></img>:<img src={vehi.logoUrl} className='picEquipe'></img>}
+                                    <p className='NomEquipe'>{vehi.Nom}</p>
+                                    <p className='FonctionEquipe'>{vehi.Fonction}</p>          
+                                </div>
+                                <div className='liseretEquipeCard'></div>
+                                <div className='containerIconEquipe'>
+                                        <img src={modif} onClick={()=>{ModifUploadVéhicule(vehi.pictureName,vehi.logoUrl,vehi._id,vehi.Nom,vehi.Fonction)}} className='iconForfaitFiche'></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpGeneral(setCheckPopUpSupOpen,setOpenPopUpDeleteFromVéhicule,setIdVéhicule,vehi._id,setNameVéhicule,vehi.Nom)}}></img>
+                                </div>
+                            </div>
+                            )}
+                        </div>
+                        <button  className={VéhiculeInfo!=0 && MinusAddVéhicule===false && ModifyVéhicule==false?'buttonAjouterMembreBottom':'buttonAjouterMembre2'} onClick={()=>{setMinusAddVéhicule(true)}}>+ Nouveau véhicule</button>
+                    </div>
+
+                    <div className='pTEAndLogoMinusPaiement'>
+                        <p>Inclusivité</p>
+                        {MinusTEInclusive===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusTEInclusive===false?setMinusTEInclusive(true):setMinusTEInclusive(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusTEInclusive===false?setMinusTEInclusive(true):setMinusTEInclusive(false)}}>-</p></div>}
+                    </div>
+                    <div className={MinusTEInclusive===false?'containerButtonAndBoxcase2':'containerButtonAndBoxcase'}>
+                        <div className='pTEAndLogoMinusLangueMenu'>
+                            <div className='pTEAndLogoMinusLangue'>
+                                <p>Langues</p>
+                                {MinusTEILangue===false?<div className='containerMinusLangue'><p className='minusLangue' onClick={()=>{MinusTEILangue===false?setMinusTELangue(true):setMinusTELangue(false)}}>+</p></div>:<div className='containerMinusLangue'><p className='minusLangue' onClick={()=>{MinusTEILangue===false?setMinusTELangue(true):setMinusTELangue(false)}}>-</p></div>}
+                            </div>   
+                            <div className={MinusTEILangue===false?'containercheckBoxAndPLangue2':'containercheckBoxAndPLangue'}>
+                                <p>Anglais</p>
+                                <div className={checkAnglais===true?'checkBoxTrueLangue':'checkBoxFalseLangue'} onClick={()=>{ModifSecondCheckBox(checkAnglais,setCheckAnglais,ValiderInclusive,setModifySecondInclusive)}}>
+                                    <img src={check} className={checkAnglais===true?'checkTrue':'checkFalse'}></img>
+                                </div>
+                            </div>
+                            <div className={MinusTEILangue===false?'containercheckBoxAndPLangue2':'containercheckBoxAndPLangue'}>
+                                <p>Espagnol</p>
+                                <div className={checkEspagnol===true?'checkBoxTrueLangue':'checkBoxFalseLangue'} onClick={()=>{ModifSecondCheckBox(checkEspagnol,setCheckEspagnol,ValiderInclusive,setModifySecondInclusive)}}>
+                                    <img src={check} className={checkEspagnol===true?'checkTrue':'checkFalse'}></img>
+                                </div>
+                            </div>
+                            <div className={MinusTEILangue===false?'containercheckBoxAndPLangue2':'containercheckBoxAndPLangue'}>
+                                <p>Allemand</p>
+                                <div className={checkAllemand===true?'checkBoxTrueLangue':'checkBoxFalseLangue'} onClick={()=>{ModifSecondCheckBox(checkAllemand,setCheckAllemand,ValiderInclusive,setModifySecondInclusive)}}>
+                                    <img src={check} className={checkAllemand===true?'checkTrue':'checkFalse'}></img>
+                                </div>
+                            </div>
+                            <div className={MinusTEILangue===false?'containercheckBoxAndPLangue2':'containercheckBoxAndPLangue'}>
+                                <p>Italien</p>
+                                <div className={checkItalien===true?'checkBoxTrueLangue':'checkBoxFalseLangue'} onClick={()=>{ModifSecondCheckBox(checkItalien,setCheckItalien,ValiderInclusive,setModifySecondInclusive)}}>
+                                    <img src={check} className={checkItalien===true?'checkTrue':'checkFalse'}></img>
+                                </div>
+                            </div>
+                            <div className={MinusTEILangue===false?'containercheckBoxAndPLangue2':'containercheckBoxAndPLangue'}>
+                                <p>Portugais</p>
+                                <div className={checkPortugais===true?'checkBoxTrueLangue':'checkBoxFalseLangue'} onClick={()=>{ModifSecondCheckBox(checkPortugais,setCheckPortugais,ValiderInclusive,setModifySecondInclusive)}}>
+                                    <img src={check} className={checkPortugais===true?'checkTrue':'checkFalse'}></img>
+                                </div>
+                            </div>
+                         </div>
+                         <div className='pTEAndLogoMinusLangueMenu'>
+                            <div className='pTEAndLogoMinusLangue'>
+                                <p>Accompagnement handicap</p>
+                                {MinusTEIAccompHandi===false?<div className='containerMinusLangue'><p className='minusLangue' onClick={()=>{MinusTEIAccompHandi===false?setMinusTEAccompHandi(true):setMinusTEAccompHandi(false)}}>+</p></div>:<div className='containerMinusLangue'><p className='minusLangue' onClick={()=>{MinusTEIAccompHandi===false?setMinusTEAccompHandi(true):setMinusTEAccompHandi(false)}}>-</p></div>}
+                            </div> 
+                            <div className={MinusTEIAccompHandi===false?'OptionAccompHand2':'OptionAccompHand'}>
+                                <div className={MinusTEIAccompHandi===false?'pTEAndLogoMinusMoteur2':'pTEAndLogoMinusMoteur'}>
+                                    <p className='Moteurp'>Moteur</p>
+                                    {MinusTEIMoteur===false?<div className='containerMinusMoteur'><p className='minusMoteur' onClick={()=>{MinusTEIMoteur===false?setMinusTEMoteur(true):setMinusTEMoteur(false)}}>+</p></div>:<div className='containerMinusMoteur'><p className='minusMoteur' onClick={()=>{MinusTEIMoteur===false?setMinusTEMoteur(true):setMinusTEMoteur(false)}}>-</p></div>}
+                                </div>
+                                <div className={MinusTEIMoteur===false?'containerOptionMoteur2':'containerOptionMoteur'}>
+                                    <div className={MinusTEIMoteur===false?'containercheckBoxAndPLangue2':'containercheckBoxAndPLangue'}>
+                                        <p>Paraplégie</p>
+                                        <div className={CheckPara===true?'checkBoxTrueLangue':'checkBoxFalseLangue'} onClick={()=>{ModifSecondCheckBox(CheckPara,setCheckPara,ValiderInclusive,setModifySecondInclusive)}}>
+                                            <img src={check} className={CheckPara===true?'checkTrue':'checkFalse'}></img>
+                                        </div>
+                                    </div>
+                                    <div className={MinusTEIMoteur===false?'containercheckBoxAndPLangue2':'containercheckBoxAndPLangue'}>
+                                        <p>Tétraplégie</p>
+                                        <div className={CheckTetra===true?'checkBoxTrueLangue':'checkBoxFalseLangue'} onClick={()=>{ModifSecondCheckBox(CheckTetra,setCheckTetra,ValiderInclusive,setModifySecondInclusive)}}>
+                                            <img src={check} className={CheckTetra===true?'checkTrue':'checkFalse'}></img>
+                                        </div>
+                                    </div>
+                                    <div className={MinusTEIMoteur===false?'containercheckBoxAndPLangue2':'containercheckBoxAndPLangue'}>
+                                        <p>Hémiplégie</p>
+                                        <div className={CheckHemi===true?'checkBoxTrueLangue':'checkBoxFalseLangue'} onClick={()=>{ModifSecondCheckBox(CheckHemi,setCheckHemi,ValiderInclusive,setModifySecondInclusive)}}>
+                                            <img src={check} className={CheckHemi===true?'checkTrue':'checkFalse'}></img>
+                                        </div>
+                                    </div>
+                                    <div className={MinusTEIMoteur===false?'containercheckBoxAndPLangue2':'containercheckBoxAndPLangue'}>
+                                        <p>Amputation Membre supérieur</p>
+                                        <div className={CheckAmpuSup===true?'checkBoxTrueLangue':'checkBoxFalseLangue'} onClick={()=>{ModifSecondCheckBox(CheckAmpuSup,setCheckAmpuSup,ValiderInclusive,setModifySecondInclusive)}}>
+                                            <img src={check} className={CheckAmpuSup===true?'checkTrue':'checkFalse'}></img>
+                                        </div>
+                                    </div> 
+                                    <div className={MinusTEIMoteur===false?'containercheckBoxAndPLangue2':'containercheckBoxAndPLangue'}>
+                                        <p>Amputation Membre inférieur</p>
+                                        <div className={CheckAmpuInf===true?'checkBoxTrueLangue':'checkBoxFalseLangue'} onClick={()=>{ModifSecondCheckBox(CheckAmpuInf,setCheckAmpuInf,ValiderInclusive,setModifySecondInclusive)}}>
+                                            <img src={check} className={CheckAmpuInf===true?'checkTrue':'checkFalse'}></img>
+                                        </div>
+                                    </div>
+                                </div>  
+                                <div className={MinusTEIAccompHandi===false?'pTEAndLogoMinusMoteur2':'pTEAndLogoMinusMoteur'}>
+                                    <p className='Moteurp'>Cognitif</p>
+                                    {MinusTEICognitif===false?<div className='containerMinusMoteur'><p className='minusMoteur' onClick={()=>{MinusTEICognitif===false?setMinusTECognitif(true):setMinusTECognitif(false)}}>+</p></div>:<div className='containerMinusMoteur'><p className='minusMoteur' onClick={()=>{MinusTEICognitif===false?setMinusTECognitif(true):setMinusTECognitif(false)}}>-</p></div>}
+                                </div> 
+                                <div className={MinusTEICognitif===false?'containerOptionMoteur2':'containerOptionMoteur'}>
+                                    <div className={MinusTEICognitif===false?'containercheckBoxAndPLangue2':'containercheckBoxAndPLangue'}>
+                                        <p>Dys</p>
+                                        <div className={checkDys===true?'checkBoxTrueLangue':'checkBoxFalseLangue'} onClick={()=>{ModifSecondCheckBox(checkDys,setCheckDys,ValiderInclusive,setModifySecondInclusive)}}>
+                                            <img src={check} className={checkDys===true?'checkTrue':'checkFalse'}></img>
+                                        </div>
+                                    </div>
+                                    <div className={MinusTEICognitif===false?'containercheckBoxAndPLangue2':'containercheckBoxAndPLangue'}>
+                                        <p>TDAH</p>
+                                        <div className={checkTDAH===true?'checkBoxTrueLangue':'checkBoxFalseLangue'} onClick={()=>{ModifSecondCheckBox(checkTDAH,setCheckTDAH,ValiderInclusive,setModifySecondInclusive)}}>
+                                            <img src={check} className={checkTDAH===true?'checkTrue':'checkFalse'}></img>
+                                        </div>
+                                    </div>
+                                </div>     
+                                <div className={MinusTEIAccompHandi===false?'pTEAndLogoMinusMoteur2':'pTEAndLogoMinusMoteur'}>
+                                    <p className='Moteurp'>Auditif</p>
+                                    {MinusTEIAuditif===false?<div className='containerMinusMoteur'><p className='minusMoteur' onClick={()=>{MinusTEIAuditif===false?setMinusTEAuditif(true):setMinusTEAuditif(false)}}>+</p></div>:<div className='containerMinusMoteur'><p className='minusMoteur' onClick={()=>{MinusTEIAuditif===false?setMinusTEAuditif(true):setMinusTEAuditif(false)}}>-</p></div>}
+                                </div>
+                                <div className={MinusTEIAuditif===false?'containerOptionMoteur2':'containerOptionMoteur'}>
+                                    <div className={MinusTEIAuditif===false?'containercheckBoxAndPLangue2':'containercheckBoxAndPLangue'}>
+                                        <p>Surdité partielle</p>
+                                        <div className={checkSigne===true?'checkBoxTrueLangue':'checkBoxFalseLangue'} onClick={()=>{ModifSecondCheckBox(checkSigne,setCheckSigne,ValiderInclusive,setModifySecondInclusive)}}>
+                                            <img src={check} className={checkSigne===true?'checkTrue':'checkFalse'}></img>
+                                        </div>
+                                    </div>
+                                    <div className={MinusTEIAuditif===false?'containercheckBoxAndPLangue2':'containercheckBoxAndPLangue'}>
+                                        <p>Surdité complète</p>
+                                        <div className={checkLabiale===true?'checkBoxTrueLangue':'checkBoxFalseLangue'} onClick={()=>{ModifSecondCheckBox(checkLabiale,setCheckLabiale,ValiderInclusive,setModifySecondInclusive)}}>
+                                            <img src={check} className={checkLabiale===true?'checkTrue':'checkFalse'}></img>
+                                        </div>
+                                    </div>
+                                </div>     
+                            </div> 
+                         </div>
+                         <div className='pTEAndLogoMinusLangueMenu'>
+                            <div className='pTEAndLogoMinusLangue'>
+                                <p>Amménagement Véhicules</p>
+                                {MinusTEIAmménage===false?<div className='containerMinusLangue'><p className='minusLangue' onClick={()=>{MinusTEIAmménage===false?setMinusTEAmménage(true):setMinusTEAmménage(false)}}>+</p></div>:<div className='containerMinusLangue'><p className='minusLangue' onClick={()=>{MinusTEIAmménage===false?setMinusTEAmménage(true):setMinusTEAmménage(false)}}>-</p></div>}
+                            </div>   
+                            <div className={MinusTEIAmménage===false?'containercheckBoxAndPLangue2':'containercheckBoxAndPLangue'}>
+                                <p>Boule au volant</p>
+                                <div className={checkBoule===true?'checkBoxTrueLangue':'checkBoxFalseLangue'} onClick={()=>{ModifSecondCheckBox(checkBoule,setCheckBoule,ValiderInclusive,setModifySecondInclusive)}}>
+                                    <img src={check} className={checkBoule===true?'checkTrue':'checkFalse'}></img>
+                                </div>
+                            </div>
+                            <div className={MinusTEIAmménage===false?'containercheckBoxAndPLangue2':'containercheckBoxAndPLangue'}>
+                                <p>Cercle au volant</p>
+                                <div className={checkCercle===true?'checkBoxTrueLangue':'checkBoxFalseLangue'} onClick={()=>{ModifSecondCheckBox(checkCercle,setCheckCercle,ValiderInclusive,setModifySecondInclusive)}}>
+                                    <img src={check} className={checkCercle===true?'checkTrue':'checkFalse'}></img>
+                                </div>
+                            </div>
+                            <div className={MinusTEIAmménage===false?'containercheckBoxAndPLangue2':'containercheckBoxAndPLangue'}>
+                                <p>Combiné accélérateur frein</p>
+                                <div className={checkCombiné===true?'checkBoxTrueLangue':'checkBoxFalseLangue'} onClick={()=>{ModifSecondCheckBox(checkCombiné,setCheckcombiné,ValiderInclusive,setModifySecondInclusive)}}>
+                                    <img src={check} className={checkCombiné===true?'checkTrue':'checkFalse'}></img>
+                                </div>
+                            </div>
+                         </div>
+                         
+                        <input   type='submit' className={ValiderInclusive===false?'buttonValidBoxcase':'buttonValidBoxcase2'}  value={'Valider'} onClick={()=>{InclusiveModif()}}></input>
+                        <input   type='submit' className={ValiderInclusive===true && ModifySecondInclusive===false?'buttonValidBoxcaseModif':ValiderInclusive===true && ModifySecondInclusive===true?'buttonValidBoxcaseModif3':'buttonValidBoxcaseModif2'}  value={ModifySecondInclusive===false?'Modification enregistrée':'valider'} onClick={()=>{ModifSecondInclusive()}}></input>
+                    </div>
+
                 </div>
-
-
                 <div className={test===true?'containerInformations':'containerInformations2'}>
                     <div className='containerTitreArrow'>
                         <img src={arrow}  className='arrowFicheReturn' onClick={()=>{getBackInitialeLien()}}></img>

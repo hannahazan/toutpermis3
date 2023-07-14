@@ -1,6 +1,5 @@
 import  express from 'express'
 import multer from "multer"
-import  uuidv4 from 'uuidv4'
 const routerFicheCouverture= express.Router()
 routerFicheCouverture.use(express.json());
 routerFicheCouverture.use(express.urlencoded({extended: true}))
