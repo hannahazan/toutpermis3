@@ -39,6 +39,11 @@ const Fiche=()=>{
     const [FormationName,setFormationName]=useState()
     const [FormationDescriptif,setFormationDescriptif]=useState()
     const [FormationPrix,setFormationPrix]=useState()
+    const [checkFormationTypeClassique,setCheckFormationTypeClassique]=useState(false)
+    const [checkFormationTypeAccellérée,setCheckFormationTypeAccellérée]=useState(false)
+    const [checkFormationOptionAcc,setcheckFormationOptionAcc]=useState(false)
+    const [checkFormationOptionSuper,setcheckFormationOptionSuper]=useState(false)
+    const [checkFormationOptionAucune,setcheckFormationOptionAucune]=useState(false)
     const [AddEcole,setAddEcole]=useState(false)
     const [EcoleName,setEcoleName]=useState('')
     const [Create,setCreate]=useState(false)
@@ -266,13 +271,22 @@ const Fiche=()=>{
     const [ModificationFormationPrix,setModificationFormationPrix]=useState(null)
     const [ModifFormSup,setModifFormSup]=useState(null)
     /****************modification formation logique fonction*************************** */
-    const OpenModifFormation=(Name,Descriptif,Prix,sup)=>{
+    const OpenModifFormation=(Name,Descriptif,Prix,sup,typeClass,typeAcc,optionAccom,optionSuper,optionAucune)=>{
         setModifFormation(true)
         setModificationFormationNom(Name)
         setModificationFormationDescriptif(Descriptif)
         setModificationFormationPrix(Prix)
         setModifFormSup(sup)
         setIsCategorieFormation(false)
+    }
+    const oneOrTheOther=(setHook,setHook2)=>{
+        setHook(true)
+        setHook2(false)
+    }
+    const oneOrTheOtherTwo=(setHook,setHook2,setHook3)=>{
+        setHook(true)
+        setHook2(false)
+        setHook3(false)
     }
     /******************modification formation carte logique fonction ********************** */
     const OpenModifFormationCarte=(Name,Descriptif,Prix,sup)=>{
@@ -799,7 +813,12 @@ const formationsModif=()=>{
         Descriptif:FormationDescriptif,
         prix:FormationPrix,
         categorie:OngletFormations,
-        uniqueId:uniqueId
+        uniqueId:uniqueId,
+        typeClass:checkFormationTypeClassique,
+        typeAcc:checkFormationTypeAccellérée,
+        optionSuper:checkFormationOptionSuper,
+        optionAccom:checkFormationOptionAcc,
+        optionAucune:checkFormationOptionAucune
      }
      axios
     .put(`http://localhost:5000/FicheEcolePrincipale/addFormation/${EcoleName}`,{Formation:NouvelleForm})
@@ -819,7 +838,12 @@ const ModifFormationSecond=()=>{
         Descriptif:ModificationFormationDescriptif,
         prix:ModificationFormationPrix,
         categorie:OngletFormations,
-        uniqueId:uniqueId
+        uniqueId:uniqueId,
+        typeClass:checkFormationTypeClassique,
+        typeAcc:checkFormationTypeAccellérée,
+        optionSuper:checkFormationOptionSuper,
+        optionAccom:checkFormationOptionAcc,
+        optionAucune:checkFormationOptionAucune
      }
      axios
     .put(`http://localhost:5000/FicheEcolePrincipale/addFormation/${EcoleName}`,{Formation:NouvelleForm})
@@ -1212,7 +1236,6 @@ useEffect(()=>{
             <main className={CheckPopUpSupOpen===true?'mainFiche2':'mainFiche'}>
                 <div className={test===false?'containerTitreLien':'containerTitreLien2'}>
                     <div className='containerTitreArrow'>
-                        {AddEcole===true || Create===true?<img src={arrow}  className='arrowFicheReturn' onClick={()=>{getBackInitiale()}}></img>:console.log('ouais')}
                         {Create===false || Fiche.length===0?<h1 className='titreFiche'>Mes fiches</h1>:<h1 className='titreFiche'>{Fiche.EcoleName}</h1>}
                     </div>
                     <p className={AllOfOne.length===0?'accompagnéP':'accompagnéP2'}>Besoin d’être accompagné pour remplir ta fiche et
@@ -2125,8 +2148,10 @@ useEffect(()=>{
                         </div>
                         <div className={isCategorieFormation===true ?'containerPrixNomFormation':'containerPrixNomFormation2'}>
                             <div className={Fiche.length!=0 && Fiche.Formation.length!=0?'containerNomPrixFormationFiche':'containerNomPrixFormationFiche2'}>
-                            <p>Nom</p>
-                            <p className='pPrixForfaitFiche'>Prix</p>
+                                <p>Nom</p>
+                               {OngletFormations==='Auto'?<p>Type</p>:OngletFormations==='Moto'||OngletFormations==='Bateau'?<p id='TypeFormationAutreMoto'>Type</p>:console.log("ha ba non")}
+                               {OngletFormations==='Auto'?<p>Option</p>:console.log("toujourspas non")}
+                                <p className='pPrixForfaitFiche'>Prix</p>  
                             </div>
                         {Fiche.length!=0 && Fiche.Formation.length!=0?Fiche.Formation.map( 
                         (event)=>
@@ -2134,6 +2159,8 @@ useEffect(()=>{
                         <div > 
                             <div className='containerForfaitMapFiche'>
                                 <p className='pForfaitsMap'> {event.Nom}</p>
+                                {event.typeClass===true?<p className='pForfaitsMap'>Class</p>:<p className='pForfaitsMap'>Acce</p>}
+                                {event.optionSuper===true?<p className='pForfaitsMap'>Supervi</p>:event.optionAccom===true?<p className='pForfaitsMap'>Accom</p>:<p className='pForfaitsMap'>Aucune</p>}
                                 <div className='containerIconFormationPrixFiche'>
                                     <p className='pPrixForfaitsFiche'>{event.prix}</p>
                                     <div className='containerIconForfaitFiche'>
@@ -2146,6 +2173,7 @@ useEffect(()=>{
                         </div>: event.categorie==='Moto'&& OngletFormations==='Moto'?<div >
                             <div className='containerForfaitMapFiche'>
                                 <p className='pForfaitsMap'> {event.Nom}</p>
+                                {event.typeClass===true?<p className='pForfaitsMap'>Class</p>:<p className='pForfaitsMap'>Acce</p>}
                                 <div className='containerIconFormationPrixFiche'>
                                     <p className='pPrixForfaitsFiche'>{event.prix}</p>
                                     <div className='containerIconForfaitFiche'>
@@ -2158,6 +2186,7 @@ useEffect(()=>{
                         </div>: event.categorie==='Bateau'&& OngletFormations==='Bateau'?<div >
                             <div className='containerForfaitMapFiche'>
                                 <p className='pForfaitsMap'> {event.Nom}</p>
+                                {event.typeClass===true?<p className='pForfaitsMap'>Class</p>:<p className='pForfaitsMap'>Acce</p>}
                                 <div className='containerIconFormationPrixFiche'>
                                     <p className='pPrixForfaitsFiche'>{event.prix}</p>
                                     <div className='containerIconForfaitFiche'>
@@ -2188,6 +2217,42 @@ useEffect(()=>{
                             <input type='text' placeholder='Nom de la formation' className='inputNom' onChange={(e)=>setFormationName(e.target.value)}></input>
                             <textarea type='text' placeholder='Descriptif de la formation' className='inputDescriptif' rows="10" cols="30"onChange={(e)=>setFormationDescriptif(e.target.value)}></textarea>
                             <input type='number' placeholder='prix de la formation' className='inputNom' onChange={(e)=>{setFormationPrix(e.target.value)}}></input>
+                            <div className={OngletFormations!='Stages'?'checkBoxTypeEtOptionFormation':'checkBoxTypeEtOptionFormation2'}>
+                                <p>Type :</p>
+                                <div className='checkBoxFormation'>
+                                    <p>Classique</p>
+                                    <div className={checkFormationTypeClassique===true?'checkBoxTrueFormation':'checkBoxFalseFormation'} onClick={()=>{checkFormationTypeClassique==false?oneOrTheOther(setCheckFormationTypeClassique,setCheckFormationTypeAccellérée):setCheckFormationTypeClassique(false)}}>
+                                        <img src={check} className={checkFormationTypeClassique===true?'checkTrue':'checkFalse'}></img>
+                                    </div>
+                                </div>
+                                <div className='checkBoxFormation'>
+                                    <p>Accelérée</p>
+                                    <div className={checkFormationTypeAccellérée===true?'checkBoxTrueFormation':'checkBoxFalseFormation'} onClick={()=>{checkFormationTypeAccellérée==false?oneOrTheOther(setCheckFormationTypeAccellérée,setCheckFormationTypeClassique):setCheckFormationTypeAccellérée(false)}}>
+                                        <img src={check} className={checkFormationTypeAccellérée===true?'checkTrue':'checkFalse'}></img>
+                                    </div> 
+                                </div>
+                            </div>
+                            <div className={OngletFormations=='Auto'?'checkBoxTypeEtOptionFormation':'checkBoxTypeEtOptionFormation2'}>
+                                <p>Option :</p> 
+                                <div className='checkBoxFormation' id='checkBoxFormationAccom'>
+                                    <p>Accompagnée</p>
+                                    <div className={checkFormationOptionAcc===true?'checkBoxTrueFormation':'checkBoxFalseFormation'} onClick={()=>{checkFormationOptionAcc==false?oneOrTheOtherTwo(setcheckFormationOptionAcc,setcheckFormationOptionSuper,setcheckFormationOptionAucune):setcheckFormationOptionAcc(false)}}>
+                                        <img src={check} className={checkFormationOptionAcc===true?'checkTrue':'checkFalse'}></img>
+                                    </div>
+                                </div>
+                                <div className='checkBoxFormation'id='checkBoxFormationSuper'>
+                                    <p>Superviséé</p>
+                                    <div className={checkFormationOptionSuper===true?'checkBoxTrueFormation':'checkBoxFalseFormation'} onClick={()=>{checkFormationOptionSuper==false?oneOrTheOtherTwo(setcheckFormationOptionSuper,setcheckFormationOptionAcc,setcheckFormationOptionAucune):setcheckFormationOptionSuper(false)}}>
+                                        <img src={check} className={checkFormationOptionSuper===true?'checkTrue':'checkFalse'}></img>
+                                    </div> 
+                                </div>
+                                <div className='checkBoxFormation'>
+                                    <p>Aucune</p>
+                                    <div className={checkFormationOptionAucune===true?'checkBoxTrueFormation':'checkBoxFalseFormation'} onClick={()=>{checkFormationOptionAucune==false?oneOrTheOtherTwo(setcheckFormationOptionAucune,setcheckFormationOptionSuper,setcheckFormationOptionAcc):setcheckFormationOptionAucune(false)}}>
+                                        <img src={check} className={checkFormationOptionAucune===true?'checkTrue':'checkFalse'}></img>
+                                    </div> 
+                                </div>
+                            </div>
                             <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={()=>{formationsModif()}}></input>
                         </div>
                         <div className={ModifFormation===false?'containerNomDescription':'containerNomDescription2'}>
