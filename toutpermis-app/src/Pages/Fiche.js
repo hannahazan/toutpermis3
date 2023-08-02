@@ -52,6 +52,7 @@ const Fiche=()=>{
     const [Fiche,setFiche]=useState([])
     const [modify,setModify]=useState()
     const [DescriptionEcole,setDescriptionEcole]=useState(null)
+    const EcoleNameId=`${EcoleName+Math.random()+Date()}`
 
 
     /****************************logique part: premières modifications apparition d'un nouveau boutton
@@ -151,6 +152,7 @@ const Fiche=()=>{
     const [isDescriptifModif,setIsDescriptifModif]=useState(false)
     /******************popUpSuprimmer********************* */
     const [EcoleSup,setEcoleSup]=useState(String)
+    const [ecoleNameSup,setEcolenameSup]=useState(String)
     const [CheckPopUpSupOpen,setCheckPopUpSupOpen]=useState(false)
     const [CheckDelete,setCheckDelete]=useState(Boolean)
     const [uniquIdForm,setUniqueIdForm]=useState(Number)
@@ -226,11 +228,13 @@ const Fiche=()=>{
     const [checkCadeau,setCheckCadeau]=useState(false)
     const [ValiderPaiment,setValiderPaiment]=useState(false)
     const [ModifySecondPaiement,setModifySecondPaiment]=useState(false)
-        
+    /*************création fiche unique id ecole */
+    const [uniqueIdFicheEcoleName,setUniqueIdFicheEcoleName]=useState(String)    
     /**************openPopUp*************** */
-    const OpenPopUp=(ecolePop)=>{
+    const OpenPopUp=(ecolePop,ecoleNameSup)=>{
         setEcoleSup(ecolePop)
         setCheckPopUpSupOpen(true)
+        setEcolenameSup(ecoleNameSup)
     }
     const OpenPopUpForm=(ecolePop,id,NameForm)=>{
         setIsFormDelete(true)
@@ -436,7 +440,7 @@ const Fiche=()=>{
   const ModifSecondTypeEtabissementRequest =()=>{
         console.log('what')
         axios
-        .put(`http://localhost:5000/FicheEcolePrincipale/${EcoleName}`,{Bateau:checkBateau,Voiture:checkAuto,Moto:checkMoto})
+        .put(`http://localhost:5000/FicheEcolePrincipale/${Fiche.EcoleNameId}`,{Bateau:checkBateau,Voiture:checkAuto,Moto:checkMoto})
         .then((response) => {
             console.log(setModify(response.data));
             setModifTypesEtablissement(false)
@@ -447,7 +451,7 @@ const Fiche=()=>{
   const ModifSecondPaiementRequest =()=>{
     console.log('what')
     axios
-    .put(`http://localhost:5000/FicheEcolePrincipale/${EcoleName}`,{Cadeau:checkCadeau,Especes:checkEspeces,Bancaire:checkBancaire,Cheque:checkCheque})
+    .put(`http://localhost:5000/FicheEcolePrincipale/${Fiche.EcoleNameId}`,{Cadeau:checkCadeau,Especes:checkEspeces,Bancaire:checkBancaire,Cheque:checkCheque})
     .then((response) => {
         console.log(setModify(response.data));
         setModifySecondPaiment(false)
@@ -459,7 +463,7 @@ const Fiche=()=>{
 const ModifSecondInclusive=()=>{
     console.log('dans le paiement')
     axios
-    .put(`http://localhost:5000/FicheEcolePrincipale/${EcoleName}`,{Espagnol:checkEspagnol,Anglais:checkAnglais,Portugais:checkPortugais,Italien:checkItalien,Boule:checkBoule,
+    .put(`http://localhost:5000/FicheEcolePrincipale/${Fiche.EcoleNameId}`,{Espagnol:checkEspagnol,Anglais:checkAnglais,Portugais:checkPortugais,Italien:checkItalien,Boule:checkBoule,
     Combine:checkCombiné,Cercle:checkCercle,Para:CheckPara,Tetra:CheckTetra,Hemi:CheckHemi,AmpuMI:CheckAmpuInf,AmpuMs:CheckAmpuSup
     ,Dys:checkDys,TDAH:checkTDAH, SurPartielle:checkLabiale,Surcomplete:checkSigne,Allemand:checkAllemand
 })
@@ -535,7 +539,7 @@ const ModifSecondInclusive=()=>{
   }
   const deleteOneFormation=()=>{
     axios
-   .put(`http://localhost:5000/FicheEcolePrincipale/removeFormation/${Fiche.EcoleName}`,{Formation:{"uniqueId":ModifFormSup}})
+   .put(`http://localhost:5000/FicheEcolePrincipale/removeFormation/${Fiche.EcoleNameId}`,{Formation:{"uniqueId":ModifFormSup}})
    .then((response)=>{(console.log(response.data))
     getFiche()
    }) 
@@ -544,7 +548,7 @@ const ModifSecondInclusive=()=>{
    })  }
    const deleteOneFormationCarte=()=>{
     axios
-   .put(`http://localhost:5000/FicheEcolePrincipale/removeFormationCarte/${Fiche.EcoleName}`,{FormationCarte:{"uniqueId":ModifCarteSup}})
+   .put(`http://localhost:5000/FicheEcolePrincipale/removeFormationCarte/${Fiche.EcoleNameId}`,{FormationCarte:{"uniqueId":ModifCarteSup}})
    .then((response)=>{(console.log(response.data))
     getFiche()
    }) 
@@ -651,12 +655,25 @@ const ModifSecondInclusive=()=>{
     useEffect(()=>{
         console.log(`${LogoNew} voyons voir ça`)
     })
-
+    const getFicheFirst=()=>{
+        axios
+        .get(`http://localhost:5000/FicheEcolePrincipale/creation/${EcoleNameId}`)
+        .then((res) => {
+          setFiche(res.data)
+          setUniqueIdFicheEcoleName(res.data.EcoleNameId)
+          alert(uniqueIdFicheEcoleName)
+          console.log(Fiche)
+          //isOngletFormationsameAsFicheCategorie(OngletFormations)
+          ;
+        })
+        .catch((err) => console.error(err));
+    }
     const getFiche=()=>{
         axios
-    .get(`http://localhost:5000/FicheEcolePrincipale/creation/${EcoleName}`)
+    .get(`http://localhost:5000/FicheEcolePrincipale/creation/${uniqueIdFicheEcoleName}`)
     .then((res) => {
-      setFiche(res.data) 
+      alert(uniqueIdFicheEcoleName)
+      setFiche(res.data)
       console.log(Fiche)
       //isOngletFormationsameAsFicheCategorie(OngletFormations)
       ;
@@ -675,7 +692,7 @@ const ModifSecondInclusive=()=>{
 
     const getEquipe=()=>{
         axios
-        .get(`http://localhost:5000/FicheEquipes/${EcoleName}`)
+        .get(`http://localhost:5000/FicheEquipes/${Fiche.EcoleNameId}`)
         .then((res) => {
           setEquipesInfo(res.data) 
           console.log(EquipesInfo)
@@ -686,7 +703,7 @@ const ModifSecondInclusive=()=>{
 
     const getVéhicule=()=>{
         axios
-        .get(`http://localhost:5000/FicheVehicule/${EcoleName}`)
+        .get(`http://localhost:5000/FicheVehicule/${Fiche.EcoleNameId}`)
         .then((res) => {
           setVéhiculeInfo(res.data) 
           console.log(EquipesInfo)
@@ -709,7 +726,7 @@ const ModifSecondInclusive=()=>{
     /*************modification part ****************************************************/
    const DescriptifModif=()=>{
     axios
-    .put(`http://localhost:5000/FicheEcolePrincipale/${EcoleName}`,{Descriptif:DescriptionEcole})
+    .put(`http://localhost:5000/FicheEcolePrincipale/${Fiche.EcoleNameId}`,{Descriptif:DescriptionEcole})
     .then((response)=>{setModify(response.data)
         console.log("tout est ok bien sûr que tout est ok...mais à qui tu parles? on compense la solitude comme on peut...pillule bleu...ça rime") 
         setIsdescriptif(true)
@@ -722,7 +739,7 @@ const ModifSecondInclusive=()=>{
    const HorairesConduiteModif=()=>
     {
      axios
-    .put(`http://localhost:5000/FicheEcolePrincipale/addHorairesConduite/${EcoleName}`,{HorairesConduite:{LundiMatinOuvreConduite,LundiMatinFermeConduite,LundiApremOuvreConduite,
+    .put(`http://localhost:5000/FicheEcolePrincipale/addHorairesConduite/${Fiche.EcoleNameId}`,{HorairesConduite:{LundiMatinOuvreConduite,LundiMatinFermeConduite,LundiApremOuvreConduite,
 LundiApremFermeConduite,MardiMatinOuvreConduite,MardiMatinFermeConduite,MardiApremOuvreConduite,MardiMatinFermeConduite,
 MardiApremOuvreConduite,MardiApremFermeConduite,MercrediMatinOuvreConduite,MercrediMatinFermeConduite,MercrediApremOuvreConduite,
 MercrediApremFermeConduite,JeudiMatinOuvreConduite,JeudiMatinFermeConduite,JeudiApremOuvreConduite,JeudiApremFermeConduite,
@@ -740,7 +757,7 @@ DimancheApremOuvreConduite,DimancheApremFermeConduite}})
 const EcoleModif=()=>{
     console.log('what')
     axios
-    .put(`http://localhost:5000/FicheEcolePrincipale/${EcoleName}`,{Bateau:checkBateau,Voiture:checkAuto,Moto:checkMoto})
+    .put(`http://localhost:5000/FicheEcolePrincipale/${Fiche.EcoleNameId}`,{Bateau:checkBateau,Voiture:checkAuto,Moto:checkMoto})
     .then((response) => {
         console.log(setModify(response.data));
         setValider(true)
@@ -751,7 +768,7 @@ const EcoleModif=()=>{
 const PaiementModif=()=>{
     console.log('dans le paiement')
     axios
-    .put(`http://localhost:5000/FicheEcolePrincipale/${EcoleName}`,{Cadeau:checkCadeau,Especes:checkEspeces,Bancaire:checkBancaire,Cheque:checkCheque})
+    .put(`http://localhost:5000/FicheEcolePrincipale/${Fiche.EcoleNameId}`,{Cadeau:checkCadeau,Especes:checkEspeces,Bancaire:checkBancaire,Cheque:checkCheque})
     .then((response) => {
         console.log(setModify(response.data));
         setValiderPaiment(true)
@@ -780,7 +797,7 @@ const PaiementModif=()=>{
 const InclusiveModif=()=>{
     console.log('dans le paiement')
     axios
-    .put(`http://localhost:5000/FicheEcolePrincipale/${EcoleName}`,{Espagnol:checkEspagnol,Anglais:checkAnglais,Portugais:checkPortugais,Italien:checkItalien,Boule:checkBoule,
+    .put(`http://localhost:5000/FicheEcolePrincipale/${Fiche.EcoleNameId}`,{Espagnol:checkEspagnol,Anglais:checkAnglais,Portugais:checkPortugais,Italien:checkItalien,Boule:checkBoule,
     Combine:checkCombiné,Cercle:checkCercle,Para:CheckPara,Tetra:CheckTetra,Hemi:CheckHemi,AmpuMI:CheckAmpuInf,AmpuMs:CheckAmpuSup
     ,Dys:checkDys,TDAH:checkTDAH, SurPartielle:checkLabiale,Surcomplete:checkSigne,Allemand:checkAllemand
 })
@@ -794,7 +811,7 @@ const InclusiveModif=()=>{
 
 const HorairesBureauModif=()=>{
     axios
-    .put(`http://localhost:5000/FicheEcolePrincipale/addHorairesBureau/${EcoleName}`,{HorairesBureau:{LundiMatinOuvre,LundiMatinFerme,LundiApremOuvre,LundiApremFerme,
+    .put(`http://localhost:5000/FicheEcolePrincipale/addHorairesBureau/${Fiche.EcoleNameId}`,{HorairesBureau:{LundiMatinOuvre,LundiMatinFerme,LundiApremOuvre,LundiApremFerme,
 MardiMatinOuvre,MardiMatinFerme,MardiApremOuvre,MardiApremFerme,MercrediMatinOuvre,MercrediMatinFerme,MercrediApremOuvre,MercrediApremFerme,JeudiMatinOuvre,JeudiMatinFerme,
 JeudiApremOuvre,JeudiApremFerme,VendrediMatinOuvre,VendrediMatinFerme,VendrediApremOuvre,VendrediApremFerme,SamediMatinOuvre,SamediMatinFerme,
 SamediApremOuvre,SamediApremFerme,DimancheMatinOuvre,DimancheMatinFerme,DimancheApremOuvre,DimancheApremFerme}})
@@ -807,7 +824,7 @@ SamediApremOuvre,SamediApremFerme,DimancheMatinOuvre,DimancheMatinFerme,Dimanche
 }
 
 const formationsModif=()=>{
-    const uniqueId= Date.now()
+    const uniqueId= Date.now()+Math.random()
     let NouvelleForm={
         Nom:FormationName,
         Descriptif:FormationDescriptif,
@@ -821,7 +838,7 @@ const formationsModif=()=>{
         optionAucune:checkFormationOptionAucune
      }
      axios
-    .put(`http://localhost:5000/FicheEcolePrincipale/addFormation/${EcoleName}`,{Formation:NouvelleForm})
+    .put(`http://localhost:5000/FicheEcolePrincipale/addFormation/${Fiche.EcoleNameId}`,{Formation:NouvelleForm})
     .then((response) => {
         console.log(setModify(response.data));
         setMinusAddFormations(false)
@@ -832,7 +849,7 @@ const formationsModif=()=>{
     .catch((err) => console.error(err)); 
 }
 const ModifFormationSecond=()=>{
-    const uniqueId= Date.now()
+    const uniqueId= Date.now()+Math.random()
     let NouvelleForm={
         Nom:ModificationFormationNom,
         Descriptif:ModificationFormationDescriptif,
@@ -846,7 +863,7 @@ const ModifFormationSecond=()=>{
         optionAucune:checkFormationOptionAucune
      }
      axios
-    .put(`http://localhost:5000/FicheEcolePrincipale/addFormation/${EcoleName}`,{Formation:NouvelleForm})
+    .put(`http://localhost:5000/FicheEcolePrincipale/addFormation/${Fiche.EcoleNameId}`,{Formation:NouvelleForm})
     .then((response) => {
         console.log(setModify(response.data));
         setModifFormation(false)
@@ -858,7 +875,7 @@ const ModifFormationSecond=()=>{
 }
 
 const formationCarteModif=()=>{
-    const uniqueId= Date.now()
+    const uniqueId= Date.now()+Math.random()
     let NouvelleForm={
         Nom:FormationCarteName,
         Descriptif:FormationCarteDescriptif,
@@ -867,7 +884,7 @@ const formationCarteModif=()=>{
         uniqueId:uniqueId
      }
      axios
-    .put(`http://localhost:5000/FicheEcolePrincipale/addFormationCarte/${EcoleName}`,{FormationCarte:NouvelleForm})
+    .put(`http://localhost:5000/FicheEcolePrincipale/addFormationCarte/${Fiche.EcoleNameId}`,{FormationCarte:NouvelleForm})
     .then((response) => {
         console.log(setModify(response.data));
         setMinusAddCarte(false)
@@ -878,7 +895,7 @@ const formationCarteModif=()=>{
     .catch((err) => console.error(err)); 
 }
 const ModifFormationCarteSecond=()=>{
-    const uniqueId= Date.now()
+    const uniqueId=  Date.now()+Math.random()
     let NouvelleForm={
         Nom:ModificationFormationCarteNom,
         Descriptif:ModificationFormationCarteDescriptif,
@@ -887,7 +904,7 @@ const ModifFormationCarteSecond=()=>{
         uniqueId:uniqueId
      }
      axios
-    .put(`http://localhost:5000/FicheEcolePrincipale/addFormationCarte/${EcoleName}`,{FormationCarte:NouvelleForm})
+    .put(`http://localhost:5000/FicheEcolePrincipale/addFormationCarte/${Fiche.EcoleNameId}`,{FormationCarte:NouvelleForm})
     .then((response) => {
         console.log(setModify(response.data));
         setModifFormationCarte(false)
@@ -900,10 +917,11 @@ const ModifFormationCarteSecond=()=>{
 
 /*****************createfiche************************************/
     async function createFiche() {
+     
      axios
-     .post("http://localhost:5000/FicheEcolePrincipale/test",{EcoleName:EcoleName,UserPseudo:connectedUser})
+     .post("http://localhost:5000/FicheEcolePrincipale/test",{EcoleNameId:EcoleNameId,EcoleName:EcoleName,UserPseudo:connectedUser})
      .then((response)=>{(console.log(response.data))
-        getFiche()
+        getFicheFirst()
      }) 
      .catch(error => {
      console.log(error);
@@ -918,7 +936,7 @@ const ModifFormationCarteSecond=()=>{
         data.append('name','josephine')
         data.append('file',uploadCouv)
         data.append('UserPseudo',connectedUser)
-        data.append('EcoleName',FicheLien.EcoleName)
+        data.append('EcoleNameId',FicheLien.EcoleNameId)
         const config = {
             headers: {
               'content-type': 'multipart/form-data'
@@ -937,7 +955,7 @@ const ModifFormationCarteSecond=()=>{
         dataLogo.append("name","martine")
         dataLogo.append('file',uploadLogo)
         dataLogo.append('UserPseudo',connectedUser)
-        dataLogo.append('EcoleName',FicheLien.EcoleName)
+        dataLogo.append('EcoleNameId',FicheLien.EcoleNameId)
         
 
         axios.post("http://localhost:5000/FicheLogo",dataLogo,config)
@@ -960,7 +978,7 @@ async function onSubmit(e) {
     data.append('name','josephine')
     data.append('file',uploadCouv)
     data.append('UserPseudo',connectedUser)
-    data.append('EcoleName',Fiche.EcoleName)
+    data.append('EcoleNameId',Fiche.EcoleNameId)
     data.append("idCouv",IdLogo)
     const config = {
         headers: {
@@ -979,7 +997,7 @@ async function onSubmit(e) {
     dataLogo.append("name","martine")
     dataLogo.append('file',uploadLogo)
     dataLogo.append('UserPseudo',connectedUser)
-    dataLogo.append('EcoleName',Fiche.EcoleName)
+    dataLogo.append('EcoleNameId',Fiche.EcoleNameId)
     dataLogo.append("idLogo",IdLogo)
     
 
@@ -999,7 +1017,7 @@ async function onSubmitEquipes(e) {
     dataEquipes.append("name","martine")
     dataEquipes.append('file',UploadEquipes)
     dataEquipes.append('UserPseudo',connectedUser)
-    dataEquipes.append('EcoleName',Fiche.EcoleName)
+    dataEquipes.append('EcoleNameId',Fiche.EcoleNameId)
     dataEquipes.append("idEquipes",IdLogo)
     dataEquipes.append("Fonction",FonctionMemberEquipe)
     dataEquipes.append("Nom",NameMemberEquipe)
@@ -1028,7 +1046,7 @@ async function onSubmitVéhicule(e) {
     dataVéhicule.append("name","martine")
     dataVéhicule.append('file',UploadVéhicule)
     dataVéhicule.append('UserPseudo',connectedUser)
-    dataVéhicule.append('EcoleName',Fiche.EcoleName)
+    dataVéhicule.append('EcoleNameId',Fiche.EcoleNameId)
     dataVéhicule.append("idVéhicule",IdLogo)
     dataVéhicule.append("Fonction",FonctionVéhicule)
     dataVéhicule.append("Nom",NameVéhicule)
@@ -1057,7 +1075,7 @@ async function onSubmitModifyVéhicule(e) {
     dataVéhicule.append("name","martine")
     dataVéhicule.append('file',UploadVéhicule)
     dataVéhicule.append('UserPseudo',connectedUser)
-    dataVéhicule.append('EcoleName',Fiche.EcoleName)
+    dataVéhicule.append('EcoleNameId',Fiche.EcoleNameId)
     dataVéhicule.append("idVéhicule",IdLogo)
     dataVéhicule.append("Fonction",FonctionVéhicule)
     dataVéhicule.append("Nom",NameVéhicule)
@@ -1093,7 +1111,7 @@ async function onSubmitModifyEquipes(e) {
     dataEquipes.append("name","martine")
     dataEquipes.append('file',UploadEquipes)
     dataEquipes.append('UserPseudo',connectedUser)
-    dataEquipes.append('EcoleName',Fiche.EcoleName)
+    dataEquipes.append('EcoleNameId',Fiche.EcoleNameId)
     dataEquipes.append("idEquipes",IdLogo)
     dataEquipes.append("Fonction",FonctionMemberEquipe)
     dataEquipes.append("Nom",NameMemberEquipe)
@@ -1224,9 +1242,9 @@ useEffect(()=>{
         <div className={Create===true || test===true ?'fiche':'fiche2'}>
             <Navbar/>
             <div className={CheckPopUpSupOpen===true?'containerPopupSupprimerFiche':'containerPopupSupprimerFiche2'}>
-                <div className={isFormDelete===true || isFormCarteDelete==true?'containerDeplacementPopUpDelete':OpenPopUpDeleteFromEquipe==true || OpenPopUpDeleteFromvéhicule==true?'containerDeplacementPopUpDeleteEquipe':'containerDeplacementPopUp'}>
+                <div className={isFormDelete===true || isFormCarteDelete==true?'containerDeplacementPopUpDelete':OpenPopUpDeleteFromEquipe==true?'containerDeplacementPopUpDeleteEquipe':OpenPopUpDeleteFromvéhicule==true?'containerDeplacementPopUpDeleteVehicule':'containerDeplacementPopUp'}>
                     <p>Êtes-vous sûr de vouloir supprimer</p>
-                    {isFormDelete===false && isFormCarteDelete===false?<p className='pValuePopUp'>{EcoleSup}</p>:<p className='pValuePopUp'>{FormationNameSup}</p>}
+                    {isFormDelete===false && isFormCarteDelete===false?<p className='pValuePopUp'>{ecoleNameSup}</p>:<p className='pValuePopUp'>{FormationNameSup}</p>}
                     <div className='containerButtonPopUpSup'>
                         <button className='ButtonPopUpSupOui' onClick={()=>{deleteOneFiche(EcoleSup,uniquIdForm)}}>oui</button>
                         <button className='ButtonPopUpSupNon' onClick={()=>{closePopupWithoutDeleting()}}>non</button>
@@ -1248,8 +1266,8 @@ useEffect(()=>{
                             <div className='containerFicheName'>
                                 <p key={index} className='pLienFiche'> {event.EcoleName}</p>
                                 <div className='containerIconLienFiche'>
-                                    <img src={modif} className='iconLien'onClick={()=>{getOneFiche(event.EcoleName)}}></img>
-                                    <img src={trash} className='iconLien' onClick={()=>{OpenPopUp(event.EcoleName)}}></img>
+                                    <img src={modif} className='iconLien'onClick={()=>{getOneFiche(event.EcoleNameId)}}></img>
+                                    <img src={trash} className='iconLien' onClick={()=>{OpenPopUp(event.EcoleNameId,event.EcoleName)}}></img>
                                 </div>
                             </div>
                             <div className='liseretLien'></div>
@@ -2165,7 +2183,7 @@ useEffect(()=>{
                                     <p className='pPrixForfaitsFiche'>{event.prix}</p>
                                     <div className='containerIconForfaitFiche'>
                                         <img src={modif} className='iconForfaitFiche'onClick={()=>{OpenModifFormation(event.Nom,event.Descriptif,event.prix,event.uniqueId)}}></img>
-                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleName,event.uniqueId,event.Nom)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleNameId,event.uniqueId,event.Nom)}}></img>
                                     </div>
                                 </div>
                             </div>
@@ -2178,7 +2196,7 @@ useEffect(()=>{
                                     <p className='pPrixForfaitsFiche'>{event.prix}</p>
                                     <div className='containerIconForfaitFiche'>
                                         <img src={modif} className='iconForfaitFiche'onClick={()=>{OpenModifFormation(event.Nom,event.Descriptif,event.prix,event.uniqueId)}}></img>
-                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleName,event.uniqueId,event.Nom)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleNameId,event.uniqueId,event.Nom)}}></img>
                                     </div>
                                 </div>
                             </div>
@@ -2191,7 +2209,7 @@ useEffect(()=>{
                                     <p className='pPrixForfaitsFiche'>{event.prix}</p>
                                     <div className='containerIconForfaitFiche'>
                                         <img src={modif} className='iconForfaitFiche'onClick={()=>{OpenModifFormation(event.Nom,event.Descriptif,event.prix,event.uniqueId)}}></img>
-                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleName,event.uniqueId,event.Nom)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleNameId,event.uniqueId,event.Nom)}}></img>
                                     </div>
                                 </div>
                             </div>
@@ -2203,7 +2221,7 @@ useEffect(()=>{
                                     <p className='pPrixForfaitsFiche'>{event.prix}</p>
                                     <div className='containerIconForfaitFiche'>
                                         <img src={modif} className='iconForfaitFiche'onClick={()=>{OpenModifFormation(event.Nom,event.Descriptif,event.prix,event.uniqueId)}}></img>
-                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleName,event.uniqueId,event.Nom)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpForm(Fiche.EcoleNameId,event.uniqueId,event.Nom)}}></img>
                                     </div>
                                 </div>
                             </div>
@@ -2284,7 +2302,7 @@ useEffect(()=>{
                                     <p className='pPrixForfaitsFiche'>{event.prix}</p>
                                     <div className='containerIconForfaitFiche'>
                                         <img src={modif} className='iconForfaitFiche'onClick={()=>{ OpenModifFormationCarte(event.Nom,event.Descriptif,event.prix,event.uniqueId)}}></img>
-                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpFormCarte(Fiche.EcoleName,event.uniqueId,event.Nom)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpFormCarte(Fiche.EcoleNameId,event.uniqueId,event.Nom)}}></img>
                                     </div>
                                 </div>
                             </div>
@@ -2296,7 +2314,7 @@ useEffect(()=>{
                                     <p className='pPrixForfaitsFiche'>{event.prix}</p>
                                     <div className='containerIconForfaitFiche'>
                                         <img src={modif} className='iconForfaitFiche'onClick={()=>{ OpenModifFormationCarte(event.Nom,event.Descriptif,event.prix,event.uniqueId)}}></img>
-                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpFormCarte(Fiche.EcoleName,event.uniqueId,event.Nom)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpFormCarte(Fiche.EcoleNameId,event.uniqueId,event.Nom)}}></img>
                                     </div>
                                 </div>
                             </div>
@@ -2308,7 +2326,7 @@ useEffect(()=>{
                                     <p className='pPrixForfaitsFiche'>{event.prix}</p>
                                     <div className='containerIconForfaitFiche'>
                                         <img src={modif} className='iconForfaitFiche'onClick={()=>{ OpenModifFormationCarte(event.Nom,event.Descriptif,event.prix,event.uniqueId)}}></img>
-                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpFormCarte(Fiche.EcoleName,event.uniqueId,event.Nom)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpFormCarte(Fiche.EcoleNameId,event.uniqueId,event.Nom)}}></img>
                                     </div>
                                 </div>
                             </div>
@@ -2320,7 +2338,7 @@ useEffect(()=>{
                                     <p className='pPrixForfaitsFiche'>{event.prix}</p>
                                     <div className='containerIconForfaitFiche'>
                                         <img src={modif} className='iconForfaitFiche'onClick={()=>{ OpenModifFormationCarte(event.Nom,event.Descriptif,event.prix,event.uniqueId)}}></img>
-                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpFormCarte(Fiche.EcoleName,event.uniqueId,event.Nom)}}></img>
+                                        <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpFormCarte(Fiche.EcoleNameId,event.uniqueId,event.Nom)}}></img>
                                     </div>
                                 </div>
                             </div>

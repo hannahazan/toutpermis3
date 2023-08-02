@@ -19,7 +19,7 @@ routerFicheCouverture.post("/", upload.single('file'), async (req, res) => {
     })
     try {
       let myFicheCouverture= new FicheCouverture({
-        EcoleName:req.body.EcoleName,
+        EcoleNameId:req.body.EcoleNameId,
         UserPseudo:req.body.UserPseudo,
         CouvertureUrl: req.file !==null? "/data/uploads/" + req.file.filename:"",
         PictureName:req.file.originalname, 
@@ -42,8 +42,8 @@ routerFicheCouverture.post("/", upload.single('file'), async (req, res) => {
    });
  
 
-  routerFicheCouverture.get('/:EcoleName', function (req, res) {
-    FicheCouverture.findOne({EcoleName: req.params.EcoleName }, (err, data) => {
+  routerFicheCouverture.get('/:EcoleNameId', function (req, res) {
+    FicheCouverture.findOne({EcoleNameId: req.params.EcoleNameId }, (err, data) => {
        res.send(data)
        console.log(data)
      }

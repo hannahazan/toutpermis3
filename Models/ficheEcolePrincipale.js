@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 const ficheEcolePrincipaleSchema = new mongoose.Schema(
     {
         EcoleName:String,
+        EcoleNameId:String,
         Descriptif:String,
         UserPseudo:String,
         Bateau:Boolean,

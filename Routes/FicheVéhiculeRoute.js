@@ -16,8 +16,8 @@ routerFicheVéhicule.get('/', function (req, res) {
       
     })
   })
-  routerFicheVéhicule.get('/:EcoleName', function (req, res) {
-    FicheVéhicule.find({EcoleName: req.params.EcoleName},(err, data) => {
+  routerFicheVéhicule.get('/:EcoleNameId', function (req, res) {
+    FicheVéhicule.find({EcoleNameId: req.params.EcoleNameId},(err, data) => {
        res.send(data)
        console.log(data)
      }
@@ -44,7 +44,7 @@ routerFicheVéhicule.post("/", upload.single('file'), async (req, res) => {
         logoUrl: req.file !==null? "/data/uploads/" + req.file.filename:"",
         pictureName:req.file.originalname,
         UserPseudo:req.body.UserPseudo,
-        EcoleName:req.body.EcoleName,
+        EcoleNameId:req.body.EcoleNameId,
         Nom:req.body.Nom,
         Fonction:req.body.Fonction, 
         idVéhicule:req.body.idVéhicule,  
@@ -62,7 +62,7 @@ routerFicheVéhicule.post("/", upload.single('file'), async (req, res) => {
           logoUrl:req.body.logoUrl,
           pictureName:req.body.pictureName,
           UserPseudo:req.body.UserPseudo,
-          EcoleName:req.body.EcoleName,
+          EcoleNameId:req.body.EcoleNameId,
           Nom:req.body.Nom,
           Fonction:req.body.Fonction, 
           idVéhicule:req.body.idVéhicule,  

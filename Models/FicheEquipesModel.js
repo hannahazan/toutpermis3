@@ -4,7 +4,7 @@ const ficheEquipesSchema = new mongoose.Schema(
         logoUrl:String,
         pictureName:String,
         UserPseudo:String,
-        EcoleName:String,
+        EcoleNameId:String,
         Nom:String,
         Fonction:String,
         idEquipes:Number

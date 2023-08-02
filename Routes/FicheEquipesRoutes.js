@@ -16,8 +16,8 @@ routerFicheEquipes.get('/', function (req, res) {
       
     })
   })
-  routerFicheEquipes.get('/:EcoleName', function (req, res) {
-    FicheEquipes.find({EcoleName: req.params.EcoleName},(err, data) => {
+  routerFicheEquipes.get('/:EcoleNameId', function (req, res) {
+    FicheEquipes.find({EcoleNameId: req.params.EcoleNameId},(err, data) => {
        res.send(data)
        console.log(data)
      }
@@ -50,7 +50,7 @@ routerFicheEquipes.post("/", upload.single('file'), async (req, res) => {
         logoUrl: req.file !==null? "/data/uploads/" + req.file.filename:"",
         pictureName:req.file.originalname,
         UserPseudo:req.body.UserPseudo,
-        EcoleName:req.body.EcoleName,
+        EcoleNameId:req.body.EcoleNameId,
         Nom:req.body.Nom,
         Fonction:req.body.Fonction, 
         idEquipes:req.body.idEquipes,  
@@ -68,7 +68,7 @@ routerFicheEquipes.post("/", upload.single('file'), async (req, res) => {
           logoUrl:req.body.logoUrl,
           pictureName:req.body.pictureName,
           UserPseudo:req.body.UserPseudo,
-          EcoleName:req.body.EcoleName,
+          EcoleNameId:req.body.EcoleNameId,
           Nom:req.body.Nom,
           Fonction:req.body.Fonction, 
           idEquipes:req.body.idEquipes,  

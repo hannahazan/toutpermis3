@@ -18,8 +18,8 @@ routerFicheLogo.get('/', function (req, res) {
   })
   
 
-routerFicheLogo.get('/:EcoleName', function (req, res) {
-   FicheLogo.findOne({  EcoleName: req.params.EcoleName }, (err, data) => {
+routerFicheLogo.get('/:EcoleNameId', function (req, res) {
+   FicheLogo.findOne({  EcoleNameId: req.params.EcoleNameId}, (err, data) => {
       res.send(data)
       console.log(data)
     }
