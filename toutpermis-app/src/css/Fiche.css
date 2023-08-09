@@ -221,8 +221,27 @@
   margin-bottom: 20px;
   background-color: #37beb4;
   align-self: self-end;
-  margin-top: 13px;
- 
+  margin-top: 13px; 
+}
+.buttonValidBoxcaseModifOk{
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 74%;
+  height: 30px;
+  font-family: 'Poppins';
+  color: white;
+  border-radius: 15px;
+  align-items: center;
+  font-size: 17px;
+  font-weight: normal;
+  margin-bottom: 20px;
+  background-color: #37beb4;
+  align-self: self-end;
+  margin-top: 13px; 
 }
 .buttonValidBoxcase2{
   display: none;
@@ -861,7 +880,19 @@
   color:#8fa6a7;
   font-size: 18px;
 }
-
+.containerNomPrixFormationFicheStages{
+  display: flex;
+  flex-direction: row;
+  color: #8fa6a7;
+  font-size: 18px;
+  justify-content: space-between;
+  width: 76%;
+}
+.containerNomPrixFormationFicheStages p{
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: 5%;
+}
 .containerNomPrixFormationFiche p{
   margin-top: 0px;
   margin-bottom: 0px;

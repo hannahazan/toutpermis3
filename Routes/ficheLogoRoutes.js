@@ -51,7 +51,7 @@ routerFicheLogo.post("/", upload.single('file'), async (req, res) => {
         logoUrl: req.file !==null? "/data/uploads/" + req.file.filename:"",
         pictureName:req.file.originalname,
         UserPseudo:req.body.UserPseudo,
-        EcoleName:req.body.EcoleName, 
+        EcoleNameId:req.body.EcoleNameId, 
         idLogo:req.body.idLogo  
       });
       await myFicheLogo.save();

@@ -92,7 +92,7 @@ routerFicheEcolePrincipale.get('/One/:UserPseudo', function (req, res) {
     })
   })
   routerFicheEcolePrincipale.put('/addHorairesBureau/:EcoleNameId',(req,res) => {
-    FicheEcolePrincipale.updateOne({EcoleNameId:req.params.EcoleNameId},{$push:{HorairesBureau:{$each:[req.body.HorairesBureau],$position:0}}},function(err,data){
+    FicheEcolePrincipale.updateOne({EcoleNameId:req.params.EcoleNameId},{HorairesBureau:req.body.HorairesBureau},function(err,data){
       console.log(req.body)
       if(err){
         res.sendStatus(404)
@@ -109,7 +109,7 @@ routerFicheEcolePrincipale.get('/One/:UserPseudo', function (req, res) {
     })
   })
   routerFicheEcolePrincipale.put('/addHorairesConduite/:EcoleNameId',(req,res) => {
-    FicheEcolePrincipale.updateOne({EcoleNameId:req.params.EcoleNameId},{$push:{HorairesConduite:{$each:[req.body.HorairesConduite],$position:0}}},function(err,data){
+    FicheEcolePrincipale.updateOne({EcoleNameId:req.params.EcoleNameId},{HorairesConduite:req.body.HorairesConduite},function(err,data){
       console.log(req.body)
       if(err){
         res.sendStatus(404)

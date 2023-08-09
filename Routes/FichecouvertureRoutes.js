@@ -56,5 +56,20 @@ routerFicheCouverture.post("/", upload.single('file'), async (req, res) => {
      }
      )
    });
-
+   routerFicheCouverture.delete('/delete/:_id',(req,res)=>{
+    FicheCouverture.findOneAndDelete({_id:req.params._id},function(err,data){
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
   export default routerFicheCouverture
