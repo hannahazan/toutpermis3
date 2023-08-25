@@ -300,7 +300,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-
+  border: 2px solid #ebecf0;
 }
 .checkTrue{
   width: 15px;
@@ -374,6 +374,16 @@
   display: none;
 }
 .containerNomDescription2{
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+  background-color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 10px;
+  padding-top: 16px;
+}
+.containerFormFormation{
   display: flex;
   flex-direction: column;
   margin-top: 15px;
@@ -692,7 +702,7 @@
 
 /****************************popUp**************************************/
 .containerPopupSupprimerFiche{
-  height: 3000px;
+  height: 10000px;
   width: 104%;
   position: relative;
   z-index: 3;
@@ -709,21 +719,10 @@
 }
 /**********nouvelle position en fonction d'où la poup est déclenchée*************************/
 .containerDeplacementPopUp{
-  position: relative;
-  bottom: 570px;
+  position: fixed;
+  top:300px;
 }
-.containerDeplacementPopUpDelete{
-  position: relative;
-  bottom: 218px;
-}
-.containerDeplacementPopUpDeleteEquipe{
-  position: relative;
-  top: 290px;
-}
-.containerDeplacementPopUpDeleteVehicule{
-  position: relative;
-  top: 627px;
-}
+
 .containerPopupSupprimerFiche p{
   margin:0px
 }
@@ -989,6 +988,13 @@
   flex-direction: row;
   color:#236468;
   font-size: 24px;
+}
+.containerModifFormationPAndCross p{
+  margin-top: 0px;
+}
+
+.containerModifFormationPAndCross2{
+  display: none;
 }
 .fermerFormFormationModifFiche2{
   filter: invert(60%) sepia(99%) saturate(290%) hue-rotate(126deg) brightness(89%) contrast(89%);
@@ -1284,6 +1290,7 @@
   align-items: center;
   width: 25px;
   height: 25px;
+  border: 2px solid #ebecf0;
 }
 .pTEAndLogoMinusLangue2{
   display: none;
@@ -1384,6 +1391,7 @@
   align-items: center;
   width: 25px;
   height: 25px;
+  border: 2px solid #ebecf0;
 }
 #checkBoxFormationAccom{
   display: flex;
@@ -1406,4 +1414,11 @@
   margin-left: 10%;
   margin-top: 0px;
   margin-bottom: 0px;
+}
+.mapContainer{
+  height: 170px;
+  width: 111%;
+  position: relative;
+  right: 4%;
+  margin-top: 20px;
 }

@@ -1,5 +1,6 @@
 import '../css/Fiche.css'
 import Navbar from '../component/Navbar'
+import Localisation from '../component/Localisation'
 import { useEffect,useState,ChangeEvent,useContext } from 'react'
 import {InscriptionContext as getConnectedUser} from '../utilitaires/InscriptionContext'
 import axios from 'axios'
@@ -18,8 +19,9 @@ import picVéhicule from '../images/CardImage/véhiculeDefaut.jpg'
 
 
 
+
 const Fiche=()=>{
-    const{connectedUser}=useContext(getConnectedUser)
+    const{connectedUser,Adresse,assignAdresse,AdresseValue,assignAdresseValue,Longitude,assignLongitude,Lattitude,assignLattitude,IdFiche,assignIdFiche}=useContext(getConnectedUser)
 
     console.log(connectedUser)
     const [uploadCouv, setUploadCouv] = useState(null)
@@ -47,14 +49,16 @@ const Fiche=()=>{
     const [AddEcole,setAddEcole]=useState(false)
     const [EcoleName,setEcoleName]=useState('')
     const [Create,setCreate]=useState(false)
-    const [Couverture,setCouverture]=useState([])
-    const [Logo,setLogo]=useState([])
     const [Fiche,setFiche]=useState([])
     const [modify,setModify]=useState()
     const [DescriptionEcole,setDescriptionEcole]=useState(null)
     const EcoleNameId=`${EcoleName+Math.random()+Date.now()}`
 
-
+    /*******************Localisation*************************/
+    const [Ville,setVille]=useState(String)
+    const [Departement,setDepartement]=useState(Number)
+    const [IsCoordinate,setIsCoordinate]=useState(false)
+    const [ModifLocalisation,setModifLocalisation]=useState(false)
     /****************************logique part: premières modifications apparition d'un nouveau boutton
      * validé pour modifier une partie des données de la fiche************************************* */
     const [valider,setValider]=useState(false)
@@ -65,11 +69,7 @@ const Fiche=()=>{
     const [AllOfOne,setAllOfOne]=useState([])
 
     /***********************Les informations d'une seule fiche************************************** */
-    const [FicheLien,setFicheLien]=useState([])
-    const [couvertureLien,setCouvertureLien]=useState([])
-    const [LogoLien,setLogoLien]=useState([])
     const [test,setTest]=useState(false)//logique faire apparaitre le lien d'une fiche cliquée
-
     /*********************Horaires Bureau *************************************/
     const [LundiMatinOuvre,setLundiMatinOuvre]=useState('Fermé')
     const [LundiMatinFerme,setLundiMatinferme]=useState('Fermé')
@@ -276,6 +276,8 @@ const Fiche=()=>{
         console.log(`${OpenPopUpDeleteFromEquipe} la variable bool équipe`)
         console.log(`${NameEquipe} la variable Nom équipe`)
         console.log(`${IdEquipe} la variable id équipe`)
+        console.log(Adresse)
+        console.log(Ville)
     })
     /****************modification formation et delete Hook********************** */
     const [ModifFormation,setModifFormation]=useState(false)
@@ -356,7 +358,7 @@ const Fiche=()=>{
             console.log(isCategorieFormation)
             for(let j=0;j<Fiche.FormationCarte.length;j++){
                if(Fiche.FormationCarte[j].categorie===testCategorie){
-                    console.log('pourquoi tu rentres là-dedans')
+                    console.log("pourquoi tu rentres là-dedans")
                     setIsCategorieCarte(true)
                     console.log(Fiche.FormationCarte[j].categorie)
                     console.log(OngletFormations)
@@ -454,13 +456,7 @@ const Fiche=()=>{
     console.log(`${checkAuto} auto checkBox`)
     console.log(`${valider} valider checkbox`)
   })
-  const testHook=(test,test2)=>{
-    if(test2===false)
-    {test(true)}
-    else{
-        test(false)
-    }
-  }
+ 
 
   const ModifSecondTypeEtabissementRequest =()=>{
         console.log('what')
@@ -713,6 +709,14 @@ const ModifSecondInclusive=()=>{
       setCheckOptionDashCam(res.data.DashCam)
       setCheckOptionDomicile(res.data.Domicile)
       setCheckOptionSimulateur(res.data.Simulateur)
+      assignLattitude(res.data.Lattitude)
+      assignLongitude(res.data.Longitude)
+      setDepartement(res.data.CodePos)
+      assignAdresseValue(res.data.Adresse)
+      setVille(res.data.Ville)
+      if(res.data.Longitude){
+        setIsCoordinate(true)
+      }
       ;
     })
     .catch((err) => console.error(err));
@@ -789,7 +793,7 @@ const ModifSecondInclusive=()=>{
         .then((res) => {
           setFiche(res.data)
           setUniqueIdFicheEcoleName(res.data.EcoleNameId)
-          alert(uniqueIdFicheEcoleName)
+          assignIdFiche(res.data.EcoleNameId)
           console.log(Fiche)
           //isOngletFormationsameAsFicheCategorie(OngletFormations)
           ;
@@ -800,7 +804,6 @@ const ModifSecondInclusive=()=>{
         axios
     .get(`http://localhost:5000/FicheEcolePrincipale/creation/${uniqueIdFicheEcoleName}`)
     .then((res) => {
-      alert(uniqueIdFicheEcoleName)
       setFiche(res.data)
       console.log(Fiche)
       //isOngletFormationsameAsFicheCategorie(OngletFormations)
@@ -912,7 +915,9 @@ const OptionsModif=()=>{console.log('dans le paiement')
         setValiderOptions(true)
         console.log("dans les options et ça marche")
       })
-    .catch((err) => console.error(err));} 
+    .catch((err) => console.error(err));}
+
+
 
 const InclusiveModif=()=>{
     console.log('dans le paiement')
@@ -1042,6 +1047,8 @@ const ModifFormationCarteSecond=()=>{
      .post("http://localhost:5000/FicheEcolePrincipale/test",{EcoleNameId:EcoleNameId,EcoleName:EcoleName,UserPseudo:connectedUser})
      .then((response)=>{(console.log(response.data))
         getFicheFirst()
+        assignLattitude(null)
+        assignLongitude(null)
      }) 
      .catch(error => {
      console.log(error);
@@ -1288,7 +1295,40 @@ const ModifUploadVéhicule=(pictureName,url,id,name,fonction)=>{
     setNameVéhicule(name)
     setFonctionVéhicule(fonction)
 }
+/***********************************récupère les coordonnées pour afficher la map et les envois à la bdd************************************************************/
 
+var url="https://nominatim.openstreetmap.org/search?format=json&limit=3&q="+Adresse
+const localModifFiche=(response)=>{
+    axios
+    .put(`http://localhost:5000/FicheEcolePrincipale/${IdFiche}`,{Ville:Ville,Adresse:AdresseValue,CodePos:Departement,Longitude:response.data[0].lon,Lattitude:response.data[0].lat})
+    .then((res) => {
+        console.log(setModify(res.data));
+        console.log("dans la localisation ça le fait")
+        console.log(response.data[0].lat)
+        console.log(response.data[0].lon)
+      })
+    .catch((err) => console.error(err))
+  } 
+  const getCoordinate=()=>
+  {
+    axios
+  .get(url)
+  .then((response)=>(assignLattitude(parseFloat(response.data[0].lat)),assignLongitude(parseFloat(response.data[0].lon),console.log(response.data)),
+    localModifFiche(response),
+    assignAdresse(String),
+    setVille(String),
+    setIsCoordinate(true),
+    setModifLocalisation(false)
+  )
+  )
+  .catch((err)=>(console.log(err)));}
+  useEffect(()=>{
+    assignAdresse(`${AdresseValue} ${Ville}`)
+  })
+
+
+
+/**********************************************************************************************************************************/
 useEffect(()=>{
     console.log(typeof checkAuto)
     //console.log(`${Fiche.Formation[0].Formation.Nom}je ne comprend pas`)
@@ -1301,14 +1341,16 @@ useEffect(()=>{
     console.log(`${valider} ça c'est valider`)
     console.log(`${isCategorieFormation} voilà le pb`)
 })
-
-
+useEffect
+(()=>{console.log(`${Longitude} LA LONGITUDE BB`)
+console.log(`${Lattitude} LA LATTITUDE BB`)
+console.log(`${IdFiche}  L'ID FICHE BB`)})
 
     return(
         <div className={Create===true || test===true ?'fiche':'fiche2'}>
             <Navbar/>
             <div className={CheckPopUpSupOpen===true?'containerPopupSupprimerFiche':'containerPopupSupprimerFiche2'}>
-                <div className={isFormDelete===true || isFormCarteDelete==true?'containerDeplacementPopUpDelete':OpenPopUpDeleteFromEquipe==true?'containerDeplacementPopUpDeleteEquipe':OpenPopUpDeleteFromvéhicule==true?'containerDeplacementPopUpDeleteVehicule':'containerDeplacementPopUp'}>
+                <div  id='containerFormationPosition' className='containerDeplacementPopUp'>
                     <p>Êtes-vous sûr de vouloir supprimer</p>
                     {isFormDelete===false && isFormCarteDelete===false?<p className='pValuePopUp'>{ecoleNameSup}</p>:<p className='pValuePopUp'>{FormationNameSup}</p>}
                     <div className='containerButtonPopUpSup'>
@@ -1397,7 +1439,7 @@ useEffect(()=>{
                         <textarea type='text' placeholder='Descriptif' className='inputDescriptif' rows="10" cols="30" id='resetDescriptif' onChange={(e)=>{setDescriptionEcole(e.target.value)}}></textarea>
                         <input   type='reset' className='buttonValidBoxcase' value={'Valider'} onClick={()=>{DescriptifModif()}}></input>
                     </form>
-                    <form className={isDescriptifModif===false?'containerNomDescription':'containerNomDescription2'} id='resetDescriptif'>
+                    <form className={isDescriptifModif===false?'containerNomDescription':'containerFormFormation'} id='resetDescriptif'>
                         <img src={cross} className='fermerFormFormationModifFiche' onClick={()=>{closeFormulaireDescriptifOpenApperçusDescriptif()}}></img>
                         <textarea type='text' placeholder='Descriptif' className='inputDescriptif'value={DescriptionEcole} rows="10" cols="30"  id='resetDescriptif' onChange={(e)=>{setDescriptionEcole(e.target.value)}}></textarea>
                         <input   type='reset' className='buttonValidBoxcase' value={'Valider'} onClick={()=>{DescriptifModif()}}></input>
@@ -1406,12 +1448,18 @@ useEffect(()=>{
                         <p>Localisation</p>
                         {MinusLocal===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusLocal===false?setMinusLocal(true):setMinusLocal(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusLocal===false?setMinusLocal(true):setMinusLocal(false)}}>-</p></div>}
                     </div>
-                    <div className={MinusLocal===false?'containerLocalisation':'containerLocalisation2'}>
-                        <input type='text' placeholder='Adresse' className='inputNom'></input>
-                        <input type='number'id="tentacles" name="tentacles" className='inputNom' placeholder='code postal'></input>
-                        <input type='text' placeholder='Ville' className='inputNom'></input>
-                        <input   type='submit' className='buttonValidBoxcase' value={'Valider'}></input>
+                    <div className={MinusLocal===false || IsCoordinate===true && ModifLocalisation===false ?'containerLocalisation':'containerNomDescription2'}>
+                        <div className={ModifLocalisation===true?'containerModifFormationPAndCross':'containerModifFormationPAndCross2'}>
+                            <p>Modifier Localisation</p>
+                            <img src={cross} className='fermerFormFormationModifFiche2'onClick={()=>{setModifLocalisation(false)}}></img>
+                        </div> 
+                        <input type='text' placeholder='Adresse' className='inputNom' value={AdresseValue} onChange={(e)=>{assignAdresseValue(e.target.value )}}></input>
+                        <input type='number'id="tentacles" name="tentacles" className='inputNom' placeholder='code postal' value={Departement} onChange={(e)=>{setDepartement(e.target.value)}}></input>
+                        <input type='text' placeholder='Ville' className='inputNom' value={Ville} onChange={(e)=>{setVille(e.target.value)}}></input>
+                        <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={()=>{getCoordinate()}}></input>
                     </div>
+                   {IsCoordinate===true && MinusLocal===true && ModifLocalisation===false? <Localisation></Localisation>:console.log("nop")}
+                   <input   type='submit' className={IsCoordinate===false || ModifLocalisation===true || MinusLocal===false?'buttonValidBoxcaseModif2':'buttonValidBoxcaseModifOk'}  value='Modifier Localisation' onClick={()=>{setModifLocalisation(true)}} ></input>
                     <div className='pContactAndLogoMinus'>
                         <p>Contact</p>
                         {MinusContact===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusContact===false?setMinusContact(true):setMinusContact(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusContact===false?setMinusContact(true):setMinusContact(false)}}>-</p></div>}
@@ -2206,7 +2254,7 @@ useEffect(()=>{
                         <p>Formation</p>
                         {MinusFormations===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusFormations===false?setMinusFormations(true):setMinusFormations(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusFormations===false?setMinusFormations(true):setMinusFormations(false)}}>-</p></div>}
                     </div>
-                    <div className={MinusFormations===false?'containerFormation2':'containerFormation'}>
+                    <div className={MinusFormations===false?'containerFormation2':'containerFormation'} >
                         <div className='containerOngletsFormation'>
                             <div className={OngletFormations==='Auto'?'categorieOngletandLiseret2':'categorieOngletandLiseret'}onClick={()=>{isOngletFormationsameAsFicheCategorie('Auto')}}>
                                 <p>Auto</p>
@@ -2296,7 +2344,7 @@ useEffect(()=>{
                         ):console.log('ok') }
                         </div>
                         <button  className={Fiche.length!=0 && isCategorieFormation===true && ModifFormation===false && MinusAddFormations===false?'buttonAjouter3':'buttonAjouter2'} onClick={()=>{letContainerFormationdesappear()}}>+ Nouveau forfait</button>   
-                        <div className={MinusAddFormations===false?'containerNomDescription':'containerNomDescription2'}>
+                        <div className={MinusAddFormations===false?'containerNomDescription':'containerFormFormation'}>
                             <img src={cross} className='fermerFormFormationModifFiche'onClick={()=>{letContainerAppearFromFormationAdd()}}></img>
                             <input type='text' placeholder='Nom de la formation' className='inputNom' onChange={(e)=>setFormationName(e.target.value)}></input>
                             <textarea type='text' placeholder='Descriptif de la formation' className='inputDescriptif' rows="10" cols="30"onChange={(e)=>setFormationDescriptif(e.target.value)}></textarea>
@@ -2339,7 +2387,7 @@ useEffect(()=>{
                             </div>
                             <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={()=>{formationsModif()}}></input>
                         </div>
-                        <div className={ModifFormation===false?'containerNomDescription':'containerNomDescription2'}>
+                        <div className={ModifFormation===false?'containerNomDescription':'containerFormFormation'}>
                             <div className='containerModifFormationPAndCross'>
                                 <p>Modifier Formation</p>
                                 <img src={cross} className='fermerFormFormationModifFiche2'onClick={()=>{letContainerAppear()}}></img>
@@ -2449,14 +2497,14 @@ useEffect(()=>{
                         ):console.log('ok') }
                         </div>
                         <button  className={Fiche.length!=0 && IsCategorieCarte===true && ModifFormation===false && MinusAddCarte===false?'buttonAjouter3':'buttonAjouter2'} onClick={()=>{letContainerFormationCartedesappear()}}>+ Nouveau service</button>   
-                        <div className={MinusAddCarte===false?'containerNomDescription':'containerNomDescription2'}>
+                        <div className={MinusAddCarte===false?'containerNomDescription':'containerFormFormation'}>
                             <img src={cross} className='fermerFormFormationModifFiche'onClick={()=>{letContainerAppearFromAddCarte()}}></img>
                             <input type='text' placeholder='Nom de la formation' className='inputNom' onChange={(e)=>setFormationCarteName(e.target.value)}></input>
                             <textarea type='text' placeholder='Descriptif de la formation' className='inputDescriptif' rows="10" cols="30"onChange={(e)=>setFormationCarteDescriptif(e.target.value)}></textarea>
                             <input type='number' placeholder='prix de la formation' className='inputNom' onChange={(e)=>{setFormationCartePrix(e.target.value)}}></input>
                             <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={()=>{formationCarteModif()}}></input>
                         </div>
-                        <div className={ModifFormationCarte===false?'containerNomDescription':'containerNomDescription2'}>
+                        <div className={ModifFormationCarte===false?'containerNomDescription':'containerFormFormation'}>
                             <div className='containerModifFormationPAndCross'>
                                 <p>Modifier Service</p>
                                 <img src={cross} className='fermerFormFormationModifFiche2'onClick={()=>{letContainerCarteAppear()}}></img>
@@ -2475,7 +2523,7 @@ useEffect(()=>{
                         <div className='pForfaitAndLogoMinusEquipe'>
                                 <button  className={EquipesInfo.length==0 && MinusAddMembre==false?'buttonAjouterMembre':'buttonAjouterMembre2'} onClick={()=>{setMinusAddMembre(true)}}>+ Nouveau collaborateur</button>
                         </div>
-                        <div className={MinusAddMembre===false?'containerNomDescription':'containerNomDescription2'}>
+                        <div className={MinusAddMembre===false?'containerNomDescription':'containerFormFormation'}>
                             <img src={cross} className='fermerFormFormationModifFiche'onClick={()=>{setMinusAddMembre(false)}}></img>
                             <input  type="file" id="imageFile" accept="image/*"  placeholder='uploadEquipes' className='UploadEquipe'  onChange={(e)=>{uploadEquipesId(e)}} multiple></input>
                             {UploadEquipes==null?<div  className='PhotoEquipe'>Télécharger Photo</div>:<div  className='PhotoEquipe'>Photo téléchargée</div>}
@@ -2483,7 +2531,7 @@ useEffect(()=>{
                             <input type='text' placeholder='Fonction' className='inputNom'onChange={(e)=>setFonctionMemberEquipe(e.target.value)}></input>
                             <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={onSubmitEquipes}></input>
                         </div>
-                        <div className={ModifyEquipe===false?'containerNomDescription':'containerNomDescription2'}>
+                        <div className={ModifyEquipe===false?'containerNomDescription':'containerFormFormation'}>
                             <img src={cross} className='fermerFormFormationModifFiche'onClick={()=>{setModifyEquipe(false)}}></img>
                             <img src={EquipeUrl} className={UploadEquipes==null?'PhotoEquipeModif':'PhotoEquipeModif2'}></img>
                             <input  type="file" id="imageFile" accept="image/*"  placeholder='uploadEquipes' className='UploadEquipe'  onChange={(e)=>{uploadEquipesId(e)}} multiple></input>
@@ -2512,7 +2560,7 @@ useEffect(()=>{
                     </div>
 
                     <div className='pTEAndLogoMinusPaiement'>
-                        <p>Paiement acceptés</p>
+                        <p>Paiements acceptés</p>
                         {MinusTEPaiement===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusTEPaiement===false?setMinusTEPaiement(true):setMinusTEPaiement(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusTEPaiement===false?setMinusTEPaiement(true):setMinusTEPaiement(false)}}>-</p></div>}
                     </div>
                     <div className={MinusTEPaiement===false?'containerButtonAndBoxcase2':'containerButtonAndBoxcase'}>
@@ -2712,7 +2760,7 @@ useEffect(()=>{
                          </div>
                          <div className='pTEAndLogoMinusLangueMenu'>
                             <div className='pTEAndLogoMinusLangue'>
-                                <p>Amménagement Véhicules</p>
+                                <p>Aménagement Véhicules</p>
                                 {MinusTEIAmménage===false?<div className='containerMinusLangue'><p className='minusLangue' onClick={()=>{MinusTEIAmménage===false?setMinusTEAmménage(true):setMinusTEAmménage(false)}}>+</p></div>:<div className='containerMinusLangue'><p className='minusLangue' onClick={()=>{MinusTEIAmménage===false?setMinusTEAmménage(true):setMinusTEAmménage(false)}}>-</p></div>}
                             </div>   
                             <div className={MinusTEIAmménage===false?'containercheckBoxAndPLangue2':'containercheckBoxAndPLangue'}>
@@ -2762,7 +2810,7 @@ useEffect(()=>{
                             </div>
                         </div>
                         <div className='containercheckBoxAndP'>
-                            <p>Véhicule adpté de dashcam</p>
+                            <p>Véhicule adapté de dashcam</p>
                             <div className={CheckOptionDashcam===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{ModifSecondCheckBox(CheckOptionDashcam,setCheckOptionDashCam,ValiderOptions,setModifySecondOptions)}}>
                                 <img src={check} className={CheckOptionDashcam===true?'checkTrue':'checkFalse'}></img>
                             </div>

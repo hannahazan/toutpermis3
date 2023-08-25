@@ -1,33 +1,39 @@
 import  express from 'express'
 import multer from "multer"
 import  uuidv4 from 'uuidv4'
-const routerFicheVéhicule= express.Router()
-routerFicheVéhicule.use(express.json());
-routerFicheVéhicule.use(express.urlencoded({extended: true}))
-import FicheVéhicule from '../Models/FicheVéhiculeModel.js';
+const routerFicheEquipes= express.Router()
+routerFicheEquipes.use(express.json());
+routerFicheEquipes.use(express.urlencoded({extended: true}))
+import FicheEquipes from '../../Models/ModelEcole/FicheEquipesModel.js'
 
 const upload = multer({ dest: 'toutpermis-app/public/data/uploads' })
 
 
-routerFicheVéhicule.get('/', function (req, res) {
-    FicheVéhicule.find((err, data) => {
+routerFicheEquipes.get('/', function (req, res) {
+    FicheEquipes.find((err, data) => {
       res.send(data)
       console.log(data)
       
     })
   })
-  routerFicheVéhicule.get('/:EcoleNameId', function (req, res) {
-    FicheVéhicule.find({EcoleNameId: req.params.EcoleNameId},(err, data) => {
+  routerFicheEquipes.get('/:EcoleNameId', function (req, res) {
+    FicheEquipes.find({EcoleNameId: req.params.EcoleNameId},(err, data) => {
        res.send(data)
        console.log(data)
      }
      )
    });
-  
+  routerFicheEquipes.get('/AvecId/:idEquipes', function (req, res) {
+    FicheEquipes.findOne({idEquipes: req.params.idEquipes }, (err, data) => {
+       res.send(data)
+       console.log(data)
+     }
+     )
+   });
  
 
 // **CreatePost**/////////////////////////////////////////////////////
-routerFicheVéhicule.post("/", upload.single('file'), async (req, res) => {
+routerFicheEquipes.post("/", upload.single('file'), async (req, res) => {
     const storage = multer.diskStorage({
       destination: function (req, file, cb) {
         cb(null, 'tmp/dest')
@@ -40,16 +46,16 @@ routerFicheVéhicule.post("/", upload.single('file'), async (req, res) => {
     if(req.file)
     {
       try {
-      let myFicheVéhicule = new FicheVéhicule({
+      let myFicheEquipes = new FicheEquipes({
         logoUrl: req.file !==null? "/data/uploads/" + req.file.filename:"",
         pictureName:req.file.originalname,
         UserPseudo:req.body.UserPseudo,
         EcoleNameId:req.body.EcoleNameId,
         Nom:req.body.Nom,
         Fonction:req.body.Fonction, 
-        idVéhicule:req.body.idVéhicule,  
+        idEquipes:req.body.idEquipes,  
       });
-      await myFicheVéhicule.save();
+      await myFicheEquipes.save();
       console.log(req.file)
       console.log(req.body)
       res.json({ message: "Created" });
@@ -58,16 +64,16 @@ routerFicheVéhicule.post("/", upload.single('file'), async (req, res) => {
     }}
     else{
       try {
-        let myFicheVéhicule = new FicheVéhicule({
+        let myFicheEquipes = new FicheEquipes({
           logoUrl:req.body.logoUrl,
           pictureName:req.body.pictureName,
           UserPseudo:req.body.UserPseudo,
           EcoleNameId:req.body.EcoleNameId,
           Nom:req.body.Nom,
           Fonction:req.body.Fonction, 
-          idVéhicule:req.body.idVéhicule,  
+          idEquipes:req.body.idEquipes,  
         });
-        await myFicheVéhicule.save();
+        await myFicheEquipes.save();
         console.log(req.file)
         console.log(req.body)
         res.json({ message: "Created" });
@@ -78,8 +84,8 @@ routerFicheVéhicule.post("/", upload.single('file'), async (req, res) => {
   });  
 
   /****************delete part******* */
-  routerFicheVéhicule.delete('/delete/:_id',(req,res)=>{
-    FicheVéhicule.findOneAndDelete({_id:req.params._id},function(err,data){
+  routerFicheEquipes.delete('/delete/:_id',(req,res)=>{
+    FicheEquipes.findOneAndDelete({_id:req.params._id},function(err,data){
       if(err){
         res.sendStatus(404)
       }
@@ -96,4 +102,4 @@ routerFicheVéhicule.post("/", upload.single('file'), async (req, res) => {
   })
 
 
-  export default routerFicheVéhicule
+  export default routerFicheEquipes

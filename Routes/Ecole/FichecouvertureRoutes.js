@@ -3,7 +3,7 @@ import multer from "multer"
 const routerFicheCouverture= express.Router()
 routerFicheCouverture.use(express.json());
 routerFicheCouverture.use(express.urlencoded({extended: true}))
-import FicheCouverture from '../Models/FicheCouvertureModel.js'
+import FicheCouverture from '../../Models/ModelEcole/FicheCouvertureModel.js'
 
 const upload = multer({ dest: 'toutpermis-app/public/data/uploads' })
 

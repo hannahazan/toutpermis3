@@ -81,7 +81,7 @@
   .menuEscamotable2{
     background-color:#236468;
     position: absolute;
-    z-index: 100;
+    z-index: 9999;
     height: 350%;
     width: 100%;
     top: 0px;

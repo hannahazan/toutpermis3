@@ -3,17 +3,20 @@ const UserSchema = new mongoose.Schema(
     {
         Name:String,
         Prenom:String,
-        Mail:String,
+        Mail:{type: String, index:{sparse:true,unique:true}},
         Password:String,
         PhoneNumber:Number,
         Ecole:Boolean,
         Medecin:Boolean,
         Aménageur:Boolean,
         UserPicture:String,
-        Initiales:String
+        Initiales:String,
+        
     });
  
-     
+ 
+ 
+
  const Users= mongoose.model('Users',UserSchema);
  
  

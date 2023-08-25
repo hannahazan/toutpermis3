@@ -42,6 +42,11 @@ const ficheEcolePrincipaleSchema = new mongoose.Schema(
         Domicile:Boolean,
         Simulateur:Boolean,
         DashCam:Boolean,
+        Addresse:String,
+        CodePos:Number,
+        Longitude:Number,
+        Lattitude:Number,
+        Ville:String,
     });
  
      

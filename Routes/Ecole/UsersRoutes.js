@@ -4,7 +4,7 @@ import  uuidv4 from 'uuidv4'
 const routerUsers= express.Router()
 routerUsers.use(express.json());
 routerUsers.use(express.urlencoded({extended: true}))
-import Users from '../Models/UsersModel.js'
+import Users from '../../Models/ModelEcole/UsersModel.js'
 
 const upload = multer({ dest: 'toutpermis-app/public/data/uploads' })
 
@@ -71,7 +71,7 @@ routerUsers.post("/", upload.single('file'), async (req, res) => {
     })
     myNewUser.save(function (err, post) {
       if (err) { return next(err) }
-      res.json(201, post)
+      res.status(201).json(post)
     })
   })
   

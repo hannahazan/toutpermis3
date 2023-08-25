@@ -7,9 +7,14 @@ const InscriptionProvider=({children})=>{
     const [choice,setChoice]=useState('')
     const [Inscrit,setInscrit]=useState(false)
     const [connectedUser,setConnectedUser]=useState()
+    const [IdFiche,setIdFiche]=useState(null)
     const [checkDelete,setCheckDelete]=useState(Boolean)
     const [EcoleNameContexte,setEcoleNameContexte]=useState()
     const [OpenSupprimer,setOpenSupprimer]=useState(false)
+    const [Adresse,setAdresse]=useState(null)
+    const [AdresseValue,setAdressevalue]=useState(null)
+    const [Longitude,setLongitude]=useState(null)
+    const [Lattitude,setLattitude]=useState(null)
     function assignChoice(value){
         setChoice(value)
     }
@@ -19,6 +24,7 @@ const InscriptionProvider=({children})=>{
     function assignConnecteduser(e){
         setConnectedUser(e.target.value)
     }
+   
     function assignDeleteTrue(){
         setCheckDelete(true)
     }
@@ -34,10 +40,26 @@ const InscriptionProvider=({children})=>{
     function assignOpenSupprimerFalse(){
         setOpenSupprimer(false)
     }
+    function assignAdresse(value){
+        setAdresse(value)
+    }
+    function assignAdresseValue(value){
+        setAdressevalue(value)
+    }
+    function assignLattitude(value){
+        setLattitude(value)
+    }
+    function assignLongitude(value){
+        setLongitude(value)
+    }
+    function assignIdFiche(value){
+        setIdFiche(value)
+    }
    
     return(
         <InscriptionContext.Provider value={{choice,Inscrit,assignChoice,boolInscription,connectedUser,assignConnecteduser,checkDelete,assignDeleteTrue,
-        assignDeleteFalse,EcoleNameContexte,assignEcoleName,OpenSupprimer,assignOpenSupprimerFalse,assignOpenSupprimerTrue}}>
+        assignDeleteFalse,EcoleNameContexte,assignEcoleName,OpenSupprimer,assignOpenSupprimerFalse,assignOpenSupprimerTrue,Adresse,assignAdresse
+        ,AdresseValue,assignAdresseValue,Lattitude,assignLattitude,Longitude,assignLongitude,IdFiche,assignIdFiche}}>
             {children}
         </InscriptionContext.Provider>
     )

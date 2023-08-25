@@ -4,7 +4,7 @@ import  uuidv4 from 'uuidv4'
 const routerFicheEcolePrincipale= express.Router()
 routerFicheEcolePrincipale.use(express.json());
 routerFicheEcolePrincipale.use(express.urlencoded({extended: true}))
-import FicheEcolePrincipale from '../Models/ficheEcolePrincipale.js'
+import FicheEcolePrincipale from '../../Models/ModelEcole/ficheEcolePrincipale.js'
 
 const upload = multer({ dest: 'toutpermis-app/public/data/uploads' })
 

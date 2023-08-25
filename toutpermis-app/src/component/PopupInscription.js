@@ -8,6 +8,7 @@ import ombreSuperGirl from '../images/Ombrejambe-removebg-preview.png'
 import ombreGolgoth from '../images/OmbreIinvsible-removebg-preview.png'
 import ombreAgée from '../images/Ombreagée-removebg-preview.png'
 import '../css/popupInscription.css'
+import { Link } from "react-router-dom";
 
 const PopupInscription=()=>{
     const[Path,setPath]=useState('')
@@ -22,6 +23,7 @@ const PopupInscription=()=>{
         <div>
             {Path==='/espacepro/inscriptionChoix/inscriptionFinale/profil'&& Close===false?
             <div className="containerPopup">
+                 <Link to='/espacepro/inscriptionChoix/inscriptionFinale'><button>revenir à l'inscription</button></Link>
                 <img src={close} className="closePopup" onClick={()=>{setClose(true)}}></img>
                 <div className='containerLogoImgFelicitation'>
                     <div className="pictoLogoEspaceProPopup">
@@ -31,7 +33,7 @@ const PopupInscription=()=>{
                     <img src={superHero} className="superHeroPopup"></img>
                     <div className='pFelicitation'>
                         <p className='pColorCanard'>Felicitation!</p>
-                        <p>Tu fais maintenant partis </p>
+                        <p>Tu fais maintenant partie </p>
                         <p className="pFamille">de la grande famille</p>
                         <div className="pToutPermis">
                             <p>Tout</p>
@@ -58,6 +60,7 @@ const PopupInscription=()=>{
                         </div>
                     </div>
                 </div>
+               
             </div>
             :
             <div className="containerPopup2">

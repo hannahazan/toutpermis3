@@ -5,7 +5,8 @@ import volant from '../images/volantLogo.png'
 import axios from 'axios';
 import { useContext,useEffect,useState } from 'react' 
 import {InscriptionContext as InscriptionChoice} from '../utilitaires/InscriptionContext'
-import { Link } from 'react-router-dom';
+import { Link, Navigate,useNavigate } from 'react-router-dom';
+
 
 
 const InscriptionFinale=()=>{
@@ -16,6 +17,7 @@ const InscriptionFinale=()=>{
     const[password,setPassword]=useState()
     const[PhoneNumber,setPhoneNumber]=useState(Number)
     const[Ecole,setEcole]=useState(Boolean)
+    const navigate=useNavigate()
     useEffect(()=>{
         setPath(window.location.pathname)
         console.log(Path)
@@ -27,6 +29,9 @@ const InscriptionFinale=()=>{
         setName(e.target.value)
         setEcole(true)
     }
+    const navigation=()=>{
+        navigate('/espacepro/inscriptionChoix/inscriptionFinale/profil')
+    }
     async function onSubmit() {
         let initiales=''
         for(let i=0;i<1;i++){
@@ -37,12 +42,18 @@ const InscriptionFinale=()=>{
      .post("http://localhost:5000/Users/test",{Name:name,Mail:connectedUser,Password:password,PhoneNumber:PhoneNumber,Ecole:Ecole
     ,Prenom:prenom,Initiales:initiales})
      .then((response)=>{(console.log(response.data))
-     }) 
+        boolInscription() 
+        navigation() 
+         
+        console.log("nop il passe pas du tout par là")
+     })
      .catch(error => {
      console.log(error);
-     })   
-     boolInscription()   
+     alert("Oops!Cette adresse e-mail est déjà utilisée!")
+     })
+   
 }
+
     return(
         <div className="InscriptionFinale">
             <Navbar/>
@@ -60,7 +71,7 @@ const InscriptionFinale=()=>{
                 <p className='pEspaceProFinale'>espace pro</p>
                 <p className='pInscriptionFinale'>Inscription</p>
                 {choice==='voiture'?
-                <form  method='post'>
+                <div>
                     <input type="text" id="name" name="user_name" placeholder='Nom' className='inNameFinale' onChange={(e)=>{ChangeNameEcole(e)}}></input>
                     <input type="text" id="name" name="user_name" placeholder='Prénom' className='inNameFinale' onChange={(e)=>{setPrenom(e.target.value)}}></input>
                     <input type="text" id="name" name="user_name" placeholder='Fonction' className='inNameFinale'></input>
@@ -69,10 +80,10 @@ const InscriptionFinale=()=>{
                     <input type="number" id="name" name="user_name" placeholder='Téléphone' className='inNameFinale'onChange={(e)=>{setPhoneNumber(e.target.value)}}></input>
                     <input type="password" id="name" name="user_name" placeholder='Nom' className='inNameFinale'onChange={(e)=>{setPassword(e.target.value)}}></input>
                     <input type="password" id="name" name="user_name" placeholder='Confirmer password' className='inNameFinale'></input>
-                    <Link to='/espacepro/inscriptionChoix/inscriptionFinale/profil' className='buttonFormFinale' onClick={()=>{onSubmit()}}>M'inscrire</Link>
-                </form> 
+                    <button  className='buttonFormFinale' onClick={onSubmit}>M'inscrire</button>
+                </div>
                 :
-                <form method='post'>
+                <div >
                     <input type="text" id="name" name="user_name" placeholder='Nom' className='inNameFinale'></input>
                     <input type="text" id="name" name="user_name" placeholder='Prénom' className='inNameFinale'></input>
                     <input type="email" id="mail" name="user_mail" placeholder='Adresse e-mail' className='inNameFinale'></input>
@@ -80,7 +91,7 @@ const InscriptionFinale=()=>{
                     <input type="password" id="name" name="user_name" placeholder='Nom' className='inNameFinale'></input>
                     <input type="password" id="name" name="user_name" placeholder='Confirmer password' className='inNameFinale'></input>
                     <Link to='/espacepro/inscriptionChoix/inscriptionFinale/profil' className='buttonFormFinale'  onClick={()=>{boolInscription()}}>M'inscrire</Link>
-                </form> 
+                </div> 
                  }
             </main>
         </div>

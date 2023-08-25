@@ -4,7 +4,7 @@ import  uuidv4 from 'uuidv4'
 const routerFicheLogo= express.Router()
 routerFicheLogo.use(express.json());
 routerFicheLogo.use(express.urlencoded({extended: true}))
-import FicheLogo from '../Models/FicheLogoModel.js'
+import FicheLogo from '../../Models/ModelEcole/FicheLogoModel.js'
 
 const upload = multer({ dest: 'toutpermis-app/public/data/uploads' })
 

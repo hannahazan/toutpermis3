@@ -15,7 +15,7 @@ import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Profil=()=>{
-    const{choice,connectedUser}=useContext(InscriptionChoice)
+    const{choice,connectedUser,validEmail}=useContext(InscriptionChoice)
     const[User,setUser]=useState()
     console.log(choice) 
     const getUser = () => {
@@ -31,6 +31,7 @@ const Profil=()=>{
       
       useEffect(()=>{
         getUser()
+        console.log(`${validEmail} le trick pour l'email`)
       },[])
    
     return(
