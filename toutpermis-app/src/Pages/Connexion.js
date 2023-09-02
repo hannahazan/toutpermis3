@@ -6,7 +6,7 @@ import localLogo from '../images/toutpermisLogoVidepng.png'
 import volant from '../images/volantLogo.png'
 import cross from '../images/iconsAwesome/xmark-solid (1).svg'
 import check from '../images/iconsAwesome/check-solid (1).svg'
-import Navbar from '../component/Navbar'
+import Navbar from '../component/Navbar.js'
 import { useState,useEffect } from 'react';
 
 
@@ -19,7 +19,7 @@ function Connexion(){
         setVerifie(document.getElementById('onverra').checked)
         console.log(`${verifie} la coche`)
     })
-   
+ //test github  
     return(
         <div className='Connexion'>
             <Navbar/>
