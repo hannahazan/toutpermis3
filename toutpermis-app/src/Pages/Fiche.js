@@ -8,12 +8,14 @@ import { now, set } from 'mongoose'
 import dropArrow from '../images/iconsAwesome/caret-down-solid.svg'
 import check from '../images/iconsAwesome/check-solid (1).svg'
 import couv from '../images/Rectangle 516.png'
+import couvMedecin from '../images/ordinateur-illustration-covid19-ecran-debout-bureau-dans-salle-bureau-vide-pendant-pandemie-mondiale-chambre-hopital-moderne-equipee-instruments-medicaux-professionnels-image-cellule-virale.jpg'
 import arrow from '../images/iconsAwesome/arrow-right-solid.svg'
 import trash from '../images/iconsAwesome/trash-solid.svg'
 import modif from '../images/iconsAwesome/gear-solid (1).svg'
 import cross from '../images/iconsAwesome/xmark-solid (1).svg'
 import picEquipe from '../images/CardImage/Rectangle 519.png'
 import picVéhicule from '../images/CardImage/véhiculeDefaut.jpg'
+import { Link } from 'react-router-dom'
 
 
 
@@ -21,7 +23,7 @@ import picVéhicule from '../images/CardImage/véhiculeDefaut.jpg'
 
 
 const Fiche=()=>{
-    const{connectedUser,Adresse,assignAdresse,AdresseValue,assignAdresseValue,Longitude,assignLongitude,Lattitude,assignLattitude,IdFiche,assignIdFiche}=useContext(getConnectedUser)
+    const{choice,connectedUser,Adresse,assignAdresse,AdresseValue,assignAdresseValue,Longitude,assignLongitude,Lattitude,assignLattitude,IdFiche,assignIdFiche}=useContext(getConnectedUser)
 
     console.log(connectedUser)
     const [uploadCouv, setUploadCouv] = useState(null)
@@ -51,6 +53,7 @@ const Fiche=()=>{
     const [Create,setCreate]=useState(false)
     const [Fiche,setFiche]=useState([])
     const [modify,setModify]=useState()
+    const [User,setUser]=useState([])
     const [DescriptionEcole,setDescriptionEcole]=useState(null)
     const EcoleNameId=`${EcoleName+Math.random()+Date.now()}`
 
@@ -611,6 +614,7 @@ const ModifSecondInclusive=()=>{
     .get(`http://localhost:5000/FicheEcolePrincipale/creation/${LinkEcole}`)
     .then((res) => {
       console.log(setFiche(res.data))
+      getUser()
       if(res.data.Descriptif)
       { setIsdescriptif(true)}
       if(res.data.HorairesBureau.length!=0){
@@ -787,11 +791,20 @@ const ModifSecondInclusive=()=>{
     useEffect(()=>{
         console.log(`${LogoNew} voyons voir ça`)
     })
+    const getUser=()=>{
+        axios
+        .get(`http://localhost:5000/Users/${connectedUser}`)
+        .then((res)=>{
+            setUser(res.data)          
+        })
+        .catch((err) => console.error(err));
+    }
     const getFicheFirst=()=>{
         axios
         .get(`http://localhost:5000/FicheEcolePrincipale/creation/${EcoleNameId}`)
         .then((res) => {
           setFiche(res.data)
+          getUser()
           setUniqueIdFicheEcoleName(res.data.EcoleNameId)
           assignIdFiche(res.data.EcoleNameId)
           console.log(Fiche)
@@ -1389,7 +1402,7 @@ console.log(`${IdFiche}  L'ID FICHE BB`)})
                 {Fiche.length!=0?<div className={Create===true ||test===true?'containerInformations':'containerInformations2'}>
                     <h1 className='titreFiche'>{Fiche.EcoleName}</h1>
                     <p className='pInformations'>Informations</p> 
-                    <div className='containerCouvUpload'>
+                    <div className={choice==='voiture'?'containerCouvUpload':'containerCouvUploadNone'}>
                     {couvNew.length!=0?<img src={couvNew.CouvertureUrl} className='imgCouverture'></img>: <img src={couv} className='imgCouverture'></img>}
                         <input  type="file" id="imageFile" accept="image/*" placeholder='uploadCouv'  className='uploadHidden'onChange={(e)=>{uploadCouvId(e)}} multiple></input>
                         <div className='uploadFront'>Modifier Couverture</div>
@@ -1400,32 +1413,45 @@ console.log(`${IdFiche}  L'ID FICHE BB`)})
                             <p>C</p>
                         </div>}
                     </div>
-                    <input   type='submit' className='buttonUpload' onClick={onSubmit} value={'Valider logo et couverture'}></input> 
-                    <div className='pTEAndLogoMinus'>
-                        <p>Type d'établissement</p>
-                        {MinusTE===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusTE===false?setMinusTE(true):setMinusTE(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusTE===false?setMinusTE(true):setMinusTE(false)}}>-</p></div>}
+                    <div className={choice==='médecin'?'containerCouvUpload':'containerCouvUploadNone'}>
+                     <img src={couvMedecin} className='imgCouverture'></img>
+                        <input  type="file" id="imageFile" accept="image/*" placeholder='uploadCouv'  className='uploadHidden'onChange={(e)=>{uploadCouvId(e)}} multiple></input>
+                        <div className='uploadFront'>Modifier Couverture</div>
+                        <input  type="file" id="imageFile" accept="image/*" className='uploadLogoHidden' onChange={(e)=>{uploadLogoId(e)}}></input>
+                        <div className='uploadfrontLogo'>Modifier Logo</div>
+                        <div className='uploadLogo'>
+                            <p className='pR'>{User.Initiales}</p>
+                            
+                        </div>
                     </div>
-                    <div className={MinusTE===false?'containerButtonAndBoxcase2':'containerButtonAndBoxcase'}>
-                        <div className='containercheckBoxAndP'>
-                            <p>Auto-école</p>
-                            <div className={checkAuto===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{ModifSecondTypeEtablissement(checkAuto,setCheckAuto)}}>
-                                <img src={check} className={checkAuto===true?'checkTrue':'checkFalse'}></img>
-                            </div>
+                    <input   type='submit' className='buttonUploadImg' onClick={onSubmit} value={'Valider logo et couverture'}></input> 
+                    <div className={choice==='voiture'?'displayBlockChoice':'displayNoneblockChoice'}>
+                        <div className='pTEAndLogoMinus'>
+                            <p>Type d'établissement</p>
+                            {MinusTE===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusTE===false?setMinusTE(true):setMinusTE(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusTE===false?setMinusTE(true):setMinusTE(false)}}>-</p></div>}
                         </div>
-                        <div className='containercheckBoxAndP'>
-                            <p>Moto-école</p>
-                            <div className={checkMoto===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{ModifSecondTypeEtablissement(checkMoto,setCheckMoto)}}>
-                                <img src={check} className={checkMoto===true?'checkTrue':'checkFalse'}></img>
+                        <div className={MinusTE===false?'containerButtonAndBoxcase2':'containerButtonAndBoxcase'}>
+                            <div className='containercheckBoxAndP'>
+                                <p>Auto-école</p>
+                                <div className={checkAuto===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{ModifSecondTypeEtablissement(checkAuto,setCheckAuto)}}>
+                                    <img src={check} className={checkAuto===true?'checkTrue':'checkFalse'}></img>
+                                </div>
                             </div>
-                        </div>
-                        <div className='containercheckBoxAndP'>
-                            <p>Bateau-école</p>
-                            <div className={checkBateau===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{ModifSecondTypeEtablissement(checkBateau,setCheckbateau)}}>
-                                <img src={check} className={checkBateau===true?'checkTrue':'checkFalse'}></img>
+                            <div className='containercheckBoxAndP'>
+                                <p>Moto-école</p>
+                                <div className={checkMoto===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{ModifSecondTypeEtablissement(checkMoto,setCheckMoto)}}>
+                                    <img src={check} className={checkMoto===true?'checkTrue':'checkFalse'}></img>
+                                </div>
                             </div>
+                            <div className='containercheckBoxAndP'>
+                                <p>Bateau-école</p>
+                                <div className={checkBateau===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{ModifSecondTypeEtablissement(checkBateau,setCheckbateau)}}>
+                                    <img src={check} className={checkBateau===true?'checkTrue':'checkFalse'}></img>
+                                </div>
+                            </div>
+                            <input   type='submit' className={valider===false?'buttonValidBoxcase':'buttonValidBoxcase2'}  value={'Valider'} onClick={()=>{EcoleModif()}}></input>
+                            <input   type='submit' className={valider===true && ModifTypesEtablissement===false?'buttonValidBoxcaseModif':valider===true && ModifTypesEtablissement===true?'buttonValidBoxcaseModif3':'buttonValidBoxcaseModif2'}  value={ModifTypesEtablissement===false?'Modification enregistrée':'valider'} onClick={()=>{ModifSecondTypeEtabissementRequest()}}></input>
                         </div>
-                        <input   type='submit' className={valider===false?'buttonValidBoxcase':'buttonValidBoxcase2'}  value={'Valider'} onClick={()=>{EcoleModif()}}></input>
-                        <input   type='submit' className={valider===true && ModifTypesEtablissement===false?'buttonValidBoxcaseModif':valider===true && ModifTypesEtablissement===true?'buttonValidBoxcaseModif3':'buttonValidBoxcaseModif2'}  value={ModifTypesEtablissement===false?'Modification enregistrée':'valider'} onClick={()=>{ModifSecondTypeEtabissementRequest()}}></input>
                     </div>
                     <div className='pNDAndLogoMinus'>
                         <p>Description</p>
@@ -1464,7 +1490,7 @@ console.log(`${IdFiche}  L'ID FICHE BB`)})
                         <p>Contact</p>
                         {MinusContact===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusContact===false?setMinusContact(true):setMinusContact(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusContact===false?setMinusContact(true):setMinusContact(false)}}>-</p></div>}
                     </div>
-                    <div className={MinusContact===false?'containerLocalisation':'containerLocalisation2'}>
+                    <div className={MinusContact===false?'containerLocalisation':'containerNomDescription2'}>
                         <input type='text' placeholder='Adresse mail' className='inputNom'></input>
                         <input type='number'id="tentacles" name="tentacles" className='inputNom' placeholder='Téléphone'></input>
                         <input type='text' placeholder='site internet' className='inputNom'></input>
@@ -1868,7 +1894,7 @@ console.log(`${IdFiche}  L'ID FICHE BB`)})
                             <input   type='submit' className={validerHorBur==false?'buttonValidBoxcase':'buttonValidBoxcaseModifOk'}  value={validerHorBur==false?'Valider':"Modifications enregistrées"} onClick={()=>{HorairesBureauModif()}}></input>
                             
                         </div>
-                        <div className={OngletHoraires==='bureau'?'containerHorairesConduite2':'containerHorairesConduite'}>
+                        <div className={OngletHoraires==='bureau'?'containerHorairesConduite2':'containerHorairesBureau'}>
                             <div className='containerHorairesCalendar'>
                                 <p>Lundi</p>
                                 <div className='containerBoxHorairesDay'>
@@ -2818,6 +2844,7 @@ console.log(`${IdFiche}  L'ID FICHE BB`)})
                         <input   type='submit' className={ValiderOptions===false?'buttonValidBoxcase':'buttonValidBoxcase2'}  value={'Valider'} onClick={()=>{OptionsModif()}}></input>
                         <input   type='submit' className={ValiderOptions===true && ModifySecondOptions===false?'buttonValidBoxcaseModif':ValiderOptions===true && ModifySecondOptions===true?'buttonValidBoxcaseModif3':'buttonValidBoxcaseModif2'}  value={ModifySecondOptions===false?'Modification enregistrée':'valider'} onClick={()=>{ModifSecondOptionsRequest()}}></input>
                     </div>
+                    <Link to="/profil"  type='submit' className='buttonRevenirAuprofil' >Revenir à mon profil</Link>
                 </div>:console.log("ha ouais") } 
             </main>
         </div>

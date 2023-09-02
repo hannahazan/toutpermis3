@@ -23,7 +23,6 @@ const PopupInscription=()=>{
         <div>
             {Path==='/espacepro/inscriptionChoix/inscriptionFinale/profil'&& Close===false?
             <div className="containerPopup">
-                 <Link to='/espacepro/inscriptionChoix/inscriptionFinale'><button>revenir à l'inscription</button></Link>
                 <img src={close} className="closePopup" onClick={()=>{setClose(true)}}></img>
                 <div className='containerLogoImgFelicitation'>
                     <div className="pictoLogoEspaceProPopup">

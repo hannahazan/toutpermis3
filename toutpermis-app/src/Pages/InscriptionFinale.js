@@ -17,6 +17,8 @@ const InscriptionFinale=()=>{
     const[password,setPassword]=useState()
     const[PhoneNumber,setPhoneNumber]=useState(Number)
     const[Ecole,setEcole]=useState(Boolean)
+    const[Medecin,setMedecin]=useState(Boolean)
+    const[amenageur,setAmenageur]=useState(Boolean)
     const navigate=useNavigate()
     useEffect(()=>{
         setPath(window.location.pathname)
@@ -27,7 +29,14 @@ const InscriptionFinale=()=>{
     console.log(choice)
     const ChangeNameEcole=(e)=>{
         setName(e.target.value)
-        setEcole(true)
+        if(choice==='voiture'){ 
+            setEcole(true)}
+        else if(choice==='médecin'){
+            setMedecin(true)
+        }
+        else if(choice==='aménageur'){
+            setAmenageur(true)
+        }
     }
     const navigation=()=>{
         navigate('/espacepro/inscriptionChoix/inscriptionFinale/profil')
@@ -40,7 +49,7 @@ const InscriptionFinale=()=>{
         }
      axios
      .post("http://localhost:5000/Users/test",{Name:name,Mail:connectedUser,Password:password,PhoneNumber:PhoneNumber,Ecole:Ecole
-    ,Prenom:prenom,Initiales:initiales})
+    ,Prenom:prenom,Initiales:initiales,Medecin:Medecin,Aménageur:amenageur})
      .then((response)=>{(console.log(response.data))
         boolInscription() 
         navigation() 
@@ -84,13 +93,13 @@ const InscriptionFinale=()=>{
                 </div>
                 :
                 <div >
-                    <input type="text" id="name" name="user_name" placeholder='Nom' className='inNameFinale'></input>
-                    <input type="text" id="name" name="user_name" placeholder='Prénom' className='inNameFinale'></input>
-                    <input type="email" id="mail" name="user_mail" placeholder='Adresse e-mail' className='inNameFinale'></input>
-                    <input type="number" id="name" name="user_name" placeholder='Téléphone' className='inNameFinale'></input>
-                    <input type="password" id="name" name="user_name" placeholder='Nom' className='inNameFinale'></input>
+                    <input type="text" id="name" name="user_name" placeholder='Nom' className='inNameFinale' onChange={(e)=>{ChangeNameEcole(e)}}></input>
+                    <input type="text" id="name" name="user_name" placeholder='Prénom' className='inNameFinale'onChange={(e)=>{setPrenom(e.target.value)}}></input>
+                    <input type="email" id="mail" name="user_mail" placeholder='Adresse e-mail' className='inNameFinale'onChange={(e)=>{assignConnecteduser(e)}}></input>
+                    <input type="number" id="name" name="user_name" placeholder='Téléphone' className='inNameFinale'onChange={(e)=>{setPhoneNumber(e.target.value)}}></input>
+                    <input type="password" id="name" name="user_name" placeholder='Nom' className='inNameFinale'onChange={(e)=>{setPassword(e.target.value)}}></input>
                     <input type="password" id="name" name="user_name" placeholder='Confirmer password' className='inNameFinale'></input>
-                    <Link to='/espacepro/inscriptionChoix/inscriptionFinale/profil' className='buttonFormFinale'  onClick={()=>{boolInscription()}}>M'inscrire</Link>
+                    <button  className='buttonFormFinale' onClick={onSubmit}>M'inscrire</button>
                 </div> 
                  }
             </main>

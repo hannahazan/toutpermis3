@@ -5,7 +5,10 @@ const ficheLogoSchema = new mongoose.Schema(
         pictureName:String,
         UserPseudo:String,
         EcoleNameId:String,
-        idLogo:Number
+        idLogo:Number,
+        Ecole:Boolean,
+        Medecin:Boolean,
+        Amenageur:Boolean
     });
  
 

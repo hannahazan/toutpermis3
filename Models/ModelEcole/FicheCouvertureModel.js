@@ -6,6 +6,9 @@ const ficheCouverture = new mongoose.Schema(
         CouvertureUrl:String,
         PictureName:String,
         idCouv:Number,
+        Ecole:Boolean,
+        Medecin:Boolean,
+        Amenageur:Boolean
     });
  
      

@@ -10,6 +10,8 @@ import powerOff from '../images/iconsAwesome/power-off-solid.svg'
 import setting from '../images/iconsAwesome/gear-solid (1).svg'
 import voiture from '../images/iconsAwesome/car-rear-solid.svg'
 import PopupInscription from '../component/PopupInscription';
+import stethoscope from '../images/iconsAwesome/stethoscope-solid.svg'
+import clef from '../images/iconsAwesome/screwdriver-wrench-solid.svg'
 import { Link } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
@@ -53,22 +55,22 @@ const Profil=()=>{
             </div>  
             <div className='containerCardProfil'>
                 <Link to='Fiche' className='cardProfil'>
-                    <img src={voiture} className='voitureProfilCard'></img>
+                    {choice==='voiture'?<img src={voiture} className='voitureProfilCard'></img>:choice==='médecin'?<img src={stethoscope} className='voitureProfilCard'></img>:<img src={clef} className='voitureProfilCard'></img>}
                     <p>Ma fiche</p>
                 </Link>
                 <div className='cardProfil'>
-                    <img src={voiture} className='voitureProfilCardDeuxPara'></img>
+                {choice==='voiture'?<img src={voiture} className='voitureProfilCard'></img>:choice==='médecin'?<img src={stethoscope} className='voitureProfilCard'></img>:<img src={clef} className='voitureProfilCard'></img>}
                     <p> Mes Offres</p>
                     <p>partenaires</p>
                 </div>
             </div>
             <div className='containerCardProfil'>
                 <div className='cardProfil'>
-                    <img src={voiture} className='voitureProfilCard'></img>
+                {choice==='voiture'?<img src={voiture} className='voitureProfilCard'></img>:choice==='médecin'?<img src={stethoscope} className='voitureProfilCard'></img>:<img src={clef} className='voitureProfilCard'></img>}
                     <p>Mes factures</p>
                 </div>
                 <Link to='/MesAnnonces' className='cardProfil'>
-                    <img src={voiture} className='voitureProfilCard'></img>
+                {choice==='voiture'?<img src={voiture} className='voitureProfilCard'></img>:choice==='médecin'?<img src={stethoscope} className='voitureProfilCard'></img>:<img src={clef} className='voitureProfilCard'></img>}
                     <p>Mes annonces</p>
                 </Link>
             </div>

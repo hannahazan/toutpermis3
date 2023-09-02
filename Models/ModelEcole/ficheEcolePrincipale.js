@@ -47,6 +47,9 @@ const ficheEcolePrincipaleSchema = new mongoose.Schema(
         Longitude:Number,
         Lattitude:Number,
         Ville:String,
+        Ecole:Boolean,
+        Medecin:Boolean,
+        Amenageur:Boolean
     });
  
      

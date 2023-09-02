@@ -7,7 +7,8 @@ const ficheEquipesSchema = new mongoose.Schema(
         EcoleNameId:String,
         Nom:String,
         Fonction:String,
-        idEquipes:Number
+        idEquipes:Number,
+        
     });
  
 
