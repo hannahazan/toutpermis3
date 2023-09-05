@@ -125,6 +125,23 @@ routerFicheEcolePrincipale.get('/One/:UserPseudo', function (req, res) {
       }
     })
   })
+  routerFicheEcolePrincipale.put('/addSpe/:EcoleNameId',(req,res) => {
+    FicheEcolePrincipale.updateOne({EcoleNameId:req.params.EcoleNameId},{$push:{Specialite:{$each:[req.body.Specialite],$position:0}}},function(err,data){
+      console.log(req.body)
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
   routerFicheEcolePrincipale.put('/UpdateFormation/:EcoleNameId',(req,res) => {
     FicheEcolePrincipale.updateOne({EcoleNameId:req.params.EcoleNameId},{$set:{"Formation.0":req.body.Formation.Name,"Formation.0":req.body.Formation.Descriptif}},function(err,data){
       console.log(req.body)

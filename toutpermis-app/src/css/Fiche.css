@@ -106,9 +106,9 @@
   width: 100%;
   position: relative;
   height: 100%;
+
 }
   
-
 .uploadFront{
   width: 184px;
   height: 27px;
@@ -1476,7 +1476,17 @@
   background-color: #37beb4;
   position: relative;
   top: 38px;
+ 
 }
 .containerCouvUploadNone{
   display:None
+}
+.containerOngletBureauConduiteNone{
+  display:none
+}
+.liseretHorairesNone{
+  display:none
+}
+.containercheckBoxAndPNone{
+  display:none
 }

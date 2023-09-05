@@ -49,7 +49,10 @@ const ficheEcolePrincipaleSchema = new mongoose.Schema(
         Ville:String,
         Ecole:Boolean,
         Medecin:Boolean,
-        Amenageur:Boolean
+        Amenageur:Boolean,
+        AccessibiliteTrue:Boolean,
+        AccessibiliteFalse:Boolean,
+        Specialite:Array
     });
  
      
