@@ -1490,3 +1490,20 @@
 .containercheckBoxAndPNone{
   display:none
 }
+.containerpSpeFicheMédecin{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #f8f9f9;
+  border: solid 1px #dfe1e6;
+  border-radius: 10px;
+  padding-left: 18px;
+  padding-right: 12px;
+}
+.containerpSpeFicheMédecinNone{
+  display: none;
+}
+.SpeContainer{
+  display: flex;
+  justify-content: space-between;
+}

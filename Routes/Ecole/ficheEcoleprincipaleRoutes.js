@@ -142,8 +142,26 @@ routerFicheEcolePrincipale.get('/One/:UserPseudo', function (req, res) {
       }
     })
   })
-  routerFicheEcolePrincipale.put('/UpdateFormation/:EcoleNameId',(req,res) => {
-    FicheEcolePrincipale.updateOne({EcoleNameId:req.params.EcoleNameId},{$set:{"Formation.0":req.body.Formation.Name,"Formation.0":req.body.Formation.Descriptif}},function(err,data){
+  routerFicheEcolePrincipale.put('/UpdateSpe/:EcoleNameId',(req,res) => {
+    FicheEcolePrincipale.updateOne({EcoleNameId:req.params.EcoleNameId},{$set:{["Specialite."+req.body.Index]:req.body.Specialite}},function(err,data){
+      console.log(req.body)
+      
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
+  routerFicheEcolePrincipale.put('/removeSpe/:EcoleNameId',(req,res) => {
+    FicheEcolePrincipale.updateOne({EcoleNameId:req.params.EcoleNameId},{$pull:{Specialite:req.body.Specialite}},function(err,data){
       console.log(req.body)
       if(err){
         res.sendStatus(404)
