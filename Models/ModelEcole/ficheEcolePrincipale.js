@@ -52,7 +52,11 @@ const ficheEcolePrincipaleSchema = new mongoose.Schema(
         Amenageur:Boolean,
         AccessibiliteTrue:Boolean,
         AccessibiliteFalse:Boolean,
-        Specialite:Array
+        Specialite:Array,
+        Tarifs:Array,
+        MailContact:String,
+        SiteWeb:String,
+        PhoneNumber:Number,
     });
  
      

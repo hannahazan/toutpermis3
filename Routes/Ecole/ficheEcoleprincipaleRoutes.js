@@ -177,6 +177,60 @@ routerFicheEcolePrincipale.get('/One/:UserPseudo', function (req, res) {
       }
     })
   })
+
+  routerFicheEcolePrincipale.put('/addTarif/:EcoleNameId',(req,res) => {
+    FicheEcolePrincipale.updateOne({EcoleNameId:req.params.EcoleNameId},{$push:{Tarifs:{$each:[req.body.Tarifs],$position:0}}},function(err,data){
+      console.log(req.body)
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
+  routerFicheEcolePrincipale.put('/UpdateTarif/:EcoleNameId',(req,res) => {
+    FicheEcolePrincipale.updateOne({EcoleNameId:req.params.EcoleNameId},{$set:{["Tarifs."+req.body.Index]:req.body.Tarifs}},function(err,data){
+      console.log(req.body)
+      
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  }) 
+  routerFicheEcolePrincipale.put('/removeTarif/:EcoleNameId',(req,res) => {
+    FicheEcolePrincipale.updateOne({EcoleNameId:req.params.EcoleNameId},{$pull:{Tarifs:req.body.Tarifs}},function(err,data){
+      console.log(req.body)
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
+
   routerFicheEcolePrincipale.put('/removeFormation/:EcoleNameId',(req,res) => {
     FicheEcolePrincipale.updateOne({EcoleNameId:req.params.EcoleNameId},{$pull:{Formation:req.body.Formation}},function(err,data){
       console.log(req.body)

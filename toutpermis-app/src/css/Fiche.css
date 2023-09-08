@@ -190,7 +190,7 @@
  
 }
 .pR{
-  color: black;
+  color: white;
 }
 .EC{
   margin-right:10px;
@@ -1506,4 +1506,66 @@
 .SpeContainer{
   display: flex;
   justify-content: space-between;
+}
+.pSpécialitéFicheModif{
+  width: 260px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 18px;
+  color: #37beb4;
+  margin-top: 10px;
+}
+.containerIconSpe{
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+  height: 20px;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+.pTarifsFicheModif{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 18px;
+  color: #37beb4;
+  margin-top: 10px;
+  width: 20%;
+}
+.pTarifsPrixFicheModif{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 18px;
+  color: #37beb4;
+  margin-top: 10px;
+  width: fit-content;
+  margin-left:43px ;
+}
+.containerIconTarifs{
+  display: flex;
+  flex-direction: row;
+  width: 25%;
+  height: 20px;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+.containerConsultationPrixTarifsFiche{
+  display: flex;
+  flex-direction: row;
+  color: #8fa6a7;
+  font-size: 18px;
+}
+.containerConsultationPrixTarifsFiche p{
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: 13%;
+}
+.contactIconValueContainer{
+  display: flex;
+  justify-content: space-between;
+}
+.fermerFormFormationModifFicheNone{
+  display:none
 }

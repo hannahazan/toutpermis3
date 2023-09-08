@@ -254,8 +254,24 @@ const Fiche=()=>{
     const [AddSpe,setAddSpe]=useState(false)
     const [ModifySpe,setModifySpe]=useState(false)
     const [indexSpe,setIndexSpe]=useState(Number)
+    const [valueModifySpe,setValueModifySpe]=useState(null)
+    const [inDeleteSpe,setInDeleteSpe]=useState(false)
 
-    
+    const [MinusTarifs,setMinusTarifs]=useState(false)
+    const [Tarif,setTarif]=useState(null)
+    const [TarifPrix,setTarifPrix]=useState(null)
+    const [AddTarif,setAddTarif]=useState(false)
+    const [ModifyTarif,setModifyTarif]=useState(false)
+    const [indexTarif,setIndexTarif]=useState(Number)
+    const [valueModifyTarif,setValueModifyTarif]=useState(null)
+    const [valueModifyTarifPrix,setValueModifyTarifPrix]=useState(null)
+    const [inDeleteTarif,setInDeleteTarif]=useState(false)
+    /*************contact variable****************************/
+    const [MailContact,setMailContact]=useState(null)
+    const [SiteWeb, setSiteWeb]=useState(null)
+    const [PhoneNumber,setPhoneNumber]=useState(null)
+    const [validContact,setValidContact]=useState(false)
+    const [ModifContactValue,setModifContactValue]=useState(false)
     /**************openPopUp*************** */  
     const OpenPopUp=(ecolePop,ecoleNameSup)=>{
         setEcoleSup(ecolePop)
@@ -281,6 +297,8 @@ const Fiche=()=>{
         setisFormCarteDelete(false)
         setIsFormDelete(false)
         setOpenPopUpDeleteFromEquipe(false)
+        setInDeleteSpe(false)
+        setInDeleteTarif(false)
     }
     const OpenPopUpGeneral=(HookOpen,HookOpenFrom,HookId,id,HookName,Name)=>{
         HookOpen(true)
@@ -558,7 +576,7 @@ const ModifSecondInclusive=()=>{
 }
     /**********************Delete fiche******************** */
     const deleteOneFiche=(valeur,id)=>{
-    if(isFormDelete===false && isFormCarteDelete===false && OpenPopUpDeleteFromEquipe==false && OpenPopUpDeleteFromvéhicule==false)    
+    if(isFormDelete===false && isFormCarteDelete===false && OpenPopUpDeleteFromEquipe==false && OpenPopUpDeleteFromvéhicule==false && inDeleteSpe===false && inDeleteTarif===false)    
    { setCheckPopUpSupOpen(false)
     axios
    .delete(`http://localhost:5000/FicheEcolePrincipale/delete/${valeur}`)
@@ -568,6 +586,40 @@ const ModifSecondInclusive=()=>{
    .catch(error => {
    console.log(error);
    })  }
+   else if(inDeleteSpe){
+        setCheckPopUpSupOpen(false)
+        console.log('ici')
+        axios
+        .put(`http://localhost:5000/FicheEcolePrincipale/removeSpe/${valeur}`,{Specialite:{"id":id}})
+        .then((response)=>{(console.log(response.data))
+        console.log("je ne comprend pas")
+            setInDeleteSpe(false)
+            //getFicheFormation()
+            getFiche()
+            
+        }) 
+        .catch(error => {
+        console.log(error);
+        })
+   }
+
+   else if(inDeleteTarif){
+    setCheckPopUpSupOpen(false)
+    console.log('ici')
+    axios
+    .put(`http://localhost:5000/FicheEcolePrincipale/removeTarif/${valeur}`,{Tarifs:{"id":id}})
+    .then((response)=>{(console.log(response.data))
+    console.log("je ne comprend pas")
+        setInDeleteTarif(false)
+        //getFicheFormation()
+        getFiche()
+        
+    }) 
+    .catch(error => {
+    console.log(error);
+    })
+}
+
    else if(isFormCarteDelete){ 
     setCheckPopUpSupOpen(false)
     console.log('ici')
@@ -770,6 +822,10 @@ const ModifSecondInclusive=()=>{
       }
       setCheckAccéssibilitéYes(res.data.AccessibiliteTrue)
       setCheckAccéssibilitéNo(res.data.AccessibiliteFalse)
+      setMailContact(res.data.MailContact)
+      setPhoneNumber(res.data.PhoneNumber)
+      setSiteWeb(res.data.SiteWeb)
+      setValidContact(true)
       ;
     })
     .catch((err) => console.error(err));
@@ -1103,7 +1159,24 @@ const ModifFormationCarteSecond=()=>{
       })
     .catch((err) => console.error(err)); 
 }
-
+const ContactModif=()=>{console.log('dans le contact')
+    axios
+    .put(`http://localhost:5000/FicheEcolePrincipale/${Fiche.EcoleNameId}`,{MailContact:MailContact,SiteWeb:SiteWeb,PhoneNumber:PhoneNumber})
+    .then((response) => {
+        console.log(setModify(response.data));
+        console.log("dans les options et ça marche")
+        setValidContact(true)
+        getFiche()
+      })
+    .catch((err) => console.error(err));}
+ const LogicModiContact=()=>{
+    setValidContact(false)
+    setModifContactValue(true)
+ }
+ const closeFormContact=()=>{
+    setValidContact(true)
+    setModifContactValue(false)
+ }
 /*****************createfiche************************************/
     async function createFiche() {
      
@@ -1395,10 +1468,24 @@ const localModifFiche=(response)=>{
 const closeFormSpe=()=>{
     setAddSpe(false)
     setModifySpe(false)
+    setValueModifySpe(null)
 }
-const OpenModiFySpe=(Index)=>{
+const closeFormTarif=()=>{
+    setAddTarif(false)
+    setModifyTarif(false)
+    setValueModifyTarif(null)
+    setValueModifyTarifPrix(null)
+}
+const OpenModiFySpe=(Index,value)=>{
     setModifySpe(true)
     setIndexSpe(Index)
+    setValueModifySpe(value)
+}
+const OpenModifyGeneral=(setIndex,Index,setValue1,Value1,setValue2,Value2,setBool)=>{
+    setBool(true)
+    setIndex(Index)
+    setValue1(Value1)
+    setValue2(Value2)
 }
 const AccessibiliteModif=()=>{console.log('dans accessibilité')
     axios
@@ -1427,7 +1514,7 @@ const ModifSecondAcce=()=>{
 
 const speModif=()=>{
          axios
-        .put(`http://localhost:5000/FicheEcolePrincipale/addSpe/${Fiche.EcoleNameId}`,{Specialite:spe})
+        .put(`http://localhost:5000/FicheEcolePrincipale/addSpe/${Fiche.EcoleNameId}`,{Specialite:{value:spe,id:Math.random()+Date.now()}})
         .then((response) => {
             console.log(setModify(response.data));
             setAddSpe(false)
@@ -1435,15 +1522,45 @@ const speModif=()=>{
             console.log("ca marche vraiment? spe")
           })
         .catch((err) => console.error(err)); 
-    }
+    }    
 
 const speModifIndex=()=>{
     axios
-    .put(`http://localhost:5000/FicheEcolePrincipale/UpdateSpe/${Fiche.EcoleNameId}`,{Specialite:spe,Index:indexSpe})
+    .put(`http://localhost:5000/FicheEcolePrincipale/UpdateSpe/${Fiche.EcoleNameId}`,{Specialite:{value:valueModifySpe,id:Math.random()+Date.now()},Index:indexSpe})
     .then((response) => {
         console.log(setModify(response.data));
         setAddSpe(false)
         setModifySpe(false)
+        setValueModifySpe(null)
+        setSpe(null)
+        getFiche()
+        console.log("ca marche vraiment? spe")
+      })
+    .catch((err) => console.error(err)); 
+}
+
+const TarifModif=()=>{
+    axios
+   .put(`http://localhost:5000/FicheEcolePrincipale/addTarif/${Fiche.EcoleNameId}`,{Tarifs:{Consultation:Tarif,Prix:TarifPrix,id:Math.random()+Date.now()}})
+   .then((response) => {
+       console.log(setModify(response.data));
+       setAddTarif(false)
+       getFiche()
+       console.log("ca marche vraiment? spe")
+     })
+   .catch((err) => console.error(err)); 
+}
+const tarifModifIndex=()=>{
+    axios
+    .put(`http://localhost:5000/FicheEcolePrincipale/UpdateTarif/${Fiche.EcoleNameId}`,{Tarifs:{Consultation:valueModifyTarif,Prix:valueModifyTarifPrix,id:Math.random()+Date.now()},Index:indexTarif})
+    .then((response) => {
+        console.log(setModify(response.data));
+        setAddTarif(false)
+        setModifyTarif(false)
+        setValueModifyTarif(null)
+        setValueModifyTarifPrix(null)
+        setTarif(null)
+        setTarifPrix(null)
         getFiche()
         console.log("ca marche vraiment? spe")
       })
@@ -1475,7 +1592,7 @@ console.log(`${IdFiche}  L'ID FICHE BB`)})
                     <p>Êtes-vous sûr de vouloir supprimer</p>
                     {isFormDelete===false && isFormCarteDelete===false?<p className='pValuePopUp'>{ecoleNameSup}</p>:<p className='pValuePopUp'>{FormationNameSup}</p>}
                     <div className='containerButtonPopUpSup'>
-                        <button className='ButtonPopUpSupOui' onClick={()=>{deleteOneFiche(EcoleSup,uniquIdForm)}}>oui</button>
+                        <button className='ButtonPopUpSupOui' onClick={()=>{deleteOneFiche(Fiche.EcoleNameId,uniquIdForm)}}>oui</button>
                         <button className='ButtonPopUpSupNon' onClick={()=>{closePopupWithoutDeleting()}}>non</button>
                     </div>
                 </div>
@@ -1501,7 +1618,7 @@ console.log(`${IdFiche}  L'ID FICHE BB`)})
                             </div>
                             <div className='liseretLien'></div>
                         </div> ):console.log('ok') }
-                    <button className={AddEcole===false?'buttonAddEcole':'buttonAddEcole2'} onClick={()=>{setAddEcole(true)}}>Ajouter un établissement de conduite</button> 
+                    {choice==='voiture'?<button className={AddEcole===false?'buttonAddEcole':'buttonAddEcole2'} onClick={()=>{setAddEcole(true)}}>Ajouter un établissement de conduite</button>:<button className={AddEcole===false?'buttonAddEcole':'buttonAddEcole2'} onClick={()=>{setAddEcole(true)}}>Ajouter un établissement de santé</button> }
                     <div className={AddEcole===true&&Create===false?'containerNomEtaButtonValider':'containerNomEtaButtonValider2'}>
                         <input type='text' placeholder="Nom de l'établissement" className='inputNom' onChange={(e)=>{setEcoleName(e.target.value)}}></input>
                         <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={createFiche}></input>
@@ -1579,15 +1696,18 @@ console.log(`${IdFiche}  L'ID FICHE BB`)})
                         </div>
                         <form className={  AddSpe===true || ModifySpe===true?'containerNomDescription2':'containerNomDescription'} id='resetDescriptif'>
                             <img src={cross} className='fermerFormFormationModifFiche' onClick={()=>{closeFormSpe()}}></img>
-                            <input type='text' placeholder='Spécialité' className='inputNom' id='resetDescriptif' onChange={(e)=>{setSpe(e.target.value)}}></input>
+                            <input type='text' placeholder='Spécialité' className='inputNom' id='resetDescriptif' value={valueModifySpe!=null?valueModifySpe:null} onChange={(e)=>{ModifySpe===true?setValueModifySpe(e.target.value):setSpe(e.target.value)}}></input>
                             <input   type='reset' className='buttonValidBoxcase' value={'Valider'} onClick={()=>{ModifySpe===true?speModifIndex():speModif()}}></input>
                         </form>
                     </div>
                     <div className={Fiche.Specialite!=0 && MinusSpe===true && AddSpe===false && ModifySpe===false?'containerpSpeFicheMédecin':'containerpSpeFicheMédecinNone'}>
                         {Fiche.Specialite!=0 && MinusSpe===true? Fiche.Specialite.map((event)=>
                             <div className='SpeContainer'>
-                                <p className='pDescriptifFicheModif'>{event}</p>
-                                <img src={modif} className='iconForfaitFiche' onClick={()=>{OpenModiFySpe(Fiche.Specialite.indexOf(event))}}></img>
+                                <p className='pSpécialitéFicheModif'>{event.value}</p>
+                                <div className='containerIconSpe'>
+                                    <img src={modif} className='iconForfaitFiche' onClick={()=>{OpenModiFySpe(Fiche.Specialite.indexOf(event),event.value)}}></img>
+                                    <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpGeneral(setCheckPopUpSupOpen,setInDeleteSpe,setUniqueIdForm,event.id,setFormationNameSup," cette spécialité")}}></img>
+                                </div>
                             </div> 
                             ):console.log("pas de spe")}
                     </div>
@@ -1611,16 +1731,40 @@ console.log(`${IdFiche}  L'ID FICHE BB`)})
                     </div>
                    {IsCoordinate===true && MinusLocal===true && ModifLocalisation===false? <Localisation></Localisation>:console.log("nop")}
                    <input   type='submit' className={IsCoordinate===false || ModifLocalisation===true || MinusLocal===false?'buttonValidBoxcaseModif2':'buttonValidBoxcaseModifOk'}  value='Modifier Localisation' onClick={()=>{setModifLocalisation(true)}} ></input>
+                    
                     <div className='pContactAndLogoMinus'>
                         <p>Contact</p>
                         {MinusContact===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusContact===false?setMinusContact(true):setMinusContact(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusContact===false?setMinusContact(true):setMinusContact(false)}}>-</p></div>}
                     </div>
-                    <div className={MinusContact===false?'containerLocalisation':'containerNomDescription2'}>
-                        <input type='text' placeholder='Adresse mail' className='inputNom'></input>
-                        <input type='number'id="tentacles" name="tentacles" className='inputNom' placeholder='Téléphone'></input>
-                        <input type='text' placeholder='site internet' className='inputNom'></input>
-                        <input   type='submit' className='buttonValidBoxcase' value={'Valider'}></input>
+                    <div className={MinusContact===false || validContact===true?'containerLocalisation':'containerNomDescription2'}>
+                        <img src={cross} className={ModifContactValue===true?'fermerFormFormationModifFiche':'fermerFormFormationModifFicheNone'} onClick={()=>{closeFormContact()}}></img>
+                        <input type='text' placeholder='Adresse mail' className='inputNom' id='resetDescriptif' value={ModifContactValue===true?MailContact:null} onChange={(e)=>{setMailContact(e.target.value)}}></input>
+                        <input type='number' className='inputNom' placeholder='Téléphone' id='resetDescriptif' value={ModifContactValue===true?PhoneNumber:null}   onChange={(e)=>{setPhoneNumber(e.target.value)}}></input>
+                        <input type='text' placeholder='site internet' className='inputNom' id='resetDescriptif'  value={ModifContactValue===true?SiteWeb:null} onChange={(e)=>{setSiteWeb(e.target.value)}}></input>
+                        <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={()=>{ContactModif()}}></input>
                     </div>
+                    <div className={validContact===true && MinusContact===true?'containerpSpeFicheMédecin':'containerpSpeFicheMédecinNone'}>
+                        <div className="contactIconValueContainer">
+                            <p className='pSpécialitéFicheModif'>{MailContact}</p>
+                            <div className='containerIconSpe'>
+                                <img src={modif} className='iconForfaitFiche' onClick={()=>{LogicModiContact()}}></img>
+                            </div>
+                        </div>
+                        <div className="contactIconValueContainer">
+                            <p className='pSpécialitéFicheModif'>{PhoneNumber}</p>
+                            <div className='containerIconSpe'>
+                                <img src={modif} className='iconForfaitFiche' onClick={()=>{LogicModiContact()}}></img>
+                               
+                            </div>
+                        </div>
+                        <div className="contactIconValueContainer">
+                            <p className='pSpécialitéFicheModif'>{SiteWeb}</p>
+                            <div className='containerIconSpe'>
+                                <img src={modif} className='iconForfaitFiche' onClick={()=>{LogicModiContact()}}></img>      
+                            </div>
+                        </div>
+                    </div> 
+
                     <div className='pContactAndLogoMinus'>
                         <p>Horaires</p>
                         {MinusHoraires===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusHoraires===false?setMinusHoraires(true):setMinusHoraires(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusHoraires===false?setMinusHoraires(true):setMinusHoraires(false)}}>-</p></div>}
@@ -2400,6 +2544,41 @@ console.log(`${IdFiche}  L'ID FICHE BB`)})
                             </div>
                             <input type='submit' className={ValiderHorairesConduites===false?'buttonValidBoxcase':'buttonValidBoxcaseModifOk'} value={ValiderHorairesConduites===false?"Valider":"Modifications enregistrées"} onClick={()=>{HorairesConduiteModif()}}></input>
                         </div>
+                    </div>
+
+                    <div className={choice==='médecin'?'displayBlockChoice':'displayNoneblockChoice'}>
+                        <div className='pTEAndLogoMinusPaiement'>
+                                    <p>Tarifs</p>
+                                    {MinusTarifs===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusTarifs===false?setMinusTarifs(true):setMinusTarifs(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusTarifs===false?setMinusTarifs(true):setMinusTarifs(false)}}>-</p></div>}
+                        </div>
+                        <div className='pForfaitAndLogoMinusEquipe'>
+                                <button  className={Fiche.Tarifs.length==0 && MinusTarifs==true && AddTarif==false?'buttonAjouterMembre':'buttonAjouterMembre2'} onClick={()=>{setAddTarif(true)}}>+ Ajouter Tarif</button>
+                        </div>
+                        <form className={  AddTarif===true || ModifyTarif===true?'containerNomDescription2':'containerNomDescription'} id='resetDescriptif'>
+                            <img src={cross} className='fermerFormFormationModifFiche' onClick={()=>{closeFormTarif()}}></img>
+                            <input type='text' placeholder='Consultation' className='inputNom' id='resetDescriptif' value={valueModifyTarif!=null?valueModifyTarif:null} onChange={(e)=>{ModifyTarif===true?setValueModifyTarif(e.target.value):setTarif(e.target.value)}}></input>
+                            <input type='number' placeholder='prix' className='inputNom' id='resetDescriptif' value={valueModifyTarifPrix!=null?valueModifyTarifPrix:null} onChange={(e)=>{ModifyTarif===true?setValueModifyTarifPrix(e.target.value):setTarifPrix(e.target.value)}}></input>
+                            <input   type='reset' className='buttonValidBoxcase' value={'Valider'} onClick={()=>{ModifyTarif===true?tarifModifIndex():TarifModif()}}></input>
+                        </form>
+                    </div>
+                    <div className={Fiche.Tarifs!=0 && MinusTarifs===true && AddTarif===false && ModifyTarif===false ?'containerPrixNomFormation':'containerPrixNomFormation2'}>
+                            <div className={Fiche.Tarifs!=0 && MinusTarifs===true && AddTarif===false && ModifyTarif===false?'containerConsultationPrixTarifsFiche':'containerNomPrixFormationFiche2'}>
+                                <p>Consultation</p>
+                                <p className='pPrixForfaitFiche'>Prix</p>  
+                            </div>
+                        {Fiche.Tarifs!=0 && MinusTarifs===true? Fiche.Tarifs.map((event)=>
+                            <div className='SpeContainer'>
+                                <p className='pTarifsFicheModif'>{event.Consultation}</p>
+                                <p className='pTarifsPrixFicheModif'>{event.Prix} €</p>
+                                <div className='containerIconTarifs'>
+                                    <img src={modif} className='iconForfaitFiche' onClick={()=>{OpenModifyGeneral(setIndexTarif,Fiche.Tarifs.indexOf(event),setValueModifyTarif,event.Consultation,setValueModifyTarifPrix,event.Prix,setModifyTarif)}}></img>
+                                    <img src={trash} className='iconForfaitFiche' onClick={()=>{OpenPopUpGeneral(setCheckPopUpSupOpen,setInDeleteTarif,setUniqueIdForm,event.id,setFormationNameSup,"ce tarif")}}></img>
+                                </div>   
+                            </div> 
+                            ):console.log("pas de spe")}
+                    </div>
+                    <div className='pForfaitAndLogoMinusEquipe'>
+                                <button  className={Fiche.Tarifs.length!=0 && MinusTarifs==true && AddTarif==false && ModifyTarif===false?'buttonAjouterMembre':'buttonAjouterMembre2'} onClick={()=>{setAddTarif(true)}}>+ Ajouter Tarif</button>
                     </div>
 
                     <div className={choice==='voiture'?'displayBlockChoice':'displayNoneblockChoice'}>
