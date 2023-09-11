@@ -1492,7 +1492,7 @@
 }
 .containerpSpeFicheMédecin{
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
   background-color: #f8f9f9;
   border: solid 1px #dfe1e6;
@@ -1564,8 +1564,11 @@
 }
 .contactIconValueContainer{
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
 }
 .fermerFormFormationModifFicheNone{
+  display:none
+}
+.pSpécialitéFicheModifNone{
   display:none
 }

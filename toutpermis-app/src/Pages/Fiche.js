@@ -59,7 +59,7 @@ const Fiche=()=>{
 
     /*******************Localisation*************************/
     const [Ville,setVille]=useState(String)
-    const [Departement,setDepartement]=useState(Number)
+    const [Departement,setDepartement]=useState(null)
     const [IsCoordinate,setIsCoordinate]=useState(false)
     const [ModifLocalisation,setModifLocalisation]=useState(false)
     /****************************logique part: premières modifications apparition d'un nouveau boutton
@@ -267,9 +267,9 @@ const Fiche=()=>{
     const [valueModifyTarifPrix,setValueModifyTarifPrix]=useState(null)
     const [inDeleteTarif,setInDeleteTarif]=useState(false)
     /*************contact variable****************************/
-    const [MailContact,setMailContact]=useState(null)
-    const [SiteWeb, setSiteWeb]=useState(null)
-    const [PhoneNumber,setPhoneNumber]=useState(null)
+    const [MailContact,setMailContact]=useState(String)
+    const [SiteWeb, setSiteWeb]=useState(String)
+    const [PhoneNumber,setPhoneNumber]=useState(Number)
     const [validContact,setValidContact]=useState(false)
     const [ModifContactValue,setModifContactValue]=useState(false)
     /**************openPopUp*************** */  
@@ -825,6 +825,7 @@ const ModifSecondInclusive=()=>{
       setMailContact(res.data.MailContact)
       setPhoneNumber(res.data.PhoneNumber)
       setSiteWeb(res.data.SiteWeb)
+      if (res.data.MailContact.length !=0  || res.data.PhoneNumber !=0 && res.data.PhoneNumber!= null|| res.data.SiteWeb.length !=0 )
       setValidContact(true)
       ;
     })
@@ -1165,7 +1166,14 @@ const ContactModif=()=>{console.log('dans le contact')
     .then((response) => {
         console.log(setModify(response.data));
         console.log("dans les options et ça marche")
-        setValidContact(true)
+        if(MailContact.length === 0 && SiteWeb.length === 0 && PhoneNumber === null){
+            setValidContact(false)
+            setModifContactValue(false)
+        }
+        else
+        {setValidContact(true)
+         setModifContactValue(false)   
+        }
         getFiche()
       })
     .catch((err) => console.error(err));}
@@ -1582,7 +1590,14 @@ useEffect(()=>{
 useEffect
 (()=>{console.log(`${Longitude} LA LONGITUDE BB`)
 console.log(`${Lattitude} LA LATTITUDE BB`)
-console.log(`${IdFiche}  L'ID FICHE BB`)})
+console.log(`${IdFiche}  L'ID FICHE BB`)
+console.log(`${MailContact} le mailcontact`)
+console.log(`${PhoneNumber} le phoneNumber`)
+console.log(`${SiteWeb} le siteWeb`)
+console.log(`${MinusContact} ici c'est le minus contact`)
+console.log(`${validContact} ici c'est le validcontact`)
+console.log(`${ModifContactValue} ici c'est le modifContactvalue`)
+})
 
     return(
         <div className={Create===true || test===true ?'fiche':'fiche2'}>
@@ -1725,7 +1740,7 @@ console.log(`${IdFiche}  L'ID FICHE BB`)})
                             <img src={cross} className='fermerFormFormationModifFiche2'onClick={()=>{setModifLocalisation(false)}}></img>
                         </div> 
                         <input type='text' placeholder='Adresse' className='inputNom' value={AdresseValue} onChange={(e)=>{assignAdresseValue(e.target.value )}}></input>
-                        <input type='number'id="tentacles" name="tentacles" className='inputNom' placeholder='code postal' value={Departement} onChange={(e)=>{setDepartement(e.target.value)}}></input>
+                        <input type='number' className='inputNom' placeholder='code postal' value={Departement} onChange={(e)=>{setDepartement(e.target.value)}}></input>
                         <input type='text' placeholder='Ville' className='inputNom' value={Ville} onChange={(e)=>{setVille(e.target.value)}}></input>
                         <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={()=>{getCoordinate()}}></input>
                     </div>
@@ -1743,26 +1758,13 @@ console.log(`${IdFiche}  L'ID FICHE BB`)})
                         <input type='text' placeholder='site internet' className='inputNom' id='resetDescriptif'  value={ModifContactValue===true?SiteWeb:null} onChange={(e)=>{setSiteWeb(e.target.value)}}></input>
                         <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={()=>{ContactModif()}}></input>
                     </div>
-                    <div className={validContact===true && MinusContact===true?'containerpSpeFicheMédecin':'containerpSpeFicheMédecinNone'}>
+                    <div className={ModifContactValue===true || MinusContact === false?'containerpSpeFicheMédecinNone':validContact===false && MinusContact===true?'containerpSpeFicheMédecinNone': MailContact.length !=0 || (PhoneNumber!= 0 && PhoneNumber!= null) || SiteWeb.length!=0 ?'containerpSpeFicheMédecin':'containerpSpeFicheMédecinNone'}>
                         <div className="contactIconValueContainer">
-                            <p className='pSpécialitéFicheModif'>{MailContact}</p>
-                            <div className='containerIconSpe'>
-                                <img src={modif} className='iconForfaitFiche' onClick={()=>{LogicModiContact()}}></img>
-                            </div>
+                            <p className={ MailContact.length !=0?'pSpécialitéFicheModif':'pSpécialitéFicheModifNone'}>{MailContact}</p>
+                            <p className={PhoneNumber!= 0 && PhoneNumber!= null?'pSpécialitéFicheModif':'pSpécialitéFicheModifNone'}>{PhoneNumber}</p>
+                            <p className={SiteWeb.length!=0?'pSpécialitéFicheModif':'pSpécialitéFicheModifNone'}>{SiteWeb}</p>
                         </div>
-                        <div className="contactIconValueContainer">
-                            <p className='pSpécialitéFicheModif'>{PhoneNumber}</p>
-                            <div className='containerIconSpe'>
-                                <img src={modif} className='iconForfaitFiche' onClick={()=>{LogicModiContact()}}></img>
-                               
-                            </div>
-                        </div>
-                        <div className="contactIconValueContainer">
-                            <p className='pSpécialitéFicheModif'>{SiteWeb}</p>
-                            <div className='containerIconSpe'>
-                                <img src={modif} className='iconForfaitFiche' onClick={()=>{LogicModiContact()}}></img>      
-                            </div>
-                        </div>
+                        <img src={modif} className='iconForfaitFiche' onClick={()=>{LogicModiContact()}}></img>
                     </div> 
 
                     <div className='pContactAndLogoMinus'>
