@@ -286,6 +286,9 @@ routerFicheEcolePrincipale.get('/One/:UserPseudo', function (req, res) {
       Cadeau:req.body.Cadeau,
       Cheque:req.body.Cheque,
       Especes:req.body.Especes,
+      MailContact:req.body.MailContact,
+      SiteWeb:req.body.SiteWeb,
+      PhoneNumber:req.body.PhoneNumber
     })
     myNewFiche.save(function (err, post) {
       if (err) { return next(err) }

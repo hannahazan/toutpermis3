@@ -1189,7 +1189,9 @@ const ContactModif=()=>{console.log('dans le contact')
     async function createFiche() {
      
      axios
-     .post("http://localhost:5000/FicheEcolePrincipale/test",{EcoleNameId:EcoleNameId,EcoleName:EcoleName,UserPseudo:connectedUser})
+     .post("http://localhost:5000/FicheEcolePrincipale/test",{EcoleNameId:EcoleNameId,EcoleName:EcoleName,UserPseudo:connectedUser,MailContact:MailContact,PhoneNumber:PhoneNumber
+        ,SiteWeb:SiteWeb 
+    })
      .then((response)=>{(console.log(response.data))
         getFicheFirst()
         assignLattitude(null)
@@ -1607,7 +1609,7 @@ console.log(`${ModifContactValue} ici c'est le modifContactvalue`)
                     <p>Êtes-vous sûr de vouloir supprimer</p>
                     {isFormDelete===false && isFormCarteDelete===false?<p className='pValuePopUp'>{ecoleNameSup}</p>:<p className='pValuePopUp'>{FormationNameSup}</p>}
                     <div className='containerButtonPopUpSup'>
-                        <button className='ButtonPopUpSupOui' onClick={()=>{deleteOneFiche(Fiche.EcoleNameId,uniquIdForm)}}>oui</button>
+                        <button className='ButtonPopUpSupOui' onClick={()=>{deleteOneFiche(EcoleSup,uniquIdForm)}}>oui</button>
                         <button className='ButtonPopUpSupNon' onClick={()=>{closePopupWithoutDeleting()}}>non</button>
                     </div>
                 </div>
