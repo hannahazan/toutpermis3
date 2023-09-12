@@ -47,19 +47,28 @@ const InscriptionFinale=()=>{
                 initiales =name[i].toUpperCase()+prenom[i].toUpperCase()
                 console.log(initiales)    
         }
-     axios
-     .post("http://localhost:5000/Users/test",{Name:name,Mail:connectedUser,Password:password,PhoneNumber:PhoneNumber,Ecole:Ecole
-    ,Prenom:prenom,Initiales:initiales,Medecin:Medecin,Aménageur:amenageur})
-     .then((response)=>{(console.log(response.data))
-        boolInscription() 
-        navigation() 
-         
-        console.log("nop il passe pas du tout par là")
-     })
-     .catch(error => {
-     console.log(error);
-     alert("Oops!Cette adresse e-mail est déjà utilisée!")
-     })
+        let regexMail= new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i);
+        let validEmail=regexMail.test(connectedUser)
+
+        if (validEmail===true){
+            axios
+            .post("http://localhost:5000/Users/test",{Name:name,Mail:connectedUser,Password:password,PhoneNumber:PhoneNumber,Ecole:Ecole
+            ,Prenom:prenom,Initiales:initiales,Medecin:Medecin,Aménageur:amenageur})
+            .then((response)=>{(console.log(response.data))
+                boolInscription() 
+                navigation() 
+                
+                console.log("nop il passe pas du tout par là")
+            })
+            .catch(error => {
+            console.log(error);
+            alert("Oops!Cette adresse e-mail est déjà utilisée!")
+            })
+        }
+        else {
+            alert("Adresse Mail invalide")
+        }
+        
    
 }
 
@@ -87,8 +96,10 @@ const InscriptionFinale=()=>{
                     <input type="text" id="name" name="user_name" placeholder="Nom de l'école de conduite" className='inNameFinale'></input>
                     <input type="email" id="mail" name="user_mail" placeholder='Adress e-mail' className='inNameFinale'onChange={(e)=>{assignConnecteduser(e)}}></input>
                     <input type="number" id="name" name="user_name" placeholder='Téléphone' className='inNameFinale'onChange={(e)=>{setPhoneNumber(e.target.value)}}></input>
-                    <input type="password" id="name" name="user_name" placeholder='Nom' className='inNameFinale'onChange={(e)=>{setPassword(e.target.value)}}></input>
-                    <input type="password" id="name" name="user_name" placeholder='Confirmer password' className='inNameFinale'></input>
+                    <input type="password" id="name" name="user_name" placeholder='Mot de passe' className='inNameFinale'onChange={(e)=>{setPassword(e.target.value)}} onClick={()=>{alert("blabla")}}></input>
+                    <input type="password" id="name" name="user_name" placeholder='Confirmer Mot de passe' className='inNameFinale'></input>
+                    <p>Votre mot de passe doit être composer de 8 caractères minimum et comporter au moins: une minuscle, 
+                    une majuscule, un chiffre, un caractère spécial</p>
                     <button  className='buttonFormFinale' onClick={onSubmit}>M'inscrire</button>
                 </div>
                 :
