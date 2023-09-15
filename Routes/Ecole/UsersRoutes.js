@@ -22,6 +22,22 @@ routerUsers.get('/:Mail', function (req, res) {
     }
     )
 });
+
+routerUsers.get('/:Mail/:Password', function (req, res) {
+  Users.findOne({ Mail: req.params.Mail,Password:req.params.Password }, (err, data) => {
+  res.send(data)
+  console.log(data)
+  }
+  )
+})
+
+routerUsers.post('/connect/PostGet', function (req, res) {
+  Users.findOne({$and:[{Mail: req.body.Mail} ,{Password:req.body.Password}] }, (err, data) => {
+  res.send(data)
+  console.log(data)
+  }
+  )
+})
    
 
 // **CreatePost**/////////////////////////////////////////////////////
@@ -67,7 +83,8 @@ routerUsers.post("/", upload.single('file'), async (req, res) => {
         Medecin:req.body.Medecin,
         Aménageur:req.body.Aménageur,
         UserPicture:req.body.UserPicture,
-        Initiales:req.body.Initiales
+        Initiales:req.body.Initiales,
+        Admin:req.body.Admin
     })
     myNewUser.save(function (err, post) {
       if (err) { return next(err) }

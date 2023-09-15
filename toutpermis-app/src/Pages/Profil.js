@@ -1,4 +1,5 @@
 import '../css/Profil.css'
+import '../css/Fiche.css'
 import Navbar from "../component/Navbar";
 import localLogo from '../images/toutpermisLogoVidepng.png'
 import volant from '../images/volantLogo.png'
@@ -13,12 +14,14 @@ import PopupInscription from '../component/PopupInscription';
 import stethoscope from '../images/iconsAwesome/stethoscope-solid.svg'
 import clef from '../images/iconsAwesome/screwdriver-wrench-solid.svg'
 import { Link } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
+import { Navigate,useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Profil=()=>{
-    const{choice,connectedUser,validEmail}=useContext(InscriptionChoice)
+    const{choice,assignChoice,connectedUser,validEmail,disconnetingUser,boolInscription}=useContext(InscriptionChoice)
     const[User,setUser]=useState()
+    const [disconnected,setDisconnected]=useState(false)
+    const navigate=useNavigate()
     console.log(choice) 
     const getUser = () => {
         return axios
@@ -29,18 +32,40 @@ const Profil=()=>{
             ;
           })
           .catch((err) => console.error(err));
-      };  
+      };
+      const Deconnexion=()=>{
+        disconnetingUser()
+        boolInscription(false)
+        assignChoice('')
+        navigate('/')
+      }  
+      const triggerDisconnect=()=>{
+        setDisconnected(true)
+       window.scroll(0,0)
+       var y= window.scrollY
+       console.log(`${y} la position du scroll sur l'axe y`)
+      }
       
       useEffect(()=>{
         getUser()
         console.log(`${validEmail} le trick pour l'email`)
+        console.log(choice)
       },[])
    
     return(
         <div className='profil'>
             <Navbar/>
             <PopupInscription/>
-            <main className='profilMain'>
+            <div className={disconnected===true?'containerPopupSupprimerFiche':'containerPopupSupprimerFiche2'}>
+                <div  id='containerFormationPosition' className='containerDeplacementPopUp'>
+                    <p>Êtes-vous sûr de vouloir vous déconnecter</p>
+                    <div className='containerButtonPopUpSup'>
+                        <button className='ButtonPopUpSupOui' onClick={()=>{Deconnexion()}}>oui</button>
+                        <button className='ButtonPopUpSupNon' onClick={()=>{setDisconnected(false)}}>non</button>
+                    </div>
+                </div>
+            </div>
+            <main className={disconnected===true?'profilMainNone':'profilMain'}>
             <div className='containerToolBoxProfilpicture'>
                 {User!=undefined?<p className='pBonjourProfil'>Bonjour {User.Prenom} !</p>:<p className='pBonjourProfil'>Bonjour Charliz !</p> }
                 <div className="pictoLogoEspacePro">
@@ -50,7 +75,7 @@ const Profil=()=>{
                 <div className='toolBox'>
                     <img src={enveloppe} className='enveloppeProfil'></img>
                     <img src={setting} className='settingProfil'></img>
-                    <img src={powerOff} className='powerOffProfil'></img>
+                    <img src={powerOff} className='powerOffProfil' onClick={()=>{triggerDisconnect()}}></img>
                 </div>
             </div>  
             <div className='containerCardProfil'>

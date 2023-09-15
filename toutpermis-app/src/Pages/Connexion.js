@@ -1,58 +1,83 @@
-import '../css/Navbar.css'
-import '../css/EspacePro.css'
-import '../css/Connexion.css'
-import Burger from '../images/iconsAwesome/bars-solid.svg'
+import '../css/InscriptionFinale.css'
+import Navbar from "../component/Navbar";
 import localLogo from '../images/toutpermisLogoVidepng.png'
 import volant from '../images/volantLogo.png'
-import cross from '../images/iconsAwesome/xmark-solid (1).svg'
-import check from '../images/iconsAwesome/check-solid (1).svg'
-import Navbar from '../component/Navbar.js'
-import { useState,useEffect } from 'react';
+import axios from 'axios';
+import { useContext,useEffect,useState } from 'react' 
+import {InscriptionContext as InscriptionChoice} from '../utilitaires/InscriptionContext'
+import { Link, Navigate,useNavigate } from 'react-router-dom';
 
+const Connexion=()=>{
+    const {choice,assignChoice,Inscrit,boolInscription,assignConnecteduser,connectedUser}=useContext(InscriptionChoice)
 
-function Connexion(){
-    const [Open,setOpen]=useState(false)
-    const [Check,setCheck]=useState(false)
-    const [verifie,setVerifie]=useState(null)
-    useEffect(()=>{
-        console.log(Check)
-        setVerifie(document.getElementById('onverra').checked)
-        console.log(`${verifie} la coche`)
-    })
- //test github  
-    return(
-        <div className='Connexion'>
-            <Navbar/>
-            <main className='mainConnexion'>
-                <div className="LogoEspacePro">
-                    <div className="pictoLogoEspacePro">
-                        <img src={localLogo} className='localLogoPictoEspacePro'></img>
-                        <img src={volant} className='volantLogoEspacePro'></img>
+    const [password,setpassword]=useState("")
+    const navigate=useNavigate()
+
+    const onSubmit=()=>{
+        axios
+        .post("http://localhost:5000/Users/connect/PostGet",{Mail:connectedUser,Password:password})
+        .then((response)=>{(console.log(response.data))
+
+            if(response.data.Mail!=connectedUser || response.data.Password != password){
+                alert("Login incorrect")
+            }
+          
+            else{
+                boolInscription(true)
+                if(response.data.Ecole===true){
+                    assignChoice('voiture')
+                }
+                else if(response.data.Medecin===true){
+                    assignChoice('médecin')
+                }
+                else if (response.data.Aménageur===true){
+                    assignChoice('aménageur')
+                }  
+                console.log("ca connecte bien")
+                if(response.data.Mail==="Stephanie.macedo@laposte.net"){
+                    navigate("/")
+                }
+                else{
+                    navigate("/profil")
+                }
+                
+            }
+           
+        })
+        .catch(error => {
+        console.log(error);
+        alert("Oops!Cette adresse e-mail est déjà utilisée!")
+        })
+    }
+        return(
+
+        <div className="InscriptionFinale">
+        <Navbar/>
+        <main className='ConnexionMain'>
+            <div className='pictoEspaceContainer'>
+                <div className="logoParaPictoFinale">
+                    <div className='pictoFinale'>
+                        <img src={localLogo} className="LogoSphèreFinale" ></img>
+                        <img src={volant} className="VolantFinale" ></img>
                     </div>
-                    <div className='pLogoEspacePro'>
-                        <p className='ToutLogo'>Tout</p>
-                        <p className='PermisLogo'>Permis</p>
-                        <p>.fr</p>
+                    <div className="paraLogoFinale">
+                        <p className="toutFinale">Tout</p>
+                        <p className="permisFinale">permis</p>
                     </div>
-                    <p className='espaceProLogo'>espace pro</p>
                 </div>
-                <p className='pConnexion'>Connexion</p>
-                    <form className='connexionFormulaire'>
-                        <input type="email" id="mail" name="user_mail" placeholder='Adresse e-mail' className='InputConnexion'></input>
-                        <input type="password" id="pwd" placeholder='Mot de passe' name="pwd" className='InputConnexion'></input>
-                        <div className='rememberMe'>
-                            {Check==false?<input type='checkbox' className='checkboxRemember' name="checkRem" id='onverra' ></input>:<input type='checkbox' className='checkboxRemember' name="checkRem" id='onverra' checked ></input>}
-                            <label for="checkRem" className='labelCheck'onClick={Check==false?()=>{setCheck(true)}:()=>{setCheck(false)}}>
-                               {Check==false?<img src={check} className="checkConnexion"></img>:<img src={check} className="checkConnexion2"></img>}
-                            </label>
-                            <p>Remember me</p>
-                            <p className='pOublié'>mot de passe oublié ?</p>    
-                        </div>
-                        <button className='buttonConnecter'>Se connecter</button>
-                        <p className='pPasEncore'>Vous n'êtes pas encore inscrit ?</p>
-                        <p className='pRejoinsNous'>Rejoignez-nous !</p>
-                    </form>
-            </main>
-        </div>
-    )}
-    export default Connexion
+                <p className='pEspaceProFinale'>espace pro</p>
+            </div>
+            <div className='containerConnexionForm'>
+                <p className='pInscriptionFinale'>Connexion</p>
+                <div>
+                    <input type="email" id="mail" name="user_mail" placeholder='Adress e-mail' className='inNameFinale' onChange={(e)=>{assignConnecteduser(e)}}></input>
+                    <input type="password" id="name" name="user_name" placeholder='Mot de passe' className='inNameFinale' onChange={(e)=>{setpassword(e.target.value)}}></input> 
+                    <button  className='buttonFormFinale' onClick={()=>{onSubmit()}}>Me connecter</button>
+                </div> 
+            </div>
+        </main>
+    </div>
+)
+}
+
+export default Connexion

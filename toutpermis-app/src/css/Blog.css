@@ -1,0 +1,99 @@
+.Blog{
+    height: fit-content;
+    margin:0px;
+    padding: 0px;
+    background: linear-gradient(white,#FcF3F1);
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+.mainBlog{
+    margin-left: left;
+    height: fit-content;
+    text-align: start;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-top: 250px;
+}
+.AperçusImg{
+    width : 100%;
+    height : 100%;
+    margin-top: 111px
+}
+.uploadHiddenBlog{
+    position: relative;
+    bottom: 35px;
+    left: 182px;
+    width: 180px;
+    height: 25px;
+    bottom: 152px;
+    z-index: 2;
+    opacity: 0;
+}
+.containerImg{
+    width:100%;
+    height: 266px;  
+}
+.buttonUploadBlog{
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    height: 30px;
+    font-family: 'Poppins';
+    color: white;
+    border-radius: 15px;
+    align-items: center;
+    font-size: 17px;
+    font-weight: normal;
+    margin-bottom: 25px;
+    background-color: #37beb4;
+    position: relative;
+    bottom: 124px;
+}
+.uploadFrontBlog{
+    width: 184px;
+    height: 27px;
+    border-radius: 15px;
+    padding: 0px;
+    margin: 0px;
+    font-family: 'Poppins';
+    background-color: #37beb4;
+    font-size: 20px;
+    position: relative;
+    left: 176px;
+    bottom: 235px;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+}
+.containerFormBlogEdit{
+    position: relative;
+    bottom: 146px;
+}
+.containerDoubleCat{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.containercheckBoxAndPBlog{
+    color: #236468;
+    font-size: 18px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 48%;
+}
+.containercheckBoxAndPBlog p{
+    margin-bottom: 0px;
+    margin-top: 0px;
+    font-weight: 400;
+}
+.CatBlogP{
+    font-size: 26px;
+    color: #37beb4;
+    text-align: center;
+}

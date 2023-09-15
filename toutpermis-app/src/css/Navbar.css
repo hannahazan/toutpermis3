@@ -115,6 +115,9 @@
     top: 10px;
     right: 10px;
   }
+  .liMenuNone{
+    display:none
+  }
 /*********************************connecté/inscrit***********************************************/
 .non{
     display:none

@@ -7,7 +7,8 @@ import routerUsers from './Routes/Ecole/UsersRoutes.js';
 import routerFicheCouverture from './Routes/Ecole/FichecouvertureRoutes.js';
 import routerFicheEquipes from './Routes/Ecole/FicheEquipesRoutes.js';
 import routerFicheVéhicule from './Routes/Ecole/FicheVéhiculeRoute.js';
-import UserSchema from './Models/ModelEcole/UsersModel.js'
+import routerBlog from './Routes/BlogRoutes.js';
+
 const app = express()
 const port = 5000
 app.use(cors())
@@ -22,6 +23,7 @@ app.use('/FicheEcolePrincipale',routerFicheEcolePrincipale)
 app.use('/Users',routerUsers)
 app.use('/FicheEquipes',routerFicheEquipes)
 app.use('/FicheVehicule',routerFicheVéhicule)
+app.use('/Blog',routerBlog)
 
 const db_url='mongodb+srv://hannah:TBlIyaXZd1aS1wgh@cluster0.aailhd7.mongodb.net/Toutpermis?retryWrites=true&w=majority'
 

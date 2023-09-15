@@ -42,6 +42,7 @@ function Navbar(){
                 <Link to='espacepro'><li className='liMenu'>Espace pro</li></Link>
                 <li className='liMenu'>Contactez-nous</li>
                 <Link to='/' ><li className='liMenu'>Accueil</li></Link>
+                <li className={User.Admin===true?'liMenu':'liMenuNone'}> Fonctions Administrateur</li>
                 </ul>
             </div>}
             {Path==='/connexion'||Path==='/espacepro/InscriptionChoix'||Path=="/espacepro"||Path=='/espacepro/inscriptionChoix/inscriptionFinale'||Path=='/espacepro/inscriptionChoix/inscriptionFinale/profil'?

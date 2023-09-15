@@ -17,6 +17,7 @@ import Fiche from './Pages/Fiche'
 import { useEffect,useState,useContext } from 'react';
 import Navbar from './component/Navbar';
 import Localisation from './component/Localisation.js';
+import EditBlog from './Pages/EditBlog';
 
 
 const Path=window.location.pathname
@@ -32,7 +33,6 @@ root.render(
           <Route path="/tunnelEcoleFormation" exact element={<TunnelEcoleFormation/>}></Route>
           <Route path="/tunnelEcoleVehicules" exact element={<TunnelEcoleVehicules/>}></Route>
           <Route path="/espacepro" exact element={<EspacePro/>}></Route>
-          <Route path="/connexion" exact element={<Connexion/>}></Route>
           <Route path='/espacepro/inscriptionChoix'  element={<InscriptionChoix/>}></Route>
           <Route path='/espacepro/inscriptionChoix/inscriptionFinale'  element={<InscriptionFinale/>}></Route>
           <Route path='/espacepro/inscriptionChoix/inscriptionFinale/profil'  element={<Profil/>}></Route>
@@ -41,6 +41,8 @@ root.render(
           <Route path='/testpopup'exact element={<PopupInscription/>}></Route>
           <Route path='/profil/fiche' exact element={<Fiche/>}></Route>
           <Route path='/espacepro/inscriptionChoix/inscriptionFinale/profil/Fiche' exact element={<Fiche/>}></Route>
+          <Route path='/connexion' element={<Connexion/>}></Route>
+          <Route path='/EditBlog' element={<EditBlog/>}></Route>
       </Routes>
     </InscriptionProvider>
   </BrowserRouter>

@@ -57,6 +57,11 @@ const ficheEcolePrincipaleSchema = new mongoose.Schema(
         MailContact:String,
         SiteWeb:String,
         PhoneNumber:Number,
+        PoleEmploi:Boolean,
+        CPF:Boolean,
+        PermisJour:Boolean,
+        AidesApp:Boolean,
+        AidesLocales:Boolean,
     });
  
      

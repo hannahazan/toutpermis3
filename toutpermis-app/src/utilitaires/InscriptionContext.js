@@ -18,11 +18,14 @@ const InscriptionProvider=({children})=>{
     function assignChoice(value){
         setChoice(value)
     }
-    function boolInscription(){
-        setInscrit(true)
+    function boolInscription(bool){
+        setInscrit(bool)
     }
     function assignConnecteduser(e){
         setConnectedUser(e.target.value)
+    }
+    function disconnetingUser(){
+        setConnectedUser('')
     }
    
     function assignDeleteTrue(){
@@ -57,7 +60,7 @@ const InscriptionProvider=({children})=>{
     }
    
     return(
-        <InscriptionContext.Provider value={{choice,Inscrit,assignChoice,boolInscription,connectedUser,assignConnecteduser,checkDelete,assignDeleteTrue,
+        <InscriptionContext.Provider value={{choice,Inscrit,assignChoice,boolInscription,connectedUser,assignConnecteduser,disconnetingUser,checkDelete,assignDeleteTrue,
         assignDeleteFalse,EcoleNameContexte,assignEcoleName,OpenSupprimer,assignOpenSupprimerFalse,assignOpenSupprimerTrue,Adresse,assignAdresse
         ,AdresseValue,assignAdresseValue,Lattitude,assignLattitude,Longitude,assignLongitude,IdFiche,assignIdFiche}}>
             {children}

@@ -43,7 +43,7 @@ function EspacePro(){
                 </div>
                 <div className='buttonEspacePro'>
                     <Link to={`${Path}/InscriptionChoix`}className='inscription'> Créer mon compte</Link>
-                    <button className='connexion'>Me connecter</button>
+                    <Link to="/connexion" className='connexion'>Me connecter</Link>
                 </div>
             </main>
         </div>

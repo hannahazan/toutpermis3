@@ -239,6 +239,15 @@ const Fiche=()=>{
     const [CheckOptionDashcam,setCheckOptionDashCam]=useState(false)
     const [ValiderOptions,setValiderOptions]=useState(false)
     const [ModifySecondOptions,setModifySecondOptions]=useState(false)
+    /*******************financements****************************/
+    const [MinusFinancement,setMinusFinancement]=useState(false)
+    const [CheckCPF,setCheckCPF]=useState(false)
+    const [CheckPermis1,setCheckpermis1]=useState(false)
+    const [CheckPoleEmp,setCheckPoleEmp]=useState(false)
+    const [CheckAideApp,setCheckAideApp]=useState(false)
+    const [CheckAideLocales,setCheckAideLocales]=useState(false)
+    const [ValiderFinancements,setValiderFinancements]=useState(false)
+    const [ModifSecondFinancements,setModifsecondFinancements]=useState(false)
     /*************création fiche unique id ecole */
     const [uniqueIdFicheEcoleName,setUniqueIdFicheEcoleName]=useState(String)
     /******************Variable medecin************************** */   
@@ -465,26 +474,32 @@ const Fiche=()=>{
 
   const ModifSecondCheckBox=(Hook,setHook,HookValide,setHookModify)=>{
     console.log('je rentre dans aucune condition')
+    console.log(`${HookValide} je rentre valider`)
     if(Hook===false && HookValide==false){
         setHook(true)
         console.log('je rentre dans la 1er check')
+        console.log(`${HookValide} je rentre 1er valider`)
     }
     else if (Hook===false && HookValide===true){
         setHookModify(true)
         setHook(true)
         console.log('je rentre dans la seconde check')
+        console.log(`${HookValide} je rentre 2nd valider`)
     }
     else if (Hook===true && HookValide===true){
         setHookModify(true)
         setHook(false)
         console.log('je rentre dans la 3eme check')
+        console.log(`${HookValide} je rentre 3eme valider`)
     }
     else if(Hook==true && HookValide==false){
         setHook(false)
+        console.log(`${HookValide} je rentre 4eme valider`)
     }
     else{
     setHook(true)
     console.log('je rentre dans la dernière check')
+    console.log(`${HookValide} je rentre dernière valider`)
 }
 }
 /*******************Modify second with conditions of one check is true the other is false************************ */
@@ -825,8 +840,14 @@ const ModifSecondInclusive=()=>{
       setMailContact(res.data.MailContact)
       setPhoneNumber(res.data.PhoneNumber)
       setSiteWeb(res.data.SiteWeb)
-      if (res.data.MailContact.length !=0  || res.data.PhoneNumber !=0 && res.data.PhoneNumber!= null|| res.data.SiteWeb.length !=0 )
-      setValidContact(true)
+      if (res.data.MailContact.length !=0  || res.data.PhoneNumber !=0 && res.data.PhoneNumber!= null|| res.data.SiteWeb.length !=0 ){
+        setValidContact(true)}
+
+      setCheckAideApp(res.data.AidesApp)
+      setCheckAideLocales(res.data. AidesLocales)
+      setCheckCPF(res.data.CPF)
+      setCheckPoleEmp(res.data.PoleEmploi)
+      setCheckpermis1(res.data.PermisJour)
       ;
     })
     .catch((err) => console.error(err));
@@ -1026,6 +1047,31 @@ const PaiementModif=()=>{
       })
     .catch((err) => console.error(err)); 
 }
+
+const financementsModif=()=>{
+    console.log('dans le paiement')
+    axios
+    .put(`http://localhost:5000/FicheEcolePrincipale/${Fiche.EcoleNameId}`,{PoleEmploi:CheckPoleEmp, CPF:CheckCPF,PermisJour:CheckPermis1,AidesApp:CheckAideApp, AidesLocales:CheckAideLocales})
+    .then((response) => {
+        console.log(setModify(response.data));
+        setValiderFinancements(true)
+        console.log("dans le Financement et ça marche")
+      })
+    .catch((err) => console.error(err)); 
+}
+
+const financementsSecondModif=()=>{
+    console.log('dans le paiement')
+    axios
+    .put(`http://localhost:5000/FicheEcolePrincipale/${Fiche.EcoleNameId}`,{PoleEmploi:CheckPoleEmp, CPF:CheckCPF,PermisJour:CheckPermis1,AidesApp:CheckAideApp, AidesLocales:CheckAideLocales})
+    .then((response) => {
+        console.log(setModify(response.data));
+        setModifsecondFinancements(false)
+        console.log("dans le Financement et ça marche")
+      })
+    .catch((err) => console.error(err)); 
+}
+
 const OptionsModif=()=>{console.log('dans le paiement')
     axios
     .put(`http://localhost:5000/FicheEcolePrincipale/${Fiche.EcoleNameId}`,{CoursCode:CheckOptionCours,Domicile:CheckOptionDomicile,Simulateur:CheckOptionSimulateur,DashCam:CheckOptionDashcam})
@@ -2927,6 +2973,47 @@ console.log(`${ModifContactValue} ici c'est le modifContactvalue`)
                         </div>
                         <input   type='submit' className={ValiderPaiment===false?'buttonValidBoxcase':'buttonValidBoxcase2'}  value={'Valider'} onClick={()=>{PaiementModif()}}></input>
                         <input   type='submit' className={ValiderPaiment===true && ModifySecondPaiement===false?'buttonValidBoxcaseModif':ValiderPaiment===true && ModifySecondPaiement===true?'buttonValidBoxcaseModif3':'buttonValidBoxcaseModif2'}  value={ModifySecondPaiement===false?'Modification enregistrée':'valider'} onClick={()=>{ModifSecondPaiementRequest()}}></input>
+                    </div>
+
+                    <div className={choice==='voiture'?'displayBlockChoice':'displayNoneblockChoice'}>           
+                        <div className='pTEAndLogoMinusPaiement'>
+                            <p>Financements</p>
+                            {MinusFinancement===false?<div className='containerMinus'><p className='minus' onClick={()=>{MinusFinancement===false?setMinusFinancement(true):setMinusFinancement(false)}}>+</p></div>:<div className='containerMinus'><p className='minus' onClick={()=>{MinusFinancement===false?setMinusFinancement(true):setMinusFinancement(false)}}>-</p></div>}
+                        </div>
+                        <div className={MinusFinancement===false?'containerButtonAndBoxcase2':'containerButtonAndBoxcase'}>
+                            <div className='containercheckBoxAndP'>
+                                <p>CPF</p>
+                                <div className={CheckCPF===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{ModifSecondCheckBox(CheckCPF,setCheckCPF,ValiderFinancements,setModifsecondFinancements)}}>
+                                    <img src={check} className={CheckCPF===true?'checkTrue':'checkFalse'}></img>
+                                </div>
+                            </div>
+                            <div className='containercheckBoxAndP'>
+                                <p>Permis 1€/jour</p>
+                                <div className={CheckPermis1===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{ModifSecondCheckBox(CheckPermis1,setCheckpermis1,ValiderFinancements,setModifsecondFinancements)}}>
+                                    <img src={check} className={CheckPermis1===true?'checkTrue':'checkFalse'}></img>
+                                </div>
+                            </div>
+                            <div className='containercheckBoxAndP'>
+                                <p>Pôle emploi</p>
+                                <div className={CheckPoleEmp===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{ModifSecondCheckBox(CheckPoleEmp,setCheckPoleEmp,ValiderFinancements,setModifsecondFinancements)}}>
+                                    <img src={check} className={CheckPoleEmp===true?'checkTrue':'checkFalse'}></img>
+                                </div>
+                            </div>
+                            <div className='containercheckBoxAndP'>
+                                <p>Aide Apprentis</p>
+                                <div className={CheckAideApp===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{ModifSecondCheckBox(CheckAideApp,setCheckAideApp,ValiderFinancements,setModifsecondFinancements)}}>
+                                    <img src={check} className={CheckAideApp===true?'checkTrue':'checkFalse'}></img>
+                                </div>
+                            </div>
+                            <div className='containercheckBoxAndP'>
+                                <p>Aide locales</p>
+                                <div className={CheckAideLocales===true?'checkBoxTrue':'checkBoxFalse'} onClick={()=>{ModifSecondCheckBox(CheckAideLocales,setCheckAideLocales,ValiderFinancements,setModifsecondFinancements)}}>
+                                    <img src={check} className={CheckAideLocales===true?'checkTrue':'checkFalse'}></img>
+                                </div>
+                            </div>
+                            <input   type='submit' className={ValiderFinancements===false?'buttonValidBoxcase':'buttonValidBoxcase2'}  value={'Valider'} onClick={()=>{financementsModif()}}></input>
+                            <input   type='submit' className={ValiderFinancements===true && ModifSecondFinancements===false?'buttonValidBoxcaseModif':ValiderFinancements===true && ModifSecondFinancements===true?'buttonValidBoxcaseModif3':'buttonValidBoxcaseModif2'}  value={ModifSecondFinancements===false?'Modification enregistrée':'valider'} onClick={()=>{financementsSecondModif()}}></input>
+                        </div>
                     </div>
 
                     <div className={choice==='voiture'?'displayBlockChoice':'displayNoneblockChoice'}>
