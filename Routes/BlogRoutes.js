@@ -123,6 +123,33 @@ routerBlog.post("/", upload.single('file'), async (req, res) => {
     }
   });  
 
+  routerBlog.post('/:UniqueId',upload.single('file'),(req,res) => {
+    const storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, 'tmp/dest')
+      },
+      filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + ' -' + Math.rond(Math.random() * 1E9)
+        cb(null, file.fieldname + '-' + uniqueSuffix)
+      },
+    })
+    Blog.findOneAndUpdate({UniqueId:req.params.UniqueId},req.body, req.file.filename,function(err,data){
+        if(err){
+          res.sendStatus(404)
+        }
+        else
+        {
+          if (!data){
+              res.sendStatus(404)
+             }
+         else{
+              res.send(data)
+              console.log(req.body)
+             }
+        }
+      })
+    })
+
   /****************delete part******* */
  routerBlog.delete('/delete/:_id',(req,res)=>{
     Blog.findOneAndDelete({_id:req.params._id},function(err,data){

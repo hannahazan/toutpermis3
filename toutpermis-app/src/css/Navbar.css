@@ -158,3 +158,26 @@
     font-size: 12px;
 }
 
+.containerLinkAdmin{
+  display:flex;
+  flex-direction: column;
+  color:#37beb4;
+  align-items: flex-end;
+}
+.noneContainerLinkAdmin{
+  display:none;
+}
+.containerLinkAdmin p{
+  color:#e8fefb
+}
+.LinkAdminP{
+  color: white;
+  font-weight: 100;
+}
+#LinkAdminLi{
+  margin-bottom: 0px !important;
+}
+#PEditLinkAdmin{
+  position: relative;
+  right: 29px;
+}

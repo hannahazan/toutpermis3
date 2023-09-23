@@ -14,6 +14,7 @@ function Navbar(){
     const[Open,setOpen]=useState(false)
     const[Path,setPath]=useState('')
     const[User,setUser]=useState()
+    const[LinkAdmin,setLinkAdmin]=useState(false)
     const getUser = () => {
         return axios
           .get(`http://localhost:5000/Users/${connectedUser}`)
@@ -42,7 +43,11 @@ function Navbar(){
                 <Link to='espacepro'><li className='liMenu'>Espace pro</li></Link>
                 <li className='liMenu'>Contactez-nous</li>
                 <Link to='/' ><li className='liMenu'>Accueil</li></Link>
-                <li className={User.Admin===true?'liMenu':'liMenuNone'}> Fonctions Administrateur</li>
+                <li className={User.Admin===true?'liMenu':'liMenuNone'} id='LinkAdminLi' onClick={()=>{LinkAdmin==false?setLinkAdmin(true):setLinkAdmin(false)}}> Fonctions Administrateur</li>
+                <div className={LinkAdmin===true?'containerLinkAdmin':'noneContainerLinkAdmin'}>
+                  <Link className='LinkAdminP' id='PEditLinkAdmin' to='/EditBlog'>Créer un article</Link>
+                  <Link className='LinkAdminP'>Modif profil</Link>
+                </div>
                 </ul>
             </div>}
             {Path==='/connexion'||Path==='/espacepro/InscriptionChoix'||Path=="/espacepro"||Path=='/espacepro/inscriptionChoix/inscriptionFinale'||Path=='/espacepro/inscriptionChoix/inscriptionFinale/profil'?

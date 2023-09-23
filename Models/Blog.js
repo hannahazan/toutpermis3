@@ -15,12 +15,19 @@ const BlogSchema = new mongoose.Schema(
         Examen:Boolean,
         Medecin:Boolean,
         Amenageur:Boolean,
+        Handicap:Boolean,
         UniqueId:String,
         PicBlogUrl:String,
         Selection:Boolean,
         EditDate:String,
         ModifDate:String,
-        PictureName:String
+        PictureName:String,
+        Actualites:Boolean,
+        CatPermisConduire:Boolean,
+        Pratique:Boolean,
+        BoiteOutils:Boolean,
+        BoitesGants:Boolean,
+        Faqs:Boolean
     });
  
  
