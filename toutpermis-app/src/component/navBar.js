@@ -13,7 +13,7 @@ function Navbar(){
     const {Inscrit,boolInscription,connectedUser}=useContext(InscriptionBoolean)
     const[Open,setOpen]=useState(false)
     const[Path,setPath]=useState('')
-    const[User,setUser]=useState()
+    const[User,setUser]=useState(null)
     const[LinkAdmin,setLinkAdmin]=useState(false)
     const getUser = () => {
         return axios
@@ -43,7 +43,7 @@ function Navbar(){
                 <Link to='espacepro'><li className='liMenu'>Espace pro</li></Link>
                 <li className='liMenu'>Contactez-nous</li>
                 <Link to='/' ><li className='liMenu'>Accueil</li></Link>
-                <li className={User.Admin===true?'liMenu':'liMenuNone'} id='LinkAdminLi' onClick={()=>{LinkAdmin==false?setLinkAdmin(true):setLinkAdmin(false)}}> Fonctions Administrateur</li>
+                <li className={User!=null&&User.Admin===true?'liMenu':'liMenuNone'} id='LinkAdminLi' onClick={()=>{LinkAdmin==false?setLinkAdmin(true):setLinkAdmin(false)}}> Fonctions Administrateur</li>
                 <div className={LinkAdmin===true?'containerLinkAdmin':'noneContainerLinkAdmin'}>
                   <Link className='LinkAdminP' id='PEditLinkAdmin' to='/EditBlog'>Créer un article</Link>
                   <Link className='LinkAdminP'>Modif profil</Link>

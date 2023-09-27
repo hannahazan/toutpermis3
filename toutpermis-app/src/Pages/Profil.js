@@ -16,8 +16,12 @@ import clef from '../images/iconsAwesome/screwdriver-wrench-solid.svg'
 import { Link } from 'react-router-dom';
 import { Navigate,useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import SocketIo from 'socket.io-client'
+const socket = SocketIo.connect('http://localhost:4000');
 
-const Profil=()=>{
+
+const Profil=({socket})=>{
+    
     const{choice,assignChoice,connectedUser,validEmail,disconnetingUser,boolInscription}=useContext(InscriptionChoice)
     const[User,setUser]=useState()
     const [disconnected,setDisconnected]=useState(false)
@@ -45,6 +49,12 @@ const Profil=()=>{
        var y= window.scrollY
        console.log(`${y} la position du scroll sur l'axe y`)
       }
+
+      const handleSubmitMessagerie = () => {
+        //sends the username and socket ID to the Node.js server
+        socket.emit('newUser', {userName: connectedUser, userID: socket.id});
+        navigate('/Messagerie');
+      };
       
       useEffect(()=>{
         getUser()
@@ -73,7 +83,7 @@ const Profil=()=>{
                     {User!=undefined?<div className='ContainerInitiales'><p  className='Initiales'>{User.Initiales}</p></div>:<img src={photoProfil} className='profilPicture'></img>}
                 </div>
                 <div className='toolBox'>
-                    <img src={enveloppe} className='enveloppeProfil'></img>
+                    <img src={enveloppe} className='enveloppeProfil'onClick={()=>{handleSubmitMessagerie()}}></img>
                     <img src={setting} className='settingProfil'></img>
                     <img src={powerOff} className='powerOffProfil' onClick={()=>{triggerDisconnect()}}></img>
                 </div>
