@@ -19,6 +19,7 @@ import Navbar from './component/Navbar';
 import Localisation from './component/Localisation.js';
 import EditBlog from './Pages/EditBlog';
 import Messagerie from './Pages/Messagerie';
+import ContactMessagerie from './Pages/ContactMessagerie';
 import socketIO from 'socket.io-client';
 
 const socket = socketIO.connect('http://localhost:4000');
@@ -39,15 +40,16 @@ root.render(
           <Route path="/espacepro" exact element={<EspacePro/>}></Route>
           <Route path='/espacepro/inscriptionChoix'  element={<InscriptionChoix/>}></Route>
           <Route path='/espacepro/inscriptionChoix/inscriptionFinale'  element={<InscriptionFinale/>}></Route>
-          <Route path='/espacepro/inscriptionChoix/inscriptionFinale/profil'  element={<Profil/>}></Route>
+          <Route path='/espacepro/inscriptionChoix/inscriptionFinale/profil'  element={<Profil socket={socket}/>}></Route>
           <Route path='/profil'  element={<Profil socket={socket}/>}></Route>
           <Route path='/espacepro/connexion/profil' element={<Profil/>}></Route>
-          <Route path='/testpopup'exact element={<PopupInscription/>}></Route>
+          <Route path='/testpopup'exact element={<PopupInscription socket={socket}/>}></Route>
           <Route path='/profil/fiche' exact element={<Fiche/>}></Route>
           <Route path='/espacepro/inscriptionChoix/inscriptionFinale/profil/Fiche' exact element={<Fiche/>}></Route>
           <Route path='/connexion' element={<Connexion/>}></Route>
           <Route path='/EditBlog' element={<EditBlog/>}></Route>
           <Route path='/Messagerie' element={<Messagerie socket={socket}/>}></Route>
+          <Route path='/ContactMessagerie' element={<ContactMessagerie socket={socket}/>}></Route>
       </Routes>
     </InscriptionProvider>
   </BrowserRouter>

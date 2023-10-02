@@ -57,6 +57,15 @@ const InscriptionFinale=()=>{
             .post("http://localhost:5000/Users/test",{Name:name,Mail:connectedUser,Password:password,PhoneNumber:PhoneNumber,Ecole:Ecole
             ,Prenom:prenom,Initiales:initiales,Medecin:Medecin,Aménageur:amenageur})
             .then((response)=>{(console.log(response.data))
+                 axios
+                .post("http://localhost:5000/MessUtil",{ListeUtil:{Utilisateur:connectedUser,Pro:choice,Initiales:initiales,Prenom:prenom,Nom:name}})
+                .then((response)=>{(console.log(response.data))  
+                    console.log("nop il passe pas du tout par là")
+                })
+                .catch(error => {
+                console.log(error);
+                alert("Oops!Cette adresse e-mail est déjà utilisée!")
+                })
                 boolInscription(true) 
                 navigation() 
                 
@@ -98,7 +107,7 @@ const InscriptionFinale=()=>{
                 <p className='pInscriptionFinale'>Inscription</p>
                 {choice==='voiture'?
                 <div>
-                    <input type="text" id="name" name="user_name" placeholder='Nom' className='inNameFinale' onChange={(e)=>{ChangeNameEcole(e)}}></input>
+                    <input type="text" id="name" name="user_name" placeholder='Nom' className='inNameFinale' onChange={(e)=>{setName(e.target.value)}}></input>
                     <input type="text" id="name" name="user_name" placeholder='Prénom' className='inNameFinale' onChange={(e)=>{setPrenom(e.target.value)}}></input>
                     <input type="text" id="name" name="user_name" placeholder='Fonction' className='inNameFinale'></input>
                     <input type="text" id="name" name="user_name" placeholder="Nom de l'école de conduite" className='inNameFinale'></input>
@@ -109,7 +118,7 @@ const InscriptionFinale=()=>{
                 </div>
                 :
                 <div >
-                    <input type="text" id="name" name="user_name" placeholder='Nom' className='inNameFinale' onChange={(e)=>{ChangeNameEcole(e)}}></input>
+                    <input type="text" id="name" name="user_name" placeholder='Nom' className='inNameFinale' onChange={(e)=>{setName(e.target.value)}}></input>
                     <input type="text" id="name" name="user_name" placeholder='Prénom' className='inNameFinale'onChange={(e)=>{setPrenom(e.target.value)}}></input>
                     <input type="email" id="mail" name="user_mail" placeholder='Adresse e-mail' className='inNameFinale'onChange={(e)=>{assignConnecteduser(e)}}></input>
                     <input type="number" id="name" name="user_name" placeholder='Téléphone' className='inNameFinale'onChange={(e)=>{setPhoneNumber(e.target.value)}}></input>

@@ -51,9 +51,9 @@ const Profil=({socket})=>{
       }
 
       const handleSubmitMessagerie = () => {
-        //sends the username and socket ID to the Node.js server
+        //sends the username and socket ID to the Node.js serve
         socket.emit('newUser', {userName: connectedUser, userID: socket.id});
-        navigate('/Messagerie');
+        navigate('/ContactMessagerie');
       };
       
       useEffect(()=>{

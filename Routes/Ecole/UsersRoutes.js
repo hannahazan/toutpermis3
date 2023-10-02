@@ -30,7 +30,7 @@ routerUsers.get('/:Mail/:Password', function (req, res) {
   }
   )
 })
-
+//l'attribut $and = les paramètres sont obligatoires
 routerUsers.post('/connect/PostGet', function (req, res) {
   Users.findOne({$and:[{Mail: req.body.Mail} ,{Password:req.body.Password}] }, (err, data) => {
   res.send(data)
@@ -91,5 +91,39 @@ routerUsers.post("/", upload.single('file'), async (req, res) => {
       res.status(201).json(post)
     })
   })
-  
+
+  routerUsers.put('/:Mail',(req,res) => {
+    Users.updateOne({Mail:req.params.Mail},{$push:{Message:{$each:[req.body.Message]}}},function(err,data){
+      console.log(req.body)
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
+  routerUsers.put('/removeMessage/:Mail',(req,res) => {
+    Users.updateOne({Mail:req.params.Mail},{$pull:{Message:req.body.Message}},function(err,data){
+      console.log(req.body)
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
   export default routerUsers

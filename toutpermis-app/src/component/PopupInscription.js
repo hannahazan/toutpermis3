@@ -9,8 +9,10 @@ import ombreGolgoth from '../images/OmbreIinvsible-removebg-preview.png'
 import ombreAgée from '../images/Ombreagée-removebg-preview.png'
 import '../css/popupInscription.css'
 import { Link } from "react-router-dom";
+import SocketIo from 'socket.io-client'
+const socket = SocketIo.connect('http://localhost:4000');
 
-const PopupInscription=()=>{
+const PopupInscription=(socket)=>{
     const[Path,setPath]=useState('')
     const[Close,setClose]=useState(false)
     useEffect(()=>{

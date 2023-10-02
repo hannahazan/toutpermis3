@@ -12,7 +12,8 @@ const UserSchema = new mongoose.Schema(
         UserPicture:String,
         Initiales:String,
         Admin:Boolean,
-        PicBlogUrl:String     
+        PicBlogUrl:String,
+        Message:Array,
     });
  
  
