@@ -1,8 +1,10 @@
 import "../css/ContactMessagerie.css"
 import '../css/Profil.css'
 import SocketIo from 'socket.io-client'
+import arrow from '../images/iconsAwesome/arrow-right-solid.svg'
 import Loupe from '../images/iconsAwesome/magnifying-glass-solid.svg'
 import Plane from '../images/iconsAwesome/paper-plane-solid.svg'
+import Pen from '../images/iconsAwesome/pen-solid.svg'
 import localLogo from '../images/toutpermisLogoVidepng.png'
 import { useEffect,useState,ChangeEvent,useContext } from 'react'
 import {InscriptionContext as getConnectedUser} from '../utilitaires/InscriptionContext'
@@ -19,10 +21,14 @@ const ContactMessagerie=({socket})=>{
     const [users, setUsers] = useState([]);
     const [user,setUser]=useState([])
     const [Destinataire,setDestinataire]=useState([])
+    const [NomEmetteur,setNomEmetteur]=useState("")
     const [room,setRoom]=useState("")
     const [ConvOn,setConvOn]=useState(false)
     const [NickName,setNickName]=useState("")
     const [Conv,setConv]=useState([])
+    const [lastMessage,setLastMessage]=useState()
+    const [MapConv,setMapConv]=useState(false)
+    const [WriteON,setWriteOn]=useState(false)
     const getContact=()=>{
         axios
         .get(`http://localhost:5000/MessUtil`)
@@ -34,14 +40,26 @@ const ContactMessagerie=({socket})=>{
     const getConv=()=>{
         axios
         .get(`http://localhost:5000/Users/${connectedUser}`)
-        .then((res)=>{setConv(res.data.Message)})
+        .then((res)=>{setConv(res.data.Message)
+        setNomEmetteur(res.data.Prenom)
+        setMapConv(true)
+        })
         .catch((err) => console.error(err));
-
     }
     
     useEffect(() => {
-        socket.on('messageResponse', (data) => setMessages([...messages, data]));
-    }, [socket, messages]);
+        //socket.on('messageResponse', (data) => setMessages([...messages,data]));
+        socket.on('messageResponse',()=>{
+            axios
+        .get(`http://localhost:5000/Users/${connectedUser}`)
+        .then((res)=>{setConv(res.data.Message)
+        setNomEmetteur(res.data.Prenom)
+        setMapConv(true)
+        console.log("je suis bien rentrée dans le fetch de la socket")
+        })
+        .catch((err) => console.error(err));
+        })
+    }, [socket, Conv]);
     
     useEffect(() => {
         socket.on('newUserResponse', (data) =>setUsers(data),console.log("ha ba ouais je passe par ici"),console.log(users));
@@ -52,13 +70,17 @@ const ContactMessagerie=({socket})=>{
     useEffect(()=>{
         console.log(Destinataire)
         console.log(NickName)
+        console.log(`${lastMessage} le dernier message`)
+        console.log(ConvOn)
     })
 
     const handleSendMessage = (e) => {
+        let TimeStamp=Date.now()
         axios
-        .put(`http://localhost:5000/Users/${connectedUser}`,{Message:{Destinataire:Destinataire,Body:message,uniqueId:Date.now()+Math.random(),Room:room}})
+        .put(`http://localhost:5000/Users/${connectedUser}`,{Message:{Destinataire:Destinataire,Body:message,uniqueId:Date.now()+Math.random(),Room:room,TimeStamp:TimeStamp}})
         .then((response)=>{(console.log(response.data))  
             console.log("il est bien dans le message user")
+            getConv()
         })
         .catch(error => {
         console.log(error);
@@ -66,7 +88,7 @@ const ContactMessagerie=({socket})=>{
         })
 
         axios
-        .put(`http://localhost:5000/Users/${Destinataire}`,{Message:{Emetteur:connectedUser,Body:message,uniqueId:Date.now()+Math.random(),Room:room}})
+        .put(`http://localhost:5000/Users/${Destinataire}`,{Message:{Emetteur:connectedUser,Body:message,uniqueId:Date.now()+Math.random(),Room:room,TimeStamp:TimeStamp}})
         .then((response)=>{(console.log(response.data))  
             console.log("il est bien dans le message user")
         })
@@ -82,13 +104,17 @@ const ContactMessagerie=({socket})=>{
         socket.emit('message', {
           text: message,
           name:connectedUser,
-          nickName:NickName,
+          nickName:NomEmetteur,
           id: `${socket.id}${Math.random()}`,
           socketID: socket.id,
-          room
+          room,
+          TimeStamp:TimeStamp
         });
       }
       setMessage('');
+      setLastMessage(TimeStamp)
+      setMapConv(false)
+      setWriteOn(false)
     };
 
      //set la Room unique pour l'envoyer dans le tableau message par la suite
@@ -109,6 +135,7 @@ const ContactMessagerie=({socket})=>{
                     console.log(NumRoom)
                     hookRoom(NumRoom.toString())
                     console.log("je suis dans la condition 0")
+                    
             }
             else{
                 for(let i=0;i<res.data.Message.length;i++){
@@ -119,7 +146,9 @@ const ContactMessagerie=({socket})=>{
                         break
                     }
                    else{
-                        let NumRoom=Math.random()*Math.random()+Date.now() 
+                        let NumRoom=Math.random()*Math.random()+Date.now()
+                        let textRoom=NumRoom.toString()
+                        console.log(textRoom) 
                         console.log(NumRoom)
                         hookRoom(NumRoom.toString())
                         console.log("il est rentré dans le else")
@@ -131,15 +160,26 @@ const ContactMessagerie=({socket})=>{
         hookdesti(desti)
         setConvOn(true) 
         hookNickName(NickName)
-        getConv()     
+        getConv() 
+       
     }
-
+    const WriteMessage=()=>{
+        setWriteOn(true)
+    }
+    const goBackToContact=()=>{
+        setConvOn(false)
+        setWriteOn(false)
+    }
     return(
-        <div>
-            <Navbar/>
+        <div className="Messagerie">
+            {ConvOn===false?<Navbar/>:<div className="containerArrowPMessagerie">
+                <img src={arrow} className="ArrowMessagerie" onClick={()=>{goBackToContact()}}></img>
+                <div className="NomPrenomConvMess">{NickName}</div>
+                </div>}
             <div  className={ConvOn===false?"containerContactMap":"containerContactMapNone"}>
                 {contacts.map((contact)=>
-                    <div className="ContactList"  onClick={()=>{joinRoom(setRoom,setDestinataire,contact.ListeUtil.Utilisateur,setNickName,contact.ListeUtil.Prenom)}}>
+                contact.ListeUtil.Utilisateur!= connectedUser?
+                   ( <div className="ContactList"  onClick={()=>{joinRoom(setRoom,setDestinataire,contact.ListeUtil.Utilisateur,setNickName,contact.ListeUtil.Prenom)}}>
                         <div className="pictoLogoEspaceProMessagerie">
                             <img src={localLogo} className='localLogoPictoMessagerie'></img>
                             <div className='ContainerInitialesMessagerie'><p className='InitialesMess'>{contact.ListeUtil.Initiales}</p></div>  
@@ -148,13 +188,13 @@ const ContactMessagerie=({socket})=>{
                             <p className="NomPrenomMess">{contact.ListeUtil.Prenom} {contact.ListeUtil.Nom}</p>
                             {contact.ListeUtil.Pro==="voiture"?<p className="ProMess">Ecole de conduite</p>:contact.ListeUtil.Pro==="médecin"?<p className="ProMess">Médecin</p>:<p className="ProMess">Aménageur de véhicule</p>}
                        </div>
-                    </div>
+                    </div>):console.log("hello")
                 )}
             </div>
 
-            <div className={ConvOn===true && Conv.length!=0?"message__container":"messageContainerNone"}>
+            <div className={ConvOn===true && Conv.length !=0?"containerConv":"messageContainerNone"}>
                     {Conv.map((conversation) =>
-                    conversation.Destinataire === Destinataire ? (
+                    conversation.Destinataire === Destinataire? (
                         <div className="containerMessageSender" >
                             <div className="message__sender">
                                 <p className="sender__name">You</p>
@@ -171,28 +211,32 @@ const ContactMessagerie=({socket})=>{
                         :console.log("nop pas la bonne personne")
                     )}
              </div>
-            <div className={ConvOn===true && Conv.length==0?"message__container":ConvOn===true && Conv.length!=0?"message__container2":"messageContainerNone"}>
-                    {messages.map((message) =>
-                    message.name === connectedUser ? (
-                        <div className="containerMessageSender" key={message.id}>
-                            <div className="message__sender">
-                                <p className="sender__name">You</p>
-                                <p>{message.text}</p>
+
+             
+                <div className={ConvOn===true && Conv.length==0 && MapConv===false?"message__container":ConvOn===true && Conv.length!=0 && MapConv===false?"message__container2":"messageContainerNone"}>
+                        {messages.map((message) =>
+                        message.name === connectedUser && message.room===room ? (
+                            <div className="containerMessageSender" key={message.id}>
+                                <div className="message__sender">
+                                    <p className="sender__name">You</p>
+                                    <p>{message.text}</p>
+                                </div>
                             </div>
-                        </div>
-                    ) : 
-                        <div className="message__chats" key={message.id}> 
-                            <div className="message__recipient">
-                                <p>{message.nickName}</p>
-                                <p>{message.text}</p>
+                        ) :message.room===room ? 
+                            <div className="message__chats" key={message.id}> 
+                                <div className="message__recipient">
+                                    <p>{message.nickName}</p>
+                                    <p>{message.text}</p>
+                                </div>
                             </div>
-                        </div>
-                    )}
-             </div>
+                            :console.log("nop on en veut pas")
+                        )}
+                </div>
+               
             
 
-
-            <footer className="FooterMessagerie">
+            {WriteON===false && ConvOn===true?<div  className='buttonWriteMessage'  onClick={()=>{WriteMessage()}}><img src={Pen}  className="planeMessagerieFooter"></img></div>
+            :<footer className="FooterMessagerie">
                     {ConvOn===false?<div className="containerLoupeInputMessagerieFooter">
                         <img src={Loupe} className="LoupeMessagerieFooter"></img>
                         <input type="text"  placeholder='Rechercher pro' className='inNameFinaleMessagerieFooter'></input>
@@ -200,9 +244,9 @@ const ContactMessagerie=({socket})=>{
                     <div className= "containerLoupeInputMessagerieFooter">
                         <textarea type="area" placeholder="Ecrire réponse" className='inNameFinaleMessagerieFooterTextArea' col="80" rows="1" onChange={(e)=>{setMessage(e.target.value)}}></textarea>
                         <div  className='buttonValidMessageriConv'  onClick={()=>{handleSendMessage()}}><img src={Plane}  className="planeMessagerieFooter"></img></div>
-                    </div>
+                    </div> 
                     }
-            </footer>
+            </footer>}
         </div>
     )
 }
