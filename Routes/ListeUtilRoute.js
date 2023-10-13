@@ -56,8 +56,9 @@ routerMessUtil.get('/One/:UserPseudo', function (req, res) {
       }
     })
   })
- routerMessUtil.put('/',(req,res) => {
-    MessUtil.updateOne({$push:{ListeUtil:{$each:[req.body.ListeUtil],$position:0}}},function(err,data){
+ routerMessUtil.put('/addNewUtilisateur/:_id',(req,res) => {
+    MessUtil.updateOne({_id:"6528398bd2efed6f6387edc4"},{$push:{ListeContacts:{$each:[req.body.ListeContacts],$position:0}}},function(err,data){
+      console.log('je rentre bien dans le put du fucking messutil')
       console.log(req.body)
       if(err){
         res.sendStatus(404)
@@ -141,9 +142,9 @@ routerMessUtil.get('/One/:UserPseudo', function (req, res) {
       }
     })
   })
-  routerMessUtil.put('/UpdateSpe/:EcoleNameId',(req,res) => {
-    MessUtil.updateOne({EcoleNameId:req.params.EcoleNameId},{$set:{["Specialite."+req.body.Index]:req.body.Specialite}},function(err,data){
-      console.log(req.body)
+  routerMessUtil.put('/UpdateContacts/:_id',(req,res) => {
+    MessUtil.updateOne({_id:"6528398bd2efed6f6387edc4"},{$set:{["ListeContacts."+req.body.Index]:req.body.ListeContacts},$position:0},function(err,data){
+      console.log(`${req.body} les infos de l'update`)
       
       if(err){
         res.sendStatus(404)
@@ -159,8 +160,8 @@ routerMessUtil.get('/One/:UserPseudo', function (req, res) {
       }
     })
   })
-  routerMessUtil.put('/removeSpe/:EcoleNameId',(req,res) => {
-    MessUtil.updateOne({EcoleNameId:req.params.EcoleNameId},{$pull:{Specialite:req.body.Specialite}},function(err,data){
+  routerMessUtil.put('/removeContact/:_id',(req,res) => {
+    MessUtil.updateOne({_id:"6528398bd2efed6f6387edc4"},{$pull:{ListeContacts:req.body.ListeContacts}},function(err,data){
       console.log(req.body)
       if(err){
         res.sendStatus(404)
@@ -267,7 +268,7 @@ routerMessUtil.get('/One/:UserPseudo', function (req, res) {
   
   routerMessUtil.post('/', function (req, res, next) {
     var myNewListe= new MessUtil({
-     ListeUtil:req.body.ListeUtil
+     ListeContacts:req.body.ListeContacts
     })
     myNewListe.save(function (err, post) {
       if (err) { return next(err) }
@@ -277,6 +278,58 @@ routerMessUtil.get('/One/:UserPseudo', function (req, res) {
   
   routerMessUtil.delete('/delete/:EcoleNameId',(req,res)=>{
     MessUtil.findOneAndDelete({EcoleNameId:req.params.EcoleNameId},function(err,data){
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
+
+  routerMessUtil.put('/removeContact/upadateContact/:_id',(req,res) => {
+    MessUtil.updateOne({_id:"6528398bd2efed6f6387edc4"},{$pull:{ListeContacts:req.body.ListeContacts}},function(err,data){
+      console.log(req.body)
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+    MessUtil.updateOne({_id:"6528398bd2efed6f6387edc4"},{$push:{ListeContacts:{$each:[req.body.ListeContacts],$position:0}}},function(err,data){
+      console.log('je rentre bien dans le put du fucking messutil')
+      console.log(req.body)
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }})
+  })
+
+  routerMessUtil.put('/addNewUtilisateur/:_id',(req,res) => {
+    MessUtil.updateOne({_id:"6528398bd2efed6f6387edc4"},{$push:{ListeContacts:{$each:[req.body.ListeContacts],$position:0}}},function(err,data){
+      console.log('je rentre bien dans le put du fucking messutil')
+      console.log(req.body)
       if(err){
         res.sendStatus(404)
       }

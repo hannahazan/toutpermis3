@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const MessUtilSchema = new mongoose.Schema(
     {
-        ListeUtil:Object,
+        ListeContacts:Array,
     });
  
  

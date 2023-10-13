@@ -5,7 +5,7 @@
     width: 100%;
     height: fit-content;
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(white,#FcF3F1);
+    
 
 }
 .localLogoPictoMessagerie{
@@ -196,7 +196,7 @@
 .message__recipient{
     display:flex;
     flex-direction: column;
-    width: fit-content;
+    max-width: 100%;
     background-color: #236468;
     text-align: center;
     border-radius: 21px;
@@ -205,6 +205,7 @@
     padding-top: 5px;
     padding-bottom: 5px;
     color: white;
+    height: fit-content;
 }
 .message__chats{
     display: flex;
@@ -256,8 +257,8 @@
 
 .containerConv{
     margin-top: 107px;
-    margin-left: 15px;
-    margin-right: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 .FooterMessagerieNone{
     display:none
@@ -276,8 +277,8 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     font-family: 'Poppins';
     color: white;
     border-radius: 100%;
@@ -290,5 +291,37 @@
     margin-left: 10px;
     margin-top: 18px;
     position: relative;
-    left: 318px;
+    left: 178px;
+    padding-left: 2px;
+}
+.containerConvHeigth{
+    margin-top: 107px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background: linear-gradient(white,#FcF3F1)
+}
+.buttonDisplayFooterNone{
+    display: none;
+}
+.PenWriteDisplay{
+    width: 25px;
+    height: 25px;
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(19deg) brightness(104%) contrast(100%);
+    position: relative;
+    right: 2px;
+}
+.PenWriteDisplayNone{
+    display: none;
+}
+.CrossWriteDisplay{
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(19deg) brightness(104%) contrast(100%);
+    position: relative;
+    right: 1px;
+    width: 25px
+}
+.displayNoteMessage{
+    color:#e8937c
+}
+.displayNoneNoteMessage{
+    display: none;
 }

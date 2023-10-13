@@ -36,7 +36,9 @@ io.on('connection', (socket) => {
     console.log(data)
   }); 
   
-  ;
+  socket.on('NoteMessageReçus',(data)=>{
+    io.emit('NoteMessageReçus',data)
+  });
   socket.on('newUser', (data) => {
     console.log(`${data} la data du user`)
     users.push(data);
