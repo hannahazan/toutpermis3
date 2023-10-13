@@ -37,7 +37,6 @@ const ContactMessagerie=({socket})=>{
     const [messageNonlu,setMessageNonLu]=useState(false)
     const [MessageNotLuEmmeteur,setMessageNotLuEmmeteur]=useState("")
     const [Nom,setNom]=useState("")
-    const [Prenom,setPrenom]=useState("")
     const [pro,setPro]=useState("")
    
     let NotificationArray=[]
@@ -103,7 +102,15 @@ const ContactMessagerie=({socket})=>{
             console.log(`${data.prenom} j'emet bien à tout le monde sauf moi`)
             console.log(`${data.nom} j'emet bien à tout le monde sauf moi`)
             console.log(`${data.pro} j'emet bien à tout le monde sauf moi`)
-
+            let ContactNotif={
+                emmeteur:data.emmeteur,
+                prenom:data.prenom,
+                nom:data.nom,
+                pro:data.pro,
+                nonLu:1
+            }
+            console.log(`${ContactNotif} c'est la classe`)
+                 
             if(data.destinataire===connectedUser){
                 console.log('oui c\'est moi le destinataire')
                 setMessageNonLu(true)
@@ -167,7 +174,7 @@ const ContactMessagerie=({socket})=>{
       socket.emit('NoteMessageReçus',{
             emmeteur:connectedUser,
             destinataire:Destinataire,
-            prenom:Prenom,
+            prenom:NickName,
             nom:Nom,
             pro:pro
       })
@@ -211,7 +218,7 @@ const ContactMessagerie=({socket})=>{
     };
 
      //set la Room unique pour l'envoyer dans le tableau message par la suite
-     const joinRoom=(hookRoom,hookdesti,desti,hookNickName,NickName,hookName,Name,hookPrenom,Prenom,hookPro,Pro)=>{
+     const joinRoom=(hookRoom,hookdesti,desti,hookNickName,NickName,hookName,Name,hookPro,Pro)=>{
 
         //on récupère le tableau message du user et on check plusieurs conditions:
         //que le tableau contient des données
@@ -260,7 +267,6 @@ const ContactMessagerie=({socket})=>{
         setConvOn(true) 
         hookNickName(NickName)
         hookName(Name)
-        hookPrenom(Prenom)
         hookPro(Pro)
         getConv()
        //Scroll automatique à la fin de la conversation et changement de classe pour la conv si jamais sa hauteur => window.hauteur-150px
@@ -309,7 +315,7 @@ const ContactMessagerie=({socket})=>{
             <div  className={ConvOn===false && messageNonlu===true?"containerContactMap":"containerContactMapNone"}>
                 {contacts.map((contact)=>
                 contact.Utilisateur!= connectedUser && contact.Utilisateur===MessageNotLuEmmeteur?
-                   <div className="ContactList"  onClick={()=>{joinRoom(setRoom,setDestinataire,contact.Utilisateur,setNickName,contact.Prenom,setNom,contact.Nom,setPrenom,contact.Prenom,setPro,contact.Pro)}}>
+                   <div className="ContactList"  onClick={()=>{joinRoom(setRoom,setDestinataire,contact.Utilisateur,setNickName,contact.Prenom,setNom,contact.Nom,setPro,contact.Pro)}}>
                         <div className="pictoLogoEspaceProMessagerie">
                             <img src={localLogo} className='localLogoPictoMessagerie'></img>
                             <div className='ContainerInitialesMessagerie'><p className='InitialesMess'>{contact.Initiales}</p></div>  
@@ -325,7 +331,7 @@ const ContactMessagerie=({socket})=>{
             <div  className={ConvOn===false?"containerContactMap":"containerContactMapNone"}>
                 {contacts.map((contact)=>
                 contact.Utilisateur!= connectedUser && contact.Utilisateur!=MessageNotLuEmmeteur?
-                   <div className="ContactList"  onClick={()=>{joinRoom(setRoom,setDestinataire,contact.Utilisateur,setNickName,contact.Prenom)}}>
+                   <div className="ContactList"  onClick={()=>{joinRoom(setRoom,setDestinataire,contact.Utilisateur,setNickName,contact.Prenom,setNom,contact.Nom,setPro,contact.Pro)}}>
                         <div className="pictoLogoEspaceProMessagerie">
                             <img src={localLogo} className='localLogoPictoMessagerie'></img>
                             <div className='ContainerInitialesMessagerie'><p className='InitialesMess'>{contact.Initiales}</p></div>  
