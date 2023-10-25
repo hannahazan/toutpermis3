@@ -91,6 +91,41 @@ routerUsers.post("/", upload.single('file'), async (req, res) => {
       res.status(201).json(post)
     })
   })
+  routerUsers.put('/addContact/:Mail',(req,res) => {
+    Users.updateOne({Mail:req.params.Mail},{$push:{ContactList:{$each:[req.body.ContactList]}}},function(err,data){
+      console.log(req.body)
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
+
+  routerUsers.put('/removeContact/:Mail',(req,res) => {
+    Users.updateOne({Mail:req.params.Mail},{$pull:{ContactList:req.body.ContactList}},function(err,data){
+      console.log(req.body)
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
 
   routerUsers.put('/:Mail',(req,res) => {
     Users.updateOne({Mail:req.params.Mail},{$push:{Message:{$each:[req.body.Message]}}},function(err,data){

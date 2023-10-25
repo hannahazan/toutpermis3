@@ -23,6 +23,8 @@ const ContactMessagerie=({socket})=>{
     const [user,setUser]=useState([])
     const [Destinataire,setDestinataire]=useState([])
     const [NomEmetteur,setNomEmetteur]=useState("")
+    const [NameEmetteur,setNameEmetteur]=useState("")
+    const [ProEmetteur,setProEmetteur]=useState("")
     const [room,setRoom]=useState("")
     const [ConvOn,setConvOn]=useState(false)
     const [NickName,setNickName]=useState("")
@@ -32,14 +34,19 @@ const ContactMessagerie=({socket})=>{
     const [WriteON,setWriteOn]=useState(false)
     const [ChangeHeigthConv,setChangeHeigthConv]=useState(false)
     const [DisplayFooter,setDisplayFooter]=useState(false)
+    const [notificationArray,setNoficationArray]=useState([])
 
     //logique notification de message
     const [messageNonlu,setMessageNonLu]=useState(false)
     const [MessageNotLuEmmeteur,setMessageNotLuEmmeteur]=useState("")
     const [Nom,setNom]=useState("")
     const [pro,setPro]=useState("")
+    const [boolContacMaj,setBoolContactMaj]=useState(false)
+    const [testNotif,setTestNotif]=useState(false)
+    const [ContactMajH,setContactMajH]=useState([])
    
     let NotificationArray=[]
+    let ContactMaj=[]
     const ScrollEnding=(heigth)=>{
     window.scroll(0,heigth)
     console.log (window.scrollY)
@@ -58,6 +65,16 @@ const ContactMessagerie=({socket})=>{
         .get(`http://localhost:5000/Users/${connectedUser}`)
         .then((res)=>{setConv(res.data.Message)
         setNomEmetteur(res.data.Prenom)
+        setNameEmetteur(res.data.Name)
+        if(res.data.Ecole===true){
+            setProEmetteur("voiture")
+        }
+        else if(res.data.Medecin===true){
+            setProEmetteur("médecin")
+        }
+        else{
+            setProEmetteur("aménageur")
+        }
         setMapConv(true)
           
         })
@@ -97,6 +114,7 @@ const ContactMessagerie=({socket})=>{
     }, [socket,messages]);
     useEffect(()=>{
         socket.on('NoteMessageReçus',(data)=>{
+            console.log(data,"toute la data émise dans le Notification")
             console.log(`${data.emmeteur} j'emet bien à tout le monde sauf moi`)
             console.log(`${data.destinataire} j'emet bien à tout le monde sauf moi`)
             console.log(`${data.prenom} j'emet bien à tout le monde sauf moi`)
@@ -109,29 +127,105 @@ const ContactMessagerie=({socket})=>{
                 pro:data.pro,
                 nonLu:1
             }
-            console.log(`${ContactNotif} c'est la classe`)
+            console.log(`${ContactNotif.emmeteur} c'est la classe`)
+            console.log(`${ContactNotif.prenom} c'est la classe`)
+            console.log(`${ContactNotif.nom} c'est la classe`)
+            console.log(`${ContactNotif.pro} c'est la classe`)
+            console.log(`${ContactNotif.nonLu} c'est la classe`)
                  
             if(data.destinataire===connectedUser){
                 console.log('oui c\'est moi le destinataire')
                 setMessageNonLu(true)
                 setMessageNotLuEmmeteur(data.emmeteur)
+                ContactMaj=[]
+                setContactMajH([])
+                setTestNotif(true)
                 console.log(`${contacts.length} c'est la taille des contacts`)
-                 /*axios
-                .get(`http://localhost:5000/MessUtil/6528398bd2efed6f6387edc4`)
-                .then((res)=>{setContacts(res.data.ListeContacts)
-                    console.log(`${res.data.ListeContacts} la data listecontacts pour le nouveau tableau`)
-                    /*for(let i=0;i<=res.data.ListeContacts.length;i++){
-                        console.log("je rentre bien dans la boucle tableau")
-                        if(res.data.ListeContacts[i].Utilisateur===data.emmeteur){
-                            NotificationArray.push(res.data.ListeContacts[i])
-                            console.log(`${NotificationArray[i].Prenom} dans la boucle le tableau`)
+                /*if(contacts.length!=0){
+                    for(let i=0;i<contacts.length;i++){
+                        if(contacts[i].Utilisateur===data.emmeteur){
+                            NotificationArray.push({"emmeteur":contacts[i].Utilisateur,"prenom":contacts[i].Prenom,
+                        "nom":contacts[i].Nom,"pro":contacts[i].pro
+                        })
+                            console.log(NotificationArray)
+                        }
+                        else{
+                            console.log(contacts[i])
                         }
                         
                     }
+                }*/
+               /* NotificationArray.push({"emetteur":data.emmeteur,"prenom":data.prenom,"nom":data.nom,
+                "pro":data.pro,"nonLu":1
+            })*/
+            
+            if(NotificationArray.length===0){
+                NotificationArray.push({"emetteur":data.emmeteur,"prenom":data.prenom,"nom":data.nom,
+                "pro":data.pro,"nonLu":1
+            })
+            setNoficationArray(NotificationArray)
+            
+            }
+            else{
+               const FoundEmetteur=NotificationArray.find((notif)=>notif.emetteur===data.emmeteur)
+               /*cette boucle est nécessaire si je souhaite afficher le nombre de nouveaux messages reçus, pour simplifier le process
+               je peux simplement afficher nouveau message*/
+               if(FoundEmetteur!=undefined){
+                   for(let i=0;i<NotificationArray.length;i++){
+                    if(NotificationArray[i].emetteur===FoundEmetteur.emetteur){
+                    let replaceNotif={"emetteur":NotificationArray[i].emetteur,"prenom":NotificationArray[i].prenom,
+                    "nom":NotificationArray[i].nom,"pro":NotificationArray[i].pro,"nonLu":NotificationArray[i].nonLu+1} 
+                    NotificationArray.splice(i,1)    
+                    NotificationArray.splice(0,0,{"emetteur":replaceNotif.emetteur,"prenom":replaceNotif.prenom,
+                        "nom":replaceNotif.nom,"pro":replaceNotif.pro,"nonLu":replaceNotif.nonLu
+                        })
+                   
+                    setNoficationArray(NotificationArray)
+                    }
+                    else{
+                        console.log("pas égal à l'emetteur")
+                    }
+
+                   }
+               }
+               else{
+                NotificationArray.splice(0,0,{"emetteur":data.emmeteur,"prenom":data.prenom,"nom":data.nom,
+                "pro":data.pro,"nonLu":1
+                 })
+                setNoficationArray(NotificationArray)
+               }
+            }
+                console.log("jme met à jour 48")
+                console.log("donc pb de connexion")
+                console.log(`${NotificationArray[0].nonLu} et ${NotificationArray.length}  tableau des notif à jour`)
                 
+               /* le but de ce fetch est de  récupérer dans le tableau des contacts, seulement ceux qui ne viennent pas d'envoyer un message*/  
+                axios
+                .get(`http://localhost:5000/MessUtil/6528398bd2efed6f6387edc4`)
+                .then((res)=>{
+                    for(let i=0;i<res.data.ListeContacts.length;i++){
+                        setBoolContactMaj(false)
+                        console.log(boolContacMaj,"c'est le booléan pour rentrer dans la seconde condition de la boucle")
+                        console.log(i,"le compteur i")
+                        for(let j=0;j<NotificationArray.length;j++){
+                            console.log(j,"le compteur j")
+                            if(res.data.ListeContacts[i].Utilisateur===NotificationArray[j].emetteur){
+                                console.log(NotificationArray[j].emetteur,"je suis l'emetteur dans la condition 1, je passe bien par cette condition")
+                                setBoolContactMaj(true)
+                            }
+                            else if(boolContacMaj===false && j===NotificationArray.length-1 && res.data.ListeContacts[i].Utilisateur!=NotificationArray[j].emetteur){
+                                console.log(NotificationArray.length-1,"je passe bien par là")
+                                ContactMaj.push(res.data.ListeContacts[i])
+                                console.log(res.data.ListeContacts[i],"je passe bien par cette condition")
+                                setContactMajH(ContactMaj)
+                            }
+                            else{
+                                console.log("On m'a demandé de ne rien faire bon sang!")
+                            }
+                        }
+                    }
                 })
-                .catch((err) => console.error(err)); */
-                console.log("get dans le tableau/boucle")
+                .catch((err) => console.error(err));
             }
         })
     },[socket])
@@ -147,6 +241,7 @@ const ContactMessagerie=({socket})=>{
         console.log(`${lastMessage} le dernier message`)
         console.log(ConvOn)
         console.log(`${ChangeHeigthConv} c'est la variable pour changer la taille`)
+        console.log(`${connectedUser} je garde bien cette info après reboot`)
     })
 
     const handleSendMessage = (e) => {
@@ -174,9 +269,9 @@ const ContactMessagerie=({socket})=>{
       socket.emit('NoteMessageReçus',{
             emmeteur:connectedUser,
             destinataire:Destinataire,
-            prenom:NickName,
-            nom:Nom,
-            pro:pro
+            prenom:NomEmetteur,
+            nom:NameEmetteur,
+            pro:ProEmetteur
       })
       /*if(room!==""){
         socket.emit("join_room",room)
@@ -312,25 +407,25 @@ const ContactMessagerie=({socket})=>{
                 <div className="NomPrenomConvMess">{NickName}</div>
                 <div  className={WriteON===true?'buttonWriteMessage':'buttonDisplayFooterNone'}  onClick={()=>{WriteMessage()}}><img src={Pen}  className={DisplayFooter===true?"PenWriteDisplay":"PenWriteDisplayNone"}></img><img src={cross}  className={DisplayFooter===false?"CrossWriteDisplay":"PenWriteDisplayNone"}></img></div>
                 </div>}
-            <div  className={ConvOn===false && messageNonlu===true?"containerContactMap":"containerContactMapNone"}>
-                {contacts.map((contact)=>
-                contact.Utilisateur!= connectedUser && contact.Utilisateur===MessageNotLuEmmeteur?
-                   <div className="ContactList"  onClick={()=>{joinRoom(setRoom,setDestinataire,contact.Utilisateur,setNickName,contact.Prenom,setNom,contact.Nom,setPro,contact.Pro)}}>
+            <div  className={ConvOn===false && messageNonlu===true && notificationArray.length!=0?"containerContactMap":"containerContactMapNone"}>
+                {notificationArray.map((contact)=>
+
+                   <div className="ContactList"  onClick={()=>{joinRoom(setRoom,setDestinataire,contact.emetteur,setNickName,contact.prenom,setNom,contact.Nom,setPro,contact.pro)}}>
                         <div className="pictoLogoEspaceProMessagerie">
                             <img src={localLogo} className='localLogoPictoMessagerie'></img>
-                            <div className='ContainerInitialesMessagerie'><p className='InitialesMess'>{contact.Initiales}</p></div>  
+                            <div className='ContainerInitialesMessagerie'><p className='InitialesMess'></p></div>  
                         </div>
                         <div className="NomPreProMessagerie">
-                            <p className="NomPrenomMess">{contact.Prenom} {contact.Nom}</p>
-                            {contact.Pro==="voiture"?<p className="ProMess">Ecole de conduite</p>:contact.Pro==="médecin"?<p className="ProMess">Médecin</p>:<p className="ProMess">Aménageur de véhicule</p>}
+                            <p className="NomPrenomMess">{contact.prenom} {contact.nom}</p>
+                            {contact.pro==="voiture"?<p className="ProMess">Ecole de conduite</p>:contact.pro==="médecin"?<p className="ProMess">Médecin</p>:<p className="ProMess">Aménageur de véhicule</p>}
                        </div>
-                       <p className={messageNonlu===true && MessageNotLuEmmeteur===contact.Utilisateur?"displayNoteMessage":"displayNoneNoteMessage"}>message</p>
-                    </div>:console.log("ba non")
+                       <p className="displayNoteMessage">{contact.nonLu}</p>
+                    </div>
                 )}
                 </div>
-            <div  className={ConvOn===false?"containerContactMap":"containerContactMapNone"}>
+            <div  className={ConvOn===false && testNotif===false?"containerContactMap":"containerContactMapNone"}>
                 {contacts.map((contact)=>
-                contact.Utilisateur!= connectedUser && contact.Utilisateur!=MessageNotLuEmmeteur?
+                contact.Utilisateur!= connectedUser /*&& contact.Utilisateur!=MessageNotLuEmmeteur*/?
                    <div className="ContactList"  onClick={()=>{joinRoom(setRoom,setDestinataire,contact.Utilisateur,setNickName,contact.Prenom,setNom,contact.Nom,setPro,contact.Pro)}}>
                         <div className="pictoLogoEspaceProMessagerie">
                             <img src={localLogo} className='localLogoPictoMessagerie'></img>
@@ -340,7 +435,22 @@ const ContactMessagerie=({socket})=>{
                             <p className="NomPrenomMess">{contact.Prenom} {contact.Nom}</p>
                             {contact.Pro==="voiture"?<p className="ProMess">Ecole de conduite</p>:contact.Pro==="médecin"?<p className="ProMess">Médecin</p>:<p className="ProMess">Aménageur de véhicule</p>}
                        </div>
-                       <p className={messageNonlu===true && MessageNotLuEmmeteur===contact.Utilisateur?"displayNoteMessage":"displayNoneNoteMessage"}>message</p>
+                    </div>:console.log("ba non")
+                )}
+            </div>
+
+            <div  className={ConvOn===false && testNotif===true?"containerContactMap":"containerContactMapNone"}>
+                {ContactMajH.map((contact)=>
+                contact.Utilisateur!= connectedUser /*&& contact.Utilisateur!=MessageNotLuEmmeteur*/?
+                   <div className="ContactList"  onClick={()=>{joinRoom(setRoom,setDestinataire,contact.Utilisateur,setNickName,contact.Prenom,setNom,contact.Nom,setPro,contact.Pro)}}>
+                        <div className="pictoLogoEspaceProMessagerie">
+                            <img src={localLogo} className='localLogoPictoMessagerie'></img>
+                            <div className='ContainerInitialesMessagerie'><p className='InitialesMess'>{contact.Initiales}</p></div>  
+                        </div>
+                        <div className="NomPreProMessagerie">
+                            <p className="NomPrenomMess">{contact.Prenom} {contact.Nom}</p>
+                            {contact.Pro==="voiture"?<p className="ProMess">Ecole de conduite</p>:contact.Pro==="médecin"?<p className="ProMess">Médecin</p>:<p className="ProMess">Aménageur de véhicule</p>}
+                       </div>
                     </div>:console.log("ba non")
                 )}
             </div>
