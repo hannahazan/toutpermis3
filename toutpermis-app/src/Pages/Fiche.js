@@ -1788,7 +1788,7 @@ console.log(`${ModifContactValue} ici c'est le modifContactvalue`)
                             <img src={cross} className='fermerFormFormationModifFiche2'onClick={()=>{setModifLocalisation(false)}}></img>
                         </div> 
                         <input type='text' placeholder='Adresse' className='inputNom' value={AdresseValue} onChange={(e)=>{assignAdresseValue(e.target.value )}}></input>
-                        <input type='number' className='inputNom' placeholder='code postal' value={Departement} onChange={(e)=>{setDepartement(e.target.value)}}></input>
+                        <input type='number' className='inputNom' placeholder='département' value={Departement} onChange={(e)=>{setDepartement(e.target.value)}}></input>
                         <input type='text' placeholder='Ville' className='inputNom' value={Ville} onChange={(e)=>{setVille(e.target.value)}}></input>
                         <input   type='submit' className='buttonValidBoxcase' value={'Valider'} onClick={()=>{getCoordinate()}}></input>
                     </div>

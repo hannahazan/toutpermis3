@@ -32,6 +32,14 @@ routerFicheEcolePrincipale.get('/One/:UserPseudo', function (req, res) {
     )
   });
 
+  routerFicheEcolePrincipale.get('/byDepartement/:CodePos', function (req, res) {
+    FicheEcolePrincipale.find({CodePos:req.params.CodePos}, (err, data) => {
+       res.send(data)
+       console.log(data)
+     }
+     )
+   });
+
   routerFicheEcolePrincipale.get('/creation/:EcoleNameId', function (req, res) {
     FicheEcolePrincipale.findOne({EcoleNameId: req.params.EcoleNameId}, (err, data) => {
        res.send(data)

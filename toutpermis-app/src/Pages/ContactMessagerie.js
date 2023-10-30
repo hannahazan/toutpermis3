@@ -195,12 +195,12 @@ const ContactMessagerie=({socket})=>{
                 setNoficationArray(NotificationArray)
                }
             }
-                console.log("jme met à jour 48")
+                console.log("jme met à jour 49")
                 console.log("donc pb de connexion")
                 console.log(`${NotificationArray[0].nonLu} et ${NotificationArray.length}  tableau des notif à jour`)
                 
                /* le but de ce fetch est de  récupérer dans le tableau des contacts, seulement ceux qui ne viennent pas d'envoyer un message*/  
-                axios
+                /*axios
                 .get(`http://localhost:5000/MessUtil/6528398bd2efed6f6387edc4`)
                 .then((res)=>{
                     for(let i=0;i<res.data.ListeContacts.length;i++){
@@ -209,11 +209,15 @@ const ContactMessagerie=({socket})=>{
                         console.log(i,"le compteur i")
                         for(let j=0;j<NotificationArray.length;j++){
                             console.log(j,"le compteur j")
+                            
                             if(res.data.ListeContacts[i].Utilisateur===NotificationArray[j].emetteur){
+                                console.log(j,"le compteur j dans la condition 1")
+                                console.log(i,"le compteur i dans la condition 1")
                                 console.log(NotificationArray[j].emetteur,"je suis l'emetteur dans la condition 1, je passe bien par cette condition")
                                 setBoolContactMaj(true)
                             }
                             else if(boolContacMaj===false && j===NotificationArray.length-1 && res.data.ListeContacts[i].Utilisateur!=NotificationArray[j].emetteur){
+                                console.log(boolContacMaj,j,"le j",i,"le i","dans la condition else if")
                                 console.log(NotificationArray.length-1,"je passe bien par là")
                                 ContactMaj.push(res.data.ListeContacts[i])
                                 console.log(res.data.ListeContacts[i],"je passe bien par cette condition")
@@ -225,7 +229,7 @@ const ContactMessagerie=({socket})=>{
                         }
                     }
                 })
-                .catch((err) => console.error(err));
+                .catch((err) => console.error(err));*/
             }
         })
     },[socket])
@@ -439,9 +443,9 @@ const ContactMessagerie=({socket})=>{
                 )}
             </div>
 
-            <div  className={ConvOn===false && testNotif===true?"containerContactMap":"containerContactMapNone"}>
+           {/* <div  className={ConvOn===false && testNotif===true?"containerContactMap":"containerContactMapNone"}>
                 {ContactMajH.map((contact)=>
-                contact.Utilisateur!= connectedUser /*&& contact.Utilisateur!=MessageNotLuEmmeteur*/?
+                contact.Utilisateur!= connectedUser /*&& contact.Utilisateur!=MessageNotLuEmmeteur?
                    <div className="ContactList"  onClick={()=>{joinRoom(setRoom,setDestinataire,contact.Utilisateur,setNickName,contact.Prenom,setNom,contact.Nom,setPro,contact.Pro)}}>
                         <div className="pictoLogoEspaceProMessagerie">
                             <img src={localLogo} className='localLogoPictoMessagerie'></img>
@@ -450,10 +454,11 @@ const ContactMessagerie=({socket})=>{
                         <div className="NomPreProMessagerie">
                             <p className="NomPrenomMess">{contact.Prenom} {contact.Nom}</p>
                             {contact.Pro==="voiture"?<p className="ProMess">Ecole de conduite</p>:contact.Pro==="médecin"?<p className="ProMess">Médecin</p>:<p className="ProMess">Aménageur de véhicule</p>}
-                       </div>
+                            <p>je suis dans la notif</p>
+                        </div>
                     </div>:console.log("ba non")
                 )}
-            </div>
+            </div>*/}
 
             <div className={ConvOn===true && Conv.length !=0 && ChangeHeigthConv===false?"containerConv":ConvOn===true && Conv.length !=0 && ChangeHeigthConv===true?"containerConvHeigth":"messageContainerNone"} id="ConvId">
                     {Conv.map((conversation) =>
