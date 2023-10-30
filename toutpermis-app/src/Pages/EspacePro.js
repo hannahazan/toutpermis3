@@ -4,7 +4,7 @@ import Burger from '../images/iconsAwesome/bars-solid.svg'
 import localLogo from '../images/toutpermisLogoVidepng.png'
 import volant from '../images/volantLogo.png'
 import cross from '../images/iconsAwesome/xmark-solid (1).svg'
-import Navbar from '../component/Navbar.js'
+import Navbar from '../component/Navbar'
 import { useState,useEffect } from 'react';
 import { Link } from 'react-router-dom'
 
