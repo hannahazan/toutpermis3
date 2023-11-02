@@ -44,7 +44,7 @@ const ContactMessagerie=({socket})=>{
     const [boolContacMaj,setBoolContactMaj]=useState(false)
     const [testNotif,setTestNotif]=useState(false)
     const [ContactMajH,setContactMajH]=useState([])
-   
+   //test pour le versioning
     let NotificationArray=[]
     let ContactMaj=[]
     const ScrollEnding=(heigth)=>{
