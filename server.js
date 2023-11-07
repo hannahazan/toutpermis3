@@ -64,10 +64,11 @@ io.on('connection', (socket) => {
 });
 
 var allowedOrigins = ['http://localhost:3000',
+'https://tout-permis5-span.vercel.app'
                       ];
 app.use(cors(
   {
-   origin:'https://tout-permis5-span.vercel.app'
+   origin:'http://localhost:3000'
   }
 ))
 app.use(express.json());
